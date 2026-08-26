@@ -525,6 +525,9 @@ if(e.ctrlKey&&e.key==='n'){e.preventDefault();openApp('net')}
 if(e.ctrlKey&&e.key==='d'){e.preventDefault();openApp('sys')}
 if(e.ctrlKey&&e.key==='b'){e.preventDefault();openApp('calc')}
 if(e.ctrlKey&&e.key==='p'){e.preventDefault();openApp('passgen')}});
+// Login
+document.addEventListener('keydown',e=>{if(e.key==='Enter'){const li=document.getElementById('login');if(li&&li.classList.contains('show')&&!li.classList.contains('hide')){login()}})
+document.getElementById('loginBtn').onclick=()=>login();
 // Boot
 document.addEventListener('DOMContentLoaded',()=>{bootSeq()});
 </script>
