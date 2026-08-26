@@ -1,0 +1,379 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4aykaOS | Desktop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --green: #00ff41; --green-dark: #003b00; --cyan: #00ffff; --red: #ff0040; --yellow: #ffff00; --bg: #0a0a0a; --win-bg: #111; --border: #2a2a2a; --font: 'Fira Code', monospace; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--green); font-family: var(--font); height: 100vh; overflow: hidden; user-select: none; }
+
+        /* DESKTOP */
+        .desktop { width: 100%; height: calc(100vh - 40px); position: relative; overflow: hidden;
+            background: radial-gradient(ellipse at center, #0d0d1a 0%, #0a0a0a 70%);
+        }
+        .desktop-grid { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.03;
+            background-image: linear-gradient(var(--green-dark) 1px, transparent 1px), linear-gradient(90deg, var(--green-dark) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* ICONS */
+        .desktop-icon { position: absolute; width: 80px; text-align: center; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s; }
+        .desktop-icon:hover { background: rgba(0,255,65,0.05); }
+        .desktop-icon .icon { font-size: 2rem; margin-bottom: 4px; display: block; }
+        .desktop-icon .label { font-size: 0.65rem; color: #888; }
+
+        /* TASKBAR */
+        .taskbar { height: 40px; background: rgba(15,15,15,0.95); border-top: 1px solid var(--border); display: flex; align-items: center; padding: 0 1rem; gap: 0.5rem; position: relative; z-index: 100; backdrop-filter: blur(10px); }
+        .start-btn { background: none; border: 1px solid var(--border); color: var(--green); font-family: var(--font); font-size: 0.7rem; padding: 0.3rem 0.8rem; cursor: pointer; transition: all 0.2s; }
+        .start-btn:hover { background: var(--green); color: #000; }
+        .taskbar-apps { display: flex; gap: 2px; margin-left: 1rem; }
+        .taskbar-app { font-size: 0.65rem; color: var(--dim); padding: 0.3rem 0.8rem; cursor: pointer; border: 1px solid transparent; transition: all 0.2s; }
+        .taskbar-app.active { border-color: var(--green-dark); color: var(--green); background: rgba(0,255,65,0.05); }
+        .taskbar-time { margin-left: auto; font-size: 0.7rem; color: #666; }
+
+        /* WINDOWS */
+        .window { position: absolute; background: var(--win-bg); border: 1px solid var(--border); border-radius: 6px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); display: none; min-width: 300px; min-height: 200px; }
+        .window.active { display: flex; flex-direction: column; z-index: 10; }
+        .window.maximized { top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; border-radius: 0; }
+        .win-header { display: flex; align-items: center; padding: 0.5rem 0.8rem; background: #1a1a1a; border-bottom: 1px solid var(--border); cursor: move; flex-shrink: 0; }
+        .win-dots { display: flex; gap: 5px; margin-right: 0.8rem; }
+        .win-dot { width: 10px; height: 10px; border-radius: 50%; cursor: pointer; }
+        .win-dot.r { background: var(--red); }
+        .win-dot.y { background: var(--yellow); }
+        .win-dot.g { background: #333; }
+        .win-dot.g:hover { background: var(--green); }
+        .win-title { font-size: 0.7rem; color: #888; flex: 1; }
+        .win-body { flex: 1; overflow: auto; padding: 0; }
+        .win-body::-webkit-scrollbar { width: 4px; }
+        .win-body::-webkit-scrollbar-thumb { background: var(--green-dark); }
+
+        /* TERMINAL APP */
+        .term-app { padding: 0.8rem; font-size: 0.8rem; height: 100%; display: flex; flex-direction: column; }
+        .term-output { flex: 1; overflow-y: auto; margin-bottom: 0.5rem; line-height: 1.5; }
+        .term-output div { white-space: pre-wrap; word-break: break-all; }
+        .term-input-line { display: flex; align-items: center; }
+        .term-input-line .prompt { color: var(--green); margin-right: 0.5rem; }
+        .term-input { flex: 1; background: none; border: none; color: var(--text, #c0c0c0); font-family: var(--font); font-size: 0.8rem; outline: none; }
+
+        /* FILE MANAGER */
+        .fm { padding: 0.8rem; font-size: 0.75rem; }
+        .fm-item { display: flex; align-items: center; gap: 0.8rem; padding: 0.4rem 0.6rem; cursor: pointer; border-radius: 3px; transition: background 0.2s; }
+        .fm-item:hover { background: rgba(0,255,65,0.05); }
+        .fm-item .fm-icon { width: 20px; text-align: center; }
+        .fm-item .fm-name { color: #aaa; }
+        .fm-item.dir .fm-name { color: var(--cyan); }
+        .fm-path { color: #555; margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+
+        /* SYSTEM MONITOR */
+        .sysmon { padding: 1rem; font-size: 0.75rem; }
+        .sysmon-bar { margin-bottom: 0.8rem; }
+        .sysmon-bar label { color: #666; display: block; margin-bottom: 0.3rem; }
+        .bar-bg { background: #1a1a1a; height: 8px; border-radius: 4px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+        .bar-fill.green { background: linear-gradient(90deg, var(--green-dark), var(--green)); }
+        .bar-fill.cyan { background: linear-gradient(90deg, #003333, var(--cyan)); }
+        .bar-fill.red { background: linear-gradient(90deg, #330000, var(--red)); }
+        .sysmon-val { color: var(--green); font-size: 0.7rem; margin-top: 0.2rem; }
+
+        /* TEXT EDITOR */
+        .text-editor { height: 100%; display: flex; flex-direction: column; }
+        .te-menu { padding: 0.3rem 0.8rem; background: #1a1a1a; border-bottom: 1px solid var(--border); font-size: 0.65rem; color: #555; }
+        .te-content { flex: 1; padding: 0.8rem; font-size: 0.8rem; color: #aaa; background: var(--win-bg); border: none; outline: none; resize: none; font-family: var(--font); line-height: 1.5; }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body>
+    <div class="desktop" id="desktop">
+        <div class="desktop-grid"></div>
+
+        <div class="desktop-icon" style="top:20px;left:20px;" ondblclick="openWindow('terminal')">
+            <span class="icon">&#9618;</span>
+            <span class="label">Terminal</span>
+        </div>
+        <div class="desktop-icon" style="top:120px;left:20px;" ondblclick="openWindow('files')">
+            <span class="icon">&#128193;</span>
+            <span class="label">Files</span>
+        </div>
+        <div class="desktop-icon" style="top:220px;left:20px;" ondblclick="openWindow('sysmon')">
+            <span class="icon">&#9632;</span>
+            <span class="label">System</span>
+        </div>
+        <div class="desktop-icon" style="top:320px;left:20px;" ondblclick="openWindow('editor')">
+            <span class="icon">&#9998;</span>
+            <span class="label">Editor</span>
+        </div>
+        <div class="desktop-icon" style="top:20px;left:120px;" ondblclick="openWindow('browser')">
+            <span class="icon">&#9741;</span>
+            <span class="label">Browser</span>
+        </div>
+        <div class="desktop-icon" style="top:120px;left:120px;" ondblclick="window.open('crypto.html','_blank')">
+            <span class="icon">&#9919;</span>
+            <span class="label">Crypto</span>
+        </div>
+
+        <!-- TERMINAL WINDOW -->
+        <div class="window active" id="win-terminal" style="top:60px;left:200px;width:600px;height:400px;">
+            <div class="win-header" onmousedown="dragWin(event,'win-terminal')">
+                <div class="win-dots"><div class="win-dot r" onclick="closeWin('terminal')"></div><div class="win-dot y" onclick="minWin('terminal')"></div><div class="win-dot g" onclick="maxWin('terminal')"></div></div>
+                <div class="win-title">root@4ayka:~</div>
+            </div>
+            <div class="win-body">
+                <div class="term-app">
+                    <div class="term-output" id="term-output"></div>
+                    <div class="term-input-line">
+                        <span class="prompt">$</span>
+                        <input class="term-input" id="term-input" autofocus spellcheck="false">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FILES WINDOW -->
+        <div class="window" id="win-files" style="top:80px;left:250px;width:500px;height:350px;">
+            <div class="win-header" onmousedown="dragWin(event,'win-files')">
+                <div class="win-dots"><div class="win-dot r" onclick="closeWin('files')"></div><div class="win-dot y" onclick="minWin('files')"></div><div class="win-dot g" onclick="maxWin('files')"></div></div>
+                <div class="win-title">File Manager</div>
+            </div>
+            <div class="win-body">
+                <div class="fm">
+                    <div class="fm-path">/home/guest/4ayka-studio</div>
+                    <div class="fm-item dir"><span class="fm-icon">&#128193;</span><span class="fm-name">messenger/</span></div>
+                    <div class="fm-item dir"><span class="fm-icon">&#128193;</span><span class="fm-name">4ayka-studio/</span></div>
+                    <div class="fm-item dir"><span class="fm-icon">&#128193;</span><span class="fm-name">tblocks/</span></div>
+                    <div class="fm-item"><span class="fm-icon">&#128196;</span><span class="fm-name">index.html</span></div>
+                    <div class="fm-item"><span class="fm-icon">&#128196;</span><span class="fm-name">style.css</span></div>
+                    <div class="fm-item"><span class="fm-icon">&#128196;</span><span class="fm-name">script.js</span></div>
+                    <div class="fm-item"><span class="fm-icon">&#128196;</span><span class="fm-name">crypto.html</span></div>
+                    <div class="fm-item"><span class="fm-icon">&#128196;</span><span class="fm-name">hackertyper.html</span></div>
+                    <div class="fm-item"><span class="fm-icon">&#128196;</span><span class="fm-name">logo.html</span></div>
+                    <div class="fm-item"><span class="fm-icon">&#128196;</span><span class="fm-name">.gitignore</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SYSTEM MONITOR -->
+        <div class="window" id="win-sysmon" style="top:100px;left:300px;width:400px;height:350px;">
+            <div class="win-header" onmousedown="dragWin(event,'win-sysmon')">
+                <div class="win-dots"><div class="win-dot r" onclick="closeWin('sysmon')"></div><div class="win-dot y" onclick="minWin('sysmon')"></div><div class="win-dot g" onclick="maxWin('sysmon')"></div></div>
+                <div class="win-title">System Monitor</div>
+            </div>
+            <div class="win-body">
+                <div class="sysmon">
+                    <div class="sysmon-bar"><label>CPU</label><div class="bar-bg"><div class="bar-fill green" id="cpu-bar" style="width:23%"></div></div><div class="sysmon-val" id="cpu-val">23%</div></div>
+                    <div class="sysmon-bar"><label>RAM</label><div class="bar-bg"><div class="bar-fill cyan" id="ram-bar" style="width:67%"></div></div><div class="sysmon-val" id="ram-val">67%</div></div>
+                    <div class="sysmon-bar"><label>NET</label><div class="bar-bg"><div class="bar-fill red" id="net-bar" style="width:45%"></div></div><div class="sysmon-val" id="net-val">45 KB/s</div></div>
+                    <div class="sysmon-bar"><label>DISK</label><div class="bar-bg"><div class="bar-fill green" id="disk-bar" style="width:31%"></div></div><div class="sysmon-val" id="disk-val">31%</div></div>
+                    <br>
+                    <div style="color:#555;font-size:0.7rem;">UPTIME: <span id="sys-uptime" style="color:var(--green)">00:00:00</span></div>
+                    <div style="color:#555;font-size:0.7rem;">PROCESSES: <span style="color:var(--green)">47</span></div>
+                    <div style="color:#555;font-size:0.7rem;">HOSTNAME: <span style="color:var(--cyan)">4ayka-studio</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEXT EDITOR -->
+        <div class="window" id="win-editor" style="top:50px;left:280px;width:550px;height:400px;">
+            <div class="win-header" onmousedown="dragWin(event,'win-editor')">
+                <div class="win-dots"><div class="win-dot r" onclick="closeWin('editor')"></div><div class="win-dot y" onclick="minWin('editor')"></div><div class="win-dot g" onclick="maxWin('editor')"></div></div>
+                <div class="win-title">untitled.py</div>
+            </div>
+            <div class="win-body">
+                <div class="text-editor">
+                    <div class="te-menu">File: untitled.py | UTF-8 | Python</div>
+                    <textarea class="te-content" spellcheck="false" placeholder="# start coding...">#!/usr/bin/env python3
+# 4ayka Studio - Internal Tool
+
+import socket
+import threading
+
+def scan(target, ports):
+    for port in ports:
+        try:
+            s = socket.socket()
+            s.settimeout(1)
+            s.connect((target, port))
+            print(f"[OPEN] {target}:{port}")
+            s.close()
+        except:
+            pass
+
+if __name__ == "__main__":
+    target = input("Target IP: ")
+    ports = [21, 22, 80, 443, 8080, 3389]
+    print(f"[*] Scanning {target}...")
+    scan(target, ports)
+    print("[+] Done.")</textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAKE BROWSER -->
+        <div class="window" id="win-browser" style="top:40px;left:220px;width:650px;height:450px;">
+            <div class="win-header" onmousedown="dragWin(event,'win-browser')">
+                <div class="win-dots"><div class="win-dot r" onclick="closeWin('browser')"></div><div class="win-dot y" onclick="minWin('browser')"></div><div class="win-dot g" onclick="maxWin('browser')"></div></div>
+                <div class="win-title">DarkNet Browser v2.1</div>
+            </div>
+            <div class="win-body" style="background:#0a0a0a;">
+                <div style="padding:0.5rem;background:#1a1a1a;border-bottom:1px solid #2a2a2a;font-size:0.7rem;color:#555;">
+                    &#9664; &#9654; &#8635; | <span style="color:#aaa;background:#222;padding:2px 8px;border-radius:3px;">tor://4ayka-studio.onion</span>
+                </div>
+                <div style="padding:2rem;text-align:center;">
+                    <div style="font-size:2rem;color:var(--green);text-shadow:0 0 20px var(--green);margin-bottom:1rem;">4AYKA STUDIO</div>
+                    <div style="color:#555;font-size:0.8rem;margin-bottom:2rem;">[ encrypted | anonymous | uncompromised ]</div>
+                    <div style="color:var(--green);font-size:0.75rem;line-height:2;">
+                        > T-Blocks: <a href="tblocks.html" style="color:var(--cyan);text-decoration:none;">play now</a><br>
+                        > CryptoTool: <a href="crypto.html" style="color:var(--cyan);text-decoration:none;">encrypt data</a><br>
+                        > Hacker Typer: <a href="hackertyper.html" style="color:var(--cyan);text-decoration:none;">start typing</a><br>
+                        > Particle Logo: <a href="logo.html" style="color:var(--cyan);text-decoration:none;">view</a><br>
+                        > Main Site: <a href="index.html" style="color:var(--cyan);text-decoration:none;">4ayka-studio</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="taskbar">
+        <button class="start-btn" onclick="openWindow('terminal')">&#9618; 4aykaOS</button>
+        <div class="taskbar-apps" id="taskbar-apps"></div>
+        <div class="taskbar-time" id="taskbar-time"></div>
+    </div>
+
+    <script>
+        let zIndex = 10;
+        const openWindows = {};
+
+        function openWindow(name) {
+            const win = document.getElementById('win-' + name);
+            if (!win) return;
+            win.classList.add('active');
+            win.style.zIndex = ++zIndex;
+            openWindows[name] = true;
+            updateTaskbar();
+            if (name === 'terminal') document.getElementById('term-input').focus();
+        }
+
+        function closeWin(name) {
+            document.getElementById('win-' + name).classList.remove('active');
+            delete openWindows[name];
+            updateTaskbar();
+        }
+
+        function minWin(name) {
+            document.getElementById('win-' + name).classList.remove('active');
+        }
+
+        function maxWin(name) {
+            document.getElementById('win-' + name).classList.toggle('maximized');
+        }
+
+        function updateTaskbar() {
+            const container = document.getElementById('taskbar-apps');
+            container.innerHTML = '';
+            for (const name in openWindows) {
+                const btn = document.createElement('div');
+                btn.className = 'taskbar-app active';
+                btn.textContent = name;
+                btn.onclick = () => { openWindow(name); };
+                container.appendChild(btn);
+            }
+        }
+
+        function dragWin(e, id) {
+            const win = document.getElementById(id);
+            win.style.zIndex = ++zIndex;
+            const startX = e.clientX - win.offsetLeft;
+            const startY = e.clientY - win.offsetTop;
+            function onMove(e) {
+                win.style.left = (e.clientX - startX) + 'px';
+                win.style.top = (e.clientY - startY) + 'px';
+                win.classList.remove('maximized');
+            }
+            function onUp() {
+                document.removeEventListener('mousemove', onMove);
+                document.removeEventListener('mouseup', onUp);
+            }
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onUp);
+        }
+
+        // TERMINAL
+        const termOutput = document.getElementById('term-output');
+        const termInput = document.getElementById('term-input');
+
+        const termCmds = {
+            help: () => 'Commands: help, ls, pwd, whoami, cat, echo, clear, date, neofetch, hack, exit',
+            ls: () => 'messenger/  tblocks/  4ayka-studio/  index.html  style.css  script.js  crypto.html  hackertyper.html  logo.html',
+            pwd: () => '/home/guest/4ayka-studio',
+            whoami: () => 'guest (uid=1337)',
+            date: () => new Date().toLocaleString('ru-RU'),
+            neofetch: () => '     _    _   4aykaOS v1.0\n    / \\  | | kernel: Browser/JS\n   / _ \\ | | shell: 4term\n  /_/ \\_\\|_| uptime: ' + getUptime(),
+            hack: () => '[+] Initiating hack...\n[+] Bypassing firewall... OK\n[+] Exploiting vulnerability CVE-2026-1337\n[+] Shell acquired\n[+] Just kidding :)',
+            clear: () => { termOutput.innerHTML = ''; return ''; },
+            exit: () => { closeWin('terminal'); return ''; },
+        };
+
+        function termAdd(text, cls) {
+            if (!text) return;
+            const div = document.createElement('div');
+            div.style.color = cls || '#aaa';
+            div.textContent = text;
+            termOutput.appendChild(div);
+        }
+
+        termInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const cmd = this.value.trim();
+                this.value = '';
+                termAdd('$ ' + cmd, '#00ff41');
+                if (cmd.startsWith('echo ')) {
+                    termAdd(cmd.substring(5), '#aaa');
+                } else if (cmd.startsWith('cat ')) {
+                    termAdd('cat: ' + cmd.substring(4) + ': Permission denied (just a demo)', '#ff0040');
+                } else if (termCmds[cmd]) {
+                    const result = termCmds[cmd]();
+                    if (result) termAdd(result, '#aaa');
+                } else if (cmd) {
+                    termAdd('4term: ' + cmd + ': command not found', '#ff0040');
+                }
+                termOutput.scrollTop = termOutput.scrollHeight;
+            }
+        });
+
+        // SYSMON
+        function updateSysmon() {
+            const cpu = Math.floor(Math.random() * 40 + 10);
+            const ram = Math.floor(Math.random() * 20 + 55);
+            const net = Math.floor(Math.random() * 100 + 5);
+            document.getElementById('cpu-bar').style.width = cpu + '%';
+            document.getElementById('cpu-val').textContent = cpu + '%';
+            document.getElementById('ram-bar').style.width = ram + '%';
+            document.getElementById('ram-val').textContent = ram + '%';
+            document.getElementById('net-bar').style.width = Math.min(net, 100) + '%';
+            document.getElementById('net-val').textContent = net + ' KB/s';
+        }
+        setInterval(updateSysmon, 2000);
+
+        // CLOCK
+        let startTime = Date.now();
+        function getUptime() {
+            const s = Math.floor((Date.now() - startTime) / 1000);
+            return String(Math.floor(s/3600)).padStart(2,'0') + ':' + String(Math.floor((s%3600)/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0');
+        }
+        function updateClock() {
+            document.getElementById('taskbar-time').textContent = new Date().toLocaleTimeString('ru-RU', {hour12:false});
+            document.getElementById('sys-uptime').textContent = getUptime();
+            requestAnimationFrame(updateClock);
+        }
+        updateClock();
+
+        // INIT
+        openWindow('terminal');
+        termAdd('4aykaOS v1.0 [Terminal Emulator]', '#00ff41');
+        termAdd('Type "help" for commands.\n', '#555');
+    </script>
+</body>
+</html>

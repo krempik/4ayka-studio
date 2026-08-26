@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4AYKA | Particle Logo</title>
+    <style>
+        :root { --green: #00ff41; --bg: #0a0a0a; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); overflow: hidden; cursor: crosshair; }
+        canvas { display: block; }
+        .header { position: fixed; top: 0; left: 0; width: 100%; z-index: 10; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(10,10,10,0.7); backdrop-filter: blur(10px); border-bottom: 1px solid #1a1a1a; }
+        .logo { font-family: 'Fira Code', monospace; font-size: 1rem; letter-spacing: 3px; color: var(--green); text-shadow: 0 0 10px var(--green); }
+        .back { font-family: 'Fira Code', monospace; color: #555; text-decoration: none; font-size: 0.75rem; transition: color 0.3s; cursor: pointer; }
+        .back:hover { color: var(--green); }
+        .hint { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); font-family: 'Fira Code', monospace; font-size: 0.75rem; color: #333; z-index: 10; }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <div class="logo">4AYKA</div>
+        <a class="back" href="index.html">&lt; back</a>
+    </div>
+    <canvas id="canvas"></canvas>
+    <div class="hint">move mouse to interact | click to explode</div>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let W, H;
+        function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+        resize();
+        window.addEventListener('resize', () => { resize(); initParticles(); });
+
+        let mouse = { x: -1000, y: -1000 };
+        let particles = [];
+
+        class Particle {
+            constructor(x, y, tx, ty) {
+                this.x = x;
+                this.y = y;
+                this.tx = tx;
+                this.ty = ty;
+                this.vx = 0;
+                this.vy = 0;
+                this.size = Math.random() * 2 + 1;
+                this.friction = 0.92;
+                this.spring = 0.08;
+                this.density = Math.random() * 30 + 10;
+                this.color = `hsl(${120 + Math.random() * 30}, 100%, ${40 + Math.random() * 30}%)`;
+            }
+
+            update() {
+                const dx = this.tx - this.x;
+                const dy = this.ty - this.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                const force = dist * this.spring;
+
+                this.vx += dx / this.density * force;
+                this.vy += dy / this.density * force;
+
+                const mdx = mouse.x - this.x;
+                const mdy = mouse.y - this.y;
+                const mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+                if (mdist < 150) {
+                    const mforce = (150 - mdist) / 150;
+                    this.vx -= mdx / mdist * mforce * 8;
+                    this.vy -= mdy / mdist * mforce * 8;
+                }
+
+                this.vx *= this.friction;
+                this.vy *= this.friction;
+                this.x += this.vx;
+                this.y += this.vy;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function getTextPoints(text, fontSize) {
+            const offCanvas = document.createElement('canvas');
+            const offCtx = offCanvas.getContext('2d');
+            offCanvas.width = W;
+            offCanvas.height = H;
+            offCtx.fillStyle = '#000';
+            offCtx.font = `bold ${fontSize}px 'Fira Code', monospace`;
+            offCtx.textAlign = 'center';
+            offCtx.textBaseline = 'middle';
+            offCtx.fillText(text, W / 2, H / 2);
+
+            const data = offCtx.getImageData(0, 0, W, H).data;
+            const points = [];
+            const gap = 5;
+            for (let y = 0; y < H; y += gap) {
+                for (let x = 0; x < W; x += gap) {
+                    const i = (y * W + x) * 4;
+                    if (data[i + 3] > 128) {
+                        points.push({ x: x, y: y });
+                    }
+                }
+            }
+            return points;
+        }
+
+        function initParticles() {
+            const fontSize = Math.min(W * 0.15, 200);
+            const points = getTextPoints('4AYKA', fontSize);
+            particles = [];
+
+            const perParticle = Math.max(1, Math.floor(points.length / 800));
+            for (let i = 0; i < points.length; i += perParticle) {
+                const p = points[i];
+                particles.push(new Particle(
+                    Math.random() * W,
+                    Math.random() * H,
+                    p.x,
+                    p.y
+                ));
+            }
+        }
+
+        function explode() {
+            for (const p of particles) {
+                p.vx = (Math.random() - 0.5) * 30;
+                p.vy = (Math.random() - 0.5) * 30;
+            }
+        }
+
+        canvas.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        canvas.addEventListener('mouseleave', () => { mouse.x = -1000; mouse.y = -1000; });
+        canvas.addEventListener('click', explode);
+
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.15)';
+            ctx.fillRect(0, 0, W, H);
+            for (const p of particles) {
+                p.update();
+                p.draw();
+            }
+            requestAnimationFrame(animate);
+        }
+
+        initParticles();
+        animate();
+    </script>
+</body>
+</html>
