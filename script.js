@@ -207,20 +207,43 @@ updateClock();
 document.getElementById('contact-form').addEventListener('submit', function(e) {
     e.preventDefault();
     const btn = this.querySelector('.submit-btn');
+    const nick = this.querySelector('input[type="text"]').value || 'Anonymous';
+    const email = this.querySelector('input[type="email"]').value || '';
+    const message = this.querySelector('textarea').value || '';
+
     btn.textContent = '> sending...';
     btn.style.borderColor = 'var(--yellow)';
     btn.style.color = 'var(--yellow)';
 
+    const text = encodeURIComponent(`Новое сообщение с сайта 4ayka Studio\n\nОт: ${nick}\nEmail: ${email}\n\nСообщение:\n${message}`);
+    const tgUrl = `https://t.me/KR0VOSOS?text=${text}`;
+
     setTimeout(() => {
-        btn.textContent = '> [SENT] message encrypted & delivered';
+        window.open(tgUrl, '_blank');
+        btn.textContent = '> [SENT] opening telegram...';
         btn.style.borderColor = 'var(--green)';
         btn.style.color = 'var(--green)';
 
         setTimeout(() => {
             btn.textContent = '> send --encrypt';
+            btn.style.borderColor = '';
+            btn.style.color = '';
             this.reset();
         }, 3000);
-    }, 1500);
+    }, 800);
+});
+
+// THEME TOGGLE
+const themeToggle = document.getElementById('theme-toggle');
+let isLight = false;
+try { isLight = localStorage.getItem('4ayka_theme') === 'light'; } catch(e) {}
+if (isLight) { document.body.classList.add('light'); themeToggle.textContent = '\u2600'; }
+
+themeToggle.addEventListener('click', () => {
+    isLight = !isLight;
+    document.body.classList.toggle('light', isLight);
+    themeToggle.textContent = isLight ? '\u2600' : '\u263D';
+    try { localStorage.setItem('4ayka_theme', isLight ? 'light' : 'dark'); } catch(e) {}
 });
 
 // RANDOM GLITCH EFFECT ON PAGE

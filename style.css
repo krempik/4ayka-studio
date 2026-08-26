@@ -13,6 +13,20 @@
     --font-mono: 'Fira Code', 'Share Tech Mono', monospace;
 }
 
+body.light {
+    --green: #00aa33;
+    --green-dim: #008828;
+    --green-dark: #00661f;
+    --cyan: #0077cc;
+    --red: #cc0033;
+    --yellow: #cc9900;
+    --bg: #f0efe8;
+    --bg-card: #ffffff;
+    --border: #d0cfc0;
+    --text: #1a1a1a;
+    --text-dim: #666;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -155,6 +169,49 @@ body {
     height: 2px;
     background: var(--green);
     transition: all 0.3s;
+}
+
+.theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 4px;
+    transition: all 0.3s;
+    line-height: 1;
+}
+.theme-toggle:hover {
+    border-color: var(--green);
+    color: var(--green);
+}
+
+body.light .terminal-window {
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+body.light .terminal-header {
+    background: rgba(240, 240, 235, 0.95);
+}
+body.light #matrix {
+    opacity: 0.03;
+}
+body.light .scanlines {
+    opacity: 0.3;
+}
+body.light .nav {
+    background: rgba(240, 240, 235, 0.9);
+}
+body.light .cta-btn:hover {
+    color: #000;
+}
+body.light .hero-title {
+    text-shadow: 0 0 20px rgba(0, 170, 51, 0.3);
+}
+body.light ::selection {
+    background: var(--green);
+    color: #fff;
 }
 
 /* GLITCH */
