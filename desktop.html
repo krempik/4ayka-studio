@@ -164,8 +164,8 @@ body{background:var(--bg);color:var(--tx);font-family:var(--f);height:100vh;over
 <div class="login-avatar">👤</div>
 <div class="login-name">user@4ayka</div>
 <div class="login-hint">нажмите Enter для входа</div>
-<input class="login-input" id="loginInput" type="text" value="••••••••" disabled>
-<button class="login-btn" id="loginBtn">ВОЙТИ</button>
+<div class="login-hint" style="margin-bottom:8px;color:#555">Нажмите Enter или кнопку ниже</div>
+<button class="login-btn" id="loginBtn" style="display:block;margin-top:1rem">⚡ ВОЙТИ</button>
 </div>
 <div id="desktop">
 <div class="desk-grid"></div>
@@ -255,7 +255,7 @@ let bi=0,bt=null;
 function bootSeq(){
 if(bi>=bootMsgs.length){
 setTimeout(()=>{document.getElementById('boot').classList.add('hide');
-setTimeout(()=>{document.getElementById('login').classList.add('show');document.getElementById('loginInput').focus()},500)},600);return}
+setTimeout(()=>{document.getElementById('login').classList.add('show');document.getElementById('loginBtn').focus()},500)},600);return}
 const m=bootMsgs[bi],el=document.getElementById('bootLog');
 const span=document.createElement('span');
 const txt=m[0];
