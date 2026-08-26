@@ -601,6 +601,64 @@ body {
     border-bottom-color: var(--green);
 }
 
+/* INTERACTIVE TERMINAL */
+.interactive-terminal .terminal-body {
+    min-height: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    cursor: text;
+}
+
+#terminal-output {
+    margin-bottom: 0.5rem;
+}
+
+#terminal-output .term-line {
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-all;
+}
+
+#terminal-output .term-cmd {
+    color: var(--text);
+}
+
+#terminal-output .term-out {
+    color: var(--text-dim);
+}
+
+#terminal-output .term-success {
+    color: var(--green);
+}
+
+#terminal-output .term-error {
+    color: var(--red);
+}
+
+#terminal-output .term-info {
+    color: var(--cyan);
+}
+
+#interactive-input {
+    outline: none;
+    display: inline;
+    min-width: 10px;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+}
+
+#interactive-input:empty::before {
+    content: '';
+}
+
+.interactive-terminal .terminal-body::-webkit-scrollbar {
+    width: 4px;
+}
+.interactive-terminal .terminal-body::-webkit-scrollbar-thumb {
+    background: var(--green-dark);
+}
+
 /* CONTACT */
 .contact-grid {
     display: grid;

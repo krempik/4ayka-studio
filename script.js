@@ -236,3 +236,170 @@ setInterval(() => {
         randomGlitch();
     }
 }, 2000);
+
+// INTERACTIVE TERMINAL
+const termOutput = document.getElementById('terminal-output');
+const termInput = document.getElementById('interactive-input');
+const termBody = document.getElementById('interactive-body');
+const termSection = document.getElementById('terminal');
+
+const commands = {
+    help: () => ({
+        text: `Доступные команды:
+  help       - эта справка
+  about      - кто мы
+  projects   - наши проекты
+  tblocks    - ссылка на T-Blocks
+  h4ck       - ссылка на H4ck Messenger
+  github     - ссылка на GitHub
+  telegram   - написать в Telegram
+  email      - отправить email
+  tech       - наш стек
+  uptime     - сколько сайт работает
+  clear      - очистить терминал
+  hack       - ???
+  matrix     - ???
+  whoami     - кто ты?`,
+        cls: 'term-info'
+    }),
+    about: () => ({
+        text: '4ayka Studio - инди-студия разработки.\nДелаем браузерные игры и E2E мессенджеры.\nVanilla JS + Python. Без фреймворков. Без компромиссов.',
+        cls: 'term-success'
+    }),
+    projects: () => ({
+        text: '[ACTIVE] H4ck Messenger - E2E encrypted messenger (FastAPI + WebSocket)\n[DONE]   T-Blocks - Tetris++ with 4 modes, 3 bosses, 6 powerups (721 lines)',
+        cls: 'term-out'
+    }),
+    tblocks: () => {
+        window.open('https://krempik.github.io/tblocks', '_blank');
+        return { text: '[+] Opening T-Blocks in new tab...', cls: 'term-success' };
+    },
+    h4ck: () => {
+        window.open('https://github.com/krempik/messenger', '_blank');
+        return { text: '[+] Opening H4ck Messenger repo...', cls: 'term-success' };
+    },
+    github: () => {
+        window.open('https://github.com/krempik', '_blank');
+        return { text: '[+] Opening github.com/krempik...', cls: 'term-success' };
+    },
+    telegram: () => {
+        window.open('https://t.me/KR0VOSOS', '_blank');
+        return { text: '[+] Opening Telegram @KR0VOSOS...', cls: 'term-success' };
+    },
+    email: () => {
+        window.location.href = 'mailto:kremp577@gmail.com';
+        return { text: '[+] Opening email client...', cls: 'term-success' };
+    },
+    tech: () => ({
+        text: 'Backend:   Python, FastAPI, SQLAlchemy, WebSockets\nFrontend:  HTML5 Canvas, Vanilla JS, Web Crypto API\nEncryption: RSA-2048, AES-256-GCM\nAudio:     Web Audio API (procedural synthesis)',
+        cls: 'term-out'
+    }),
+    uptime: () => {
+        const s = Math.floor((Date.now() - startTime) / 1000);
+        const h = String(Math.floor(s / 3600)).padStart(2, '0');
+        const m = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
+        const sec = String(s % 60).padStart(2, '0');
+        return { text: h + ':' + m + ':' + sec, cls: 'term-success' };
+    },
+    clear: () => {
+        termOutput.innerHTML = '';
+        return { text: '', cls: '' };
+    },
+    hack: () => {
+        const chars = '0123456789ABCDEF';
+        let progress = '';
+        for (let i = 0; i < 20; i++) {
+            progress += chars[Math.floor(Math.random() * chars.length)];
+        }
+        return { text: '[+] Initializing hack sequence...\n[+] Bypassing firewall... ' + progress + '\n[+] Access granted. Just kidding. :)', cls: 'term-success' };
+    },
+    matrix: () => {
+        document.getElementById('matrix').style.opacity = '0.3';
+        setTimeout(() => { document.getElementById('matrix').style.opacity = '0.07'; }, 3000);
+        return { text: '[+] Matrix intensity increased. Wake up, Neo...', cls: 'term-info' };
+    },
+    whoami: () => ({
+        text: 'visitor@4ayka-studio\nuid=1337(visitor) gid=1337(hackers)',
+        cls: 'term-out'
+    }),
+    ls: () => ({
+        text: 'index.html  style.css  script.js  tblocks.html',
+        cls: 'term-out'
+    }),
+    pwd: () => ({
+        text: '/home/guest/4ayka-studio',
+        cls: 'term-out'
+    }),
+    date: () => ({
+        text: new Date().toLocaleString('ru-RU'),
+        cls: 'term-out'
+    }),
+    uname: () => ({
+        text: '4ayka-studio 1.0 x86_64 JavaScript/V8 Browser',
+        cls: 'term-out'
+    }),
+    neofetch: () => ({
+        text: '       _        _   _                _    \n      / \\   ___| |_(_)_ __ ___   ___| |_ \n     / _ \\ / __| __| | \'_ ` _ \\ / _ \\ __|\n    / ___ \\ (__| |_| | | | | | |  __/ |_ \n   /_/   \\_\\___|\\__|_|_| |_| |_|\\___|\\__|\n   \n   4ayka Studio | krempik\n   Stack: Python + JS + Canvas\n   Status: CODING',
+        cls: 'term-success'
+    }),
+};
+
+const defaultReply = (cmd) => ({
+    text: 'bash: ' + cmd + ': команда не найдена. Введи help для списка.',
+    cls: 'term-error'
+});
+
+function addTermLine(text, cls) {
+    const div = document.createElement('div');
+    div.className = 'term-line ' + cls;
+    div.textContent = text;
+    termOutput.appendChild(div);
+}
+
+function addTermCmd(cmd) {
+    const div = document.createElement('div');
+    div.className = 'term-line term-cmd';
+    div.textContent = '$ ' + cmd;
+    termOutput.appendChild(div);
+}
+
+function scrollTerm() {
+    termBody.scrollTop = termBody.scrollHeight;
+}
+
+function processCommand(cmd) {
+    const trimmed = cmd.trim().toLowerCase();
+    if (!trimmed) return;
+
+    addTermCmd(cmd);
+    const handler = commands[trimmed];
+    const result = handler ? handler(trimmed) : defaultReply(trimmed);
+    if (result.text) addTermLine(result.text, result.cls);
+    scrollTerm();
+}
+
+if (termInput) {
+    termInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const cmd = this.textContent;
+            this.textContent = '';
+            processCommand(cmd);
+        }
+    });
+
+    termInput.addEventListener('focus', function() {
+        termBody.style.borderColor = 'var(--green-dim)';
+    });
+
+    termInput.addEventListener('blur', function() {
+        termBody.style.borderColor = 'var(--border)';
+    });
+
+    termSection.addEventListener('click', function() {
+        termInput.focus();
+    });
+
+    addTermLine('4ayka Studio Interactive Shell v1.0', 'term-info');
+    addTermLine('Type "help" for available commands.\n', 'term-out');
+}

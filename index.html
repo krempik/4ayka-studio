@@ -18,6 +18,7 @@
             <li><a href="#about">~/about</a></li>
             <li><a href="#services">~/services</a></li>
             <li><a href="#projects">~/projects</a></li>
+            <li><a href="#terminal">~/terminal</a></li>
             <li><a href="#contact">~/contact</a></li>
         </ul>
         <div class="burger" id="burger">
@@ -158,6 +159,25 @@
                     <a href="https://krempik.github.io/tblocks" target="_blank" class="project-link">krempik.github.io/tblocks</a>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section id="terminal" class="section">
+        <div class="container">
+            <h2 class="section-title"><span class="prompt">#</span> interactive_shell</h2>
+            <div class="terminal-window interactive-terminal">
+                <div class="terminal-header">
+                    <span class="dot red"></span>
+                    <span class="dot yellow"></span>
+                    <span class="dot green"></span>
+                    <span class="terminal-title">guest@4ayka:~</span>
+                </div>
+                <div class="terminal-body" id="interactive-body">
+                    <div id="terminal-output"></div>
+                    <p class="line"><span class="prompt">$</span> <span id="interactive-input" contenteditable="true" spellcheck="false"></span><span class="cursor">_</span></p>
+                </div>
+            </div>
+            <p class="text-dim" style="text-align:center;margin-top:1rem;font-size:0.75rem;">введи <span class="text-green">help</span> для списка команд</p>
         </div>
     </section>
 
