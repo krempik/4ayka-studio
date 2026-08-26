@@ -528,7 +528,7 @@ if(e.ctrlKey&&e.key==='p'){e.preventDefault();openApp('passgen')}});
 document.addEventListener('keydown',e=>{if(e.key==='Enter'){const li=document.getElementById('login');if(li&&li.classList.contains('show')&&!li.classList.contains('hide')){login()}})
 document.getElementById('loginBtn').onclick=()=>login();
 // Boot
-document.addEventListener('DOMContentLoaded',()=>{bootSeq()});
+bootSeq();
 </script>
 </body>
 </html>
