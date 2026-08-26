@@ -23,11 +23,9 @@ body{background:var(--bg);color:var(--tx);font-family:var(--f);height:100vh;over
 #login.show{display:flex}#login.hide{opacity:0;pointer-events:none}
 .login-avatar{width:90px;height:90px;border-radius:50%;border:2px solid var(--gd);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin-bottom:1rem;color:var(--g);background:rgba(0,255,65,0.03)}
 .login-name{font-size:1.1rem;color:var(--tx);margin-bottom:1.5rem}
-.login-input{background:rgba(255,255,255,0.05);border:1px solid var(--bd);color:var(--tx);font-family:var(--f);font-size:0.85rem;padding:0.6rem 1rem;width:250px;outline:none;text-align:center}
-.login-input:focus{border-color:var(--gd)}
 .login-hint{font-size:0.65rem;color:#333;margin-top:1rem}
-.login-btn{margin-top:1rem;padding:0.5rem 2rem;background:transparent;border:1px solid var(--gd);color:var(--g);font-family:var(--f);font-size:0.8rem;cursor:pointer;transition:all 0.3s;display:none}
-.login-btn.show{display:block}.login-btn:hover{background:var(--g);color:#000}
+.login-btn{margin-top:1rem;padding:0.5rem 2rem;background:transparent;border:1px solid var(--gd);color:var(--g);font-family:var(--f);font-size:0.8rem;cursor:pointer;transition:all 0.3s}
+.login-btn:hover{background:var(--g);color:#000}
 #desktop{display:none;width:100%;height:calc(100vh - 42px);position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 50%,#0a0e1a 0%,#050505 80%)}
 #desktop.show{display:block}
 .desk-grid{position:absolute;width:100%;height:100%;opacity:0.02;background-image:linear-gradient(var(--gd) 1px,transparent 1px),linear-gradient(90deg,var(--gd) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
@@ -77,7 +75,6 @@ body{background:var(--bg);color:var(--tx);font-family:var(--f);height:100vh;over
 .win-dot.y{background:#ffbd2e}.win-dot.y:hover{background:#ffb800}
 .win-dot.g{background:#28c840}.win-dot.g:hover{background:#20b238}
 .win-title{font-size:0.7rem;color:#888;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.win-title-icon{font-size:0.8rem;margin-right:2px}
 .win-body{flex:1;overflow:auto;position:relative}
 .win-resize{position:absolute;bottom:0;right:0;width:14px;height:14px;cursor:nwse-resize;z-index:5}
 .app-term{display:flex;flex-direction:column;height:100%;background:#0a0a0a}
@@ -85,7 +82,6 @@ body{background:var(--bg);color:var(--tx);font-family:var(--f);height:100vh;over
 .term-bar span.active{color:var(--g)}
 .term-output{flex:1;padding:10px;font-size:0.78rem;line-height:1.5;overflow-y:auto}
 .term-output .t{white-space:pre-wrap;word-break:break-all}
-.term-output .tg{color:var(--g)}.term-output .tr{color:var(--r)}.term-output .tc{color:var(--cy)}.term-output .ty{color:var(--y)}.term-output .td{color:var(--dm)}
 .term-input-area{display:flex;padding:4px 10px 8px;border-top:1px solid var(--bd);align-items:center}
 .term-input-area .p{color:var(--g);margin-right:6px;font-size:0.78rem;white-space:nowrap}
 .term-in{flex:1;background:none;border:none;color:var(--tx);font-family:var(--f);font-size:0.78rem;outline:none}
@@ -161,60 +157,61 @@ body{background:var(--bg);color:var(--tx);font-family:var(--f);height:100vh;over
 <div class="boot-bar"><div class="boot-bar-fill" id="bootBar"></div></div>
 </div>
 <div id="login">
-<div class="login-avatar">👤</div>
+<div class="login-avatar">&#x1F464;</div>
 <div class="login-name">user@4ayka</div>
 <div class="login-hint" style="color:#555">Нажмите Enter или кнопку ниже</div>
-<button class="login-btn" id="loginBtn" style="display:block;margin-top:1rem">⚡ ВОЙТИ</button>
+<button class="login-btn" id="loginBtn">&#x26A1; ВОЙТИ</button>
 </div>
 <div id="desktop">
 <div class="desk-grid"></div>
 <div class="desk-particles" id="deskParticles"></div>
-<div class="dicon" style="top:20px;left:20px" ondblclick="openApp('term')"><span class="dicon-img">🖥️</span><span class="dicon-label">Terminal</span></div>
-<div class="dicon" style="top:20px;left:130px" ondblclick="openApp('fm')"><span class="dicon-img">📁</span><span class="dicon-label">Файлы</span></div>
-<div class="dicon" style="top:115px;left:20px" ondblclick="openApp('editor')"><span class="dicon-img">📝</span><span class="dicon-label">Editor</span></div>
-<div class="dicon" style="top:115px;left:130px" ondblclick="openApp('calc')"><span class="dicon-img">🧮</span><span class="dicon-label">Calculator</span></div>
-<div class="dicon" style="top:210px;left:20px" ondblclick="openApp('net')"><span class="dicon-img">🌐</span><span class="dicon-label">Network</span></div>
-<div class="dicon" style="top:210px;left:130px" ondblclick="openApp('passgen')"><span class="dicon-img">🔐</span><span class="dicon-label">PassGen</span></div>
-<div class="dicon" style="top:305px;left:20px" ondblclick="openApp('sys')"><span class="dicon-img">📊</span><span class="dicon-label">System</span></div>
-<div class="dicon" style="top:305px;left:130px" ondblclick="openApp('about')"><span class="dicon-img">ℹ️</span><span class="dicon-label">About</span></div>
+<div class="dicon" style="top:20px;left:20px" ondblclick="openApp('term')"><span class="dicon-img">&#x1F5A5;</span><span class="dicon-label">Terminal</span></div>
+<div class="dicon" style="top:20px;left:130px" ondblclick="openApp('fm')"><span class="dicon-img">&#x1F4C1;</span><span class="dicon-label">Файлы</span></div>
+<div class="dicon" style="top:115px;left:20px" ondblclick="openApp('editor')"><span class="dicon-img">&#x1F4DD;</span><span class="dicon-label">Editor</span></div>
+<div class="dicon" style="top:115px;left:130px" ondblclick="openApp('calc')"><span class="dicon-img">&#x1F9EE;</span><span class="dicon-label">Calculator</span></div>
+<div class="dicon" style="top:210px;left:20px" ondblclick="openApp('net')"><span class="dicon-img">&#x1F310;</span><span class="dicon-label">Network</span></div>
+<div class="dicon" style="top:210px;left:130px" ondblclick="openApp('passgen')"><span class="dicon-img">&#x1F510;</span><span class="dicon-label">PassGen</span></div>
+<div class="dicon" style="top:305px;left:20px" ondblclick="openApp('sys')"><span class="dicon-img">&#x1F4CA;</span><span class="dicon-label">System</span></div>
+<div class="dicon" style="top:305px;left:130px" ondblclick="openApp('about')"><span class="dicon-img">&#x2139;</span><span class="dicon-label">About</span></div>
 </div>
 <div id="startmenu">
-<div class="sm-header"><div class="sm-avatar">👤</div><div class="sm-user">user<small>administrator</small></div></div>
+<div class="sm-header"><div class="sm-avatar">&#x1F464;</div><div class="sm-user">user<small>administrator</small></div></div>
 <div class="sm-apps">
-<div class="sm-app" onclick="openApp('term');toggleStart()"><div class="sm-app-icon">🖥️</div><div class="sm-app-name">Terminal</div></div>
-<div class="sm-app" onclick="openApp('fm');toggleStart()"><div class="sm-app-icon">📁</div><div class="sm-app-name">Файловый менеджер</div></div>
-<div class="sm-app" onclick="openApp('editor');toggleStart()"><div class="sm-app-icon">📝</div><div class="sm-app-name">Текстовый редактор</div></div>
-<div class="sm-app" onclick="openApp('calc');toggleStart()"><div class="sm-app-icon">🧮</div><div class="sm-app-name">Калькулятор</div></div>
-<div class="sm-app" onclick="openApp('net');toggleStart()"><div class="sm-app-icon">🌐</div><div class="sm-app-name">Монитор сети</div></div>
-<div class="sm-app" onclick="openApp('passgen');toggleStart()"><div class="sm-app-icon">🔐</div><div class="sm-app-name">Генератор паролей</div></div>
-<div class="sm-app" onclick="openApp('sys');toggleStart()"><div class="sm-app-icon">📊</div><div class="sm-app-name">Монитор системы</div></div>
-<div class="sm-app" onclick="openApp('about');toggleStart()"><div class="sm-app-icon">ℹ️</div><div class="sm-app-name">О системе</div></div>
+<div class="sm-app" onclick="openApp('term');toggleStart()"><div class="sm-app-icon">&#x1F5A5;</div><div class="sm-app-name">Terminal</div></div>
+<div class="sm-app" onclick="openApp('fm');toggleStart()"><div class="sm-app-icon">&#x1F4C1;</div><div class="sm-app-name">Файловый менеджер</div></div>
+<div class="sm-app" onclick="openApp('editor');toggleStart()"><div class="sm-app-icon">&#x1F4DD;</div><div class="sm-app-name">Текстовый редактор</div></div>
+<div class="sm-app" onclick="openApp('calc');toggleStart()"><div class="sm-app-icon">&#x1F9EE;</div><div class="sm-app-name">Калькулятор</div></div>
+<div class="sm-app" onclick="openApp('net');toggleStart()"><div class="sm-app-icon">&#x1F310;</div><div class="sm-app-name">Монитор сети</div></div>
+<div class="sm-app" onclick="openApp('passgen');toggleStart()"><div class="sm-app-icon">&#x1F510;</div><div class="sm-app-name">Генератор паролей</div></div>
+<div class="sm-app" onclick="openApp('sys');toggleStart()"><div class="sm-app-icon">&#x1F4CA;</div><div class="sm-app-name">Монитор системы</div></div>
+<div class="sm-app" onclick="openApp('about');toggleStart()"><div class="sm-app-icon">&#x2139;</div><div class="sm-app-name">О системе</div></div>
 </div>
 <div class="sm-footer">
-<button class="sm-footer-btn" onclick="doShutdown()">⏻ Выключить</button>
-<button class="sm-footer-btn" onclick="doReboot()">🔄 Перезагрузка</button>
+<button class="sm-footer-btn" onclick="doShutdown()">&#x23FB; Выключить</button>
+<button class="sm-footer-btn" onclick="doReboot()">&#x1F504; Перезагрузка</button>
 </div>
 </div>
 <div id="ctxmenu"></div>
 <div id="notifs"></div>
 <div id="shutdown"><div class="shut-text">Завершение работы...</div></div>
 <div class="taskbar">
-<button class="tb-start" onclick="toggleStart()">⚡ 4ayka</button>
+<button class="tb-start" onclick="toggleStart()">&#x26A1; 4ayka</button>
 <div class="tb-sep"></div>
 <div class="tb-apps" id="tbApps"></div>
 <div class="tb-tray">
-<span class="tb-tray-item" id="tbWifi" title="Wi-Fi">📶</span>
-<span class="tb-tray-item" id="tbVol" title="Audio">🔊</span>
-<span class="tb-tray-item" id="tbBat" title="Battery">🔋</span>
+<span class="tb-tray-item" id="tbWifi" title="Wi-Fi">&#x1F4F6;</span>
+<span class="tb-tray-item" id="tbVol" title="Audio">&#x1F50A;</span>
+<span class="tb-tray-item" id="tbBat" title="Battery">&#x1F50B;</span>
 </div>
 <div class="tb-clock" id="tbClock" onclick="toggleStart()"></div>
 </div>
-</div>
 <script>
-const C={g:'#00ff41',gd:'#003b00',cy:'#00ffff',r:'#ff0040',y:'#ffff00'};
-let wins={},winZ=100,activeWin=null,cmdHistory=[],cmdHistIdx=-1;
-let termDir='~',termUser='user@4ayka';
-const VFS={
+var C={g:'#00ff41',gd:'#003b00',cy:'#00ffff',r:'#ff0040',y:'#ffff00'};
+var wins={},winZ=100,activeWin=null,cmdHistory=[],cmdHistIdx=-1;
+var termDir='~',termUser='user@4ayka';
+var startTime=Date.now();
+
+var VFS={
 '~':{type:'dir',children:['Desktop','Documents','Downloads','System','Projects']},
 '~/Desktop':{type:'dir',children:['notes.txt','todo.txt']},
 '~/Documents':{type:'dir',children:['readme.md','hack_log.txt']},
@@ -225,15 +222,17 @@ const VFS={
 '~/Projects/messenger':{type:'dir',children:['server.py','client.html','crypto.js']},
 '~/Projects/4ayka-studio':{type:'dir',children:['index.html','style.css','script.js','desktop.html']},
 '~/Desktop/notes.txt':{type:'file',size:'247B',content:'[+] Персональный сайт: 4ayka-studio\n[+] H4ck Messenger: E2E шифрование\n[+] T-Blocks: Написан с нуля на JS\n[+] Навыки: FastAPI, Python, JS, MongoDB'},
-'~/Desktop/todo.txt':{type:'file',size:'183B',content:'[ ] Добавить голосовые чаты в H4ck\n[x] Запустить сайт на GitHub Pages\n[x] Рефакторинг messenger\n[ ] Новые уровни для T-Blocks\n[ ] Автообновление сервера'},
-'~/Documents/readme.md':{type:'file',size:'312B',content:'# 4ayka Studio\n> Хакерская студия разработки\n\n## Проекты\n- **H4ck Messenger** — E2E шифрованный мессенджер\n- **T-Blocks** — Игра Тетрис++ (721 строка)\n- **4ayka-studio** — Персональный сайт\n\n## Навыки\nPython • FastAPI • JavaScript • Node.js'},
-'~/Documents/hack_log.txt':{type:'file',size:'428B',content:'[2026-01-15 03:22] Попытка входа: FAIL\n[2026-01-15 03:23] Попытка входа: FAIL\n[2026-01-15 03:24] Попытка входа: SUCCESS\n[2026-01-15 03:25] Просмотр логов: OK\n[2026-01-15 04:00] H4ck Messenger: DEPLOYED\n[2026-01-15 04:12] Сертификат: Установлен'},
-'~/System/kernel':{type:'file',size:'2.4KB',content:'4aykaOS Kernel v2.0\n==================\n[OK] Memory init: 16384 MB\n[OK] CPU cores: 8 detected\n[OK] Network: eth0 UP\n[OK] Crypto: AES-256-GCM ready\n[OK] Filesystem: ext4 mounted\n[OK] Security: SELinux enforcing\n[OK] Services: all operational'},
-'~/System/config.sys':{type:'file',size:'156B',content:'OS=4aykaOS\nVER=2.0\nUSER=root\nSHELL=/bin/4sh\nCRYPTO=aes-256-gcm\nNET=eth0\nRESOLUTION=auto'},
-'~/System/boot.dat':{type:'file',size:'891B',content:'BOOT SEQUENCE LOG\n=================\nStage 1: BIOS.............. OK\nStage 2: GRUB.............. OK\nStage 3: Kernel............ OK\nStage 4: Init.............. OK\nStage 5: Services.......... OK\nStage 6: Desktop........... OK\nTotal boot time: 1.47s'}
+'~/Desktop/todo.txt':{type:'file',size:'183B',content:'[ ] Добавить голосовые чаты в H4ck\n[x] Запустить сайт на GitHub Pages\n[x] Рефакторинг messenger\n[ ] Новые уровни для T-Blocks'},
+'~/Documents/readme.md':{type:'file',size:'312B',content:'# 4ayka Studio\n> Хакерская студия разработки\n\n## Проекты\n- H4ck Messenger - E2E messenger\n- T-Blocks - Tetris++ (721 line)\n- 4ayka-studio - Personal site'},
+'~/Documents/hack_log.txt':{type:'file',size:'428B',content:'[2026-01-15 03:22] Login attempt: FAIL\n[2026-01-15 03:23] Login attempt: FAIL\n[2026-01-15 03:24] Login attempt: SUCCESS\n[2026-01-15 04:00] H4ck Messenger: DEPLOYED'},
+'~/System/kernel':{type:'file',size:'2.4KB',content:'4aykaOS Kernel v2.0\n==================\n[OK] Memory init: 16384 MB\n[OK] CPU cores: 8 detected\n[OK] Network: eth0 UP\n[OK] Crypto: AES-256-GCM ready'},
+'~/System/config.sys':{type:'file',size:'156B',content:'OS=4aykaOS\nVER=2.0\nUSER=root\nSHELL=/bin/4sh\nCRYPTO=aes-256-gcm'},
+'~/System/boot.dat':{type:'file',size:'891B',content:'BOOT SEQUENCE LOG\nStage 1: BIOS OK\nStage 2: GRUB OK\nStage 3: Kernel OK\nTotal boot time: 1.47s'}
 };
-let termFS={...VFS};// Boot sequence
-const bootMsgs=[
+var termFS={};
+Object.keys(VFS).forEach(function(k){termFS[k]=JSON.parse(JSON.stringify(VFS[k]))});
+
+var bootMsgs=[
 ['[BIOS] POST test.............. ',1,200],
 ['[BIOS] Memory: 16384 MB OK.... ',1,300],
 ['[BIOS] CPU: 8 cores detected.. ',1,250],
@@ -250,284 +249,672 @@ const bootMsgs=[
 ['[SYS]  Desktop environment..... ',1,400],
 ['[OK]   4aykaOS boot complete!',0,500]
 ];
-let bi=0,bt=null;
+var bi=0;
+
 function bootSeq(){
-if(bi>=bootMsgs.length){
-setTimeout(()=>{document.getElementById('boot').classList.add('hide');
-setTimeout(()=>{document.getElementById('login').classList.add('show');document.getElementById('loginBtn').focus()},500)},600);return}
-const m=bootMsgs[bi],el=document.getElementById('bootLog');
-const span=document.createElement('span');
-const txt=m[0];
-el.appendChild(span);
-let ci=0;
-const iv=setInterval(()=>{if(ci<txt.length){span.textContent+=txt[ci];ci++}else{clearInterval(iv);el.scrollTop=el.scrollHeight;
-if(m[1])span.classList.add('ok'),span.textContent+='[  OK  ]';
-document.getElementById('bootBar').style.width=((bi+1)/bootMsgs.length*100)+'%';
-bi++;setTimeout(bootSeq,m[2])}},12);
+  if(bi>=bootMsgs.length){
+    setTimeout(function(){
+      document.getElementById('boot').classList.add('hide');
+      setTimeout(function(){
+        document.getElementById('login').classList.add('show');
+        document.getElementById('loginBtn').focus();
+      },500);
+    },600);
+    return;
+  }
+  var m=bootMsgs[bi],el=document.getElementById('bootLog');
+  var span=document.createElement('span');
+  var txt=m[0];
+  el.appendChild(span);
+  var ci=0;
+  var iv=setInterval(function(){
+    if(ci<txt.length){span.textContent+=txt[ci];ci++;}
+    else{
+      clearInterval(iv);
+      el.scrollTop=el.scrollHeight;
+      if(m[1])span.classList.add('ok'),span.textContent+='[  OK  ]';
+      document.getElementById('bootBar').style.width=((bi+1)/bootMsgs.length*100)+'%';
+      bi++;
+      setTimeout(bootSeq,m[2]);
+    }
+  },12);
 }
-// Desktop particles
-function initParticles(){const c=document.getElementById('deskParticles');if(!c)return;for(let i=0;i<30;i++){const p=document.createElement('div');p.className='desk-particle';p.style.left=Math.random()*100+'%';p.style.animationDuration=(8+Math.random()*12)+'s';p.style.animationDelay=Math.random()*10+'s';c.appendChild(p)}}
-function login(){document.getElementById('login').classList.add('hide');
-setTimeout(()=>{document.getElementById('desktop').classList.add('show');initParticles();showNotif('4aykaOS v2.0','Добро пожаловать, user!'),updateClock()},500)}
-function updateClock(){const d=new Date(),h=String(d.getHours()).padStart(2,'0'),m=String(d.getMinutes()).padStart(2,'0');
-const el=document.getElementById('tbClock');if(el)el.textContent=h+':'+m;setTimeout(updateClock,10000)}
-// Start menu & context menu
-function toggleStart(){const m=document.getElementById('startmenu');m.classList.toggle('show');document.getElementById('ctxmenu').classList.remove('show')}
-function closeMenus(){document.getElementById('startmenu').classList.remove('show');document.getElementById('ctxmenu').classList.remove('show')}
-document.addEventListener('click',e=>{if(!e.target.closest('#startmenu')&&!e.target.closest('.tb-start'))document.getElementById('startmenu').classList.remove('show');
-if(!e.target.closest('#ctxmenu'))document.getElementById('ctxmenu').classList.remove('show')});
-document.addEventListener('contextmenu',e=>{e.preventDefault();const m=document.getElementById('ctxmenu');
-const items=[
-{i:'🖥️ Терминал',a:()=>openApp('term')},
-{i:'📁 Файлы',a:()=>openApp('fm')},
-{i:'📝 Редактор',a:()=>openApp('editor')},
-{sep:true},
-{i:'📊 Система',a:()=>openApp('sys')},
-{i:'🌐 Сеть',a:()=>openApp('net')},
-{i:'ℹ️ О системе',a:()=>openApp('about')},
-{sep:true},
-{i:'🔄 Перезагрузка',a:()=>doReboot()},
-{i:'⏻ Выключить',a:()=>doShutdown()}
-];
-m.innerHTML=items.map(it=>it.sep?'<div class="ctx-sep"></div>':`<div class="ctx-item" data-action="${it.i}">${it.i}</div>`).join('');
-m.querySelectorAll('.ctx-item').forEach((el,i)=>{const realItems=items.filter(x=>!x.sep);el.onclick=()=>{m.classList.remove('show');realItems[i].a()}});
-m.style.left=Math.min(e.clientX,window.innerWidth-200)+'px';m.style.top=Math.min(e.clientY,window.innerHeight-m.children.length*32-10)+'px';
-m.classList.add('show')});// Window management
-function openApp(id){if(wins[id]&&document.getElementById('win-'+id)){focusWin(id);return}
-const desktop=document.getElementById('desktop');const icons=document.querySelectorAll('.dicon');
-let top=60,left=60;
-if(icons.length){const ri=Math.floor(Math.random()*icons.length);const ic=icons[ri];top=Math.max(40,ic.offsetTop+40);left=Math.min(ic.offsetLeft+40,window.innerWidth-500)}
-const w=document.createElement('div');w.className='win focused';w.id='win-'+id;
-w.style.cssText=`top:${top}px;left:${left}px;width:${id==='term'||id==='fm'?'650px':id==='editor'?'550px':'440px'};height:${id==='term'?'420px':id==='fm'?'400px':id==='editor'?'420px':'480px'};z-index:${++winZ}`;
-w.innerHTML=genWinHTML(id);desktop.appendChild(w);wins[id]={el:w,focused:true,max:false};
-initDrag(w,w.querySelector('.win-head'));initResize(w);setupWinEvents(w,id);focusWin(id);
-if(id==='term')initTerm(w);if(id==='fm')initFM(w);if(id==='passgen')initPassGen(w);if(id==='calc')initCalc(w);if(id==='net')initNet(w);if(id==='sys')initSys(w);if(id==='editor')initEditor(w);
-updateTaskbar();showNotif('4aykaOS',`Приложение открыто: ${appName(id)}`)}
-function appName(id){return{term:'Терминал',fm:'Файлы',editor:'Редактор',calc:'Калькулятор',net:'Сеть',passgen:'Генератор паролей',sys:'Система',about:'О системе'}[id]||id}
+
+function initParticles(){
+  var c=document.getElementById('deskParticles');
+  if(!c)return;
+  for(var i=0;i<30;i++){
+    var p=document.createElement('div');
+    p.className='desk-particle';
+    p.style.left=Math.random()*100+'%';
+    p.style.animationDuration=(8+Math.random()*12)+'s';
+    p.style.animationDelay=Math.random()*10+'s';
+    c.appendChild(p);
+  }
+}
+
+function login(){
+  document.getElementById('login').classList.add('hide');
+  setTimeout(function(){
+    document.getElementById('desktop').classList.add('show');
+    initParticles();
+    showNotif('4aykaOS v2.0','Добро пожаловать, user!');
+    updateClock();
+  },500);
+}
+
+function updateClock(){
+  var d=new Date();
+  var h=String(d.getHours()).padStart(2,'0');
+  var m=String(d.getMinutes()).padStart(2,'0');
+  var el=document.getElementById('tbClock');
+  if(el)el.textContent=h+':'+m;
+  setTimeout(updateClock,10000);
+}
+
+function toggleStart(){
+  var m=document.getElementById('startmenu');
+  m.classList.toggle('show');
+  document.getElementById('ctxmenu').classList.remove('show');
+}
+
+function closeMenus(){
+  document.getElementById('startmenu').classList.remove('show');
+  document.getElementById('ctxmenu').classList.remove('show');
+}
+
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#startmenu')&&!e.target.closest('.tb-start'))
+    document.getElementById('startmenu').classList.remove('show');
+  if(!e.target.closest('#ctxmenu'))
+    document.getElementById('ctxmenu').classList.remove('show');
+});
+
+document.addEventListener('contextmenu',function(e){
+  e.preventDefault();
+  var m=document.getElementById('ctxmenu');
+  var items=[
+    {i:'Terminal',a:function(){openApp('term')}},
+    {i:'Файлы',a:function(){openApp('fm')}},
+    {i:'Редактор',a:function(){openApp('editor')}},
+    {sep:true},
+    {i:'Система',a:function(){openApp('sys')}},
+    {i:'Сеть',a:function(){openApp('net')}},
+    {i:'О системе',a:function(){openApp('about')}},
+    {sep:true},
+    {i:'Перезагрузка',a:function(){doReboot()}},
+    {i:'Выключить',a:function(){doShutdown()}}
+  ];
+  m.innerHTML=items.map(function(it){
+    return it.sep?'<div class="ctx-sep"></div>':'<div class="ctx-item">'+it.i+'</div>';
+  }).join('');
+  var filtered=items.filter(function(x){return !x.sep});
+  m.querySelectorAll('.ctx-item').forEach(function(el,i){
+    el.onclick=function(){m.classList.remove('show');filtered[i].a()};
+  });
+  m.style.left=Math.min(e.clientX,window.innerWidth-200)+'px';
+  m.style.top=Math.min(e.clientY,window.innerHeight-300)+'px';
+  m.classList.add('show');
+});
+
+function appName(id){
+  return {term:'Terminal',fm:'Файлы',editor:'Редактор',calc:'Калькулятор',net:'Сеть',passgen:'PassGen',sys:'Система',about:'О системе'}[id]||id;
+}
+
+function openApp(id){
+  if(wins[id]&&document.getElementById('win-'+id)){focusWin(id);return;}
+  var desktop=document.getElementById('desktop');
+  var icons=document.querySelectorAll('.dicon');
+  var top=60,left=60;
+  if(icons.length){
+    var ri=Math.floor(Math.random()*icons.length);
+    var ic=icons[ri];
+    top=Math.max(40,ic.offsetTop+40);
+    left=Math.min(ic.offsetLeft+40,window.innerWidth-500);
+  }
+  var w=document.createElement('div');
+  w.className='win focused';
+  w.id='win-'+id;
+  var ww=id==='term'||id==='fm'?'650px':id==='editor'?'550px':'440px';
+  var wh=id==='term'?'420px':id==='fm'?'400px':id==='editor'?'420px':'480px';
+  w.style.cssText='top:'+top+'px;left:'+left+'px;width:'+ww+';height:'+wh+';z-index:'+(++winZ);
+  w.innerHTML=genWinHTML(id);
+  desktop.appendChild(w);
+  wins[id]={el:w,focused:true,max:false};
+  initDrag(w,w.querySelector('.win-head'));
+  initResize(w);
+  setupWinEvents(w,id);
+  focusWin(id);
+  if(id==='term')initTerm(w);
+  if(id==='fm')initFM(w);
+  if(id==='passgen')initPassGen(w);
+  if(id==='calc')initCalc(w);
+  if(id==='net')initNet(w);
+  if(id==='sys')initSys(w);
+  if(id==='editor')initEditor(w);
+  updateTaskbar();
+  showNotif('4aykaOS','Opened: '+appName(id));
+}
+
 function genWinHTML(id){
-const titles={term:'🖥️ Terminal',fm:'📁 Файловый менеджер',editor:'📝 Текстовый редактор',calc:'🧮 Калькулятор',net:'🌐 Монитор сети',passgen:'🔐 Генератор паролей',sys:'📊 Монитор системы',about:'ℹ️ О системе 4aykaOS'};
-let body='';
-switch(id){
-case'term':body=`<div class="app-term"><div class="term-bar"><span class="active">user@4ayka</span><span>bash</span><span>0 processes</span></div><div class="term-output" id="tout-${Date.now()}"></div><div class="term-input-area"><span class="p">[${termUser} ${termDir}]$ </span><input class="term-in" id="tin-${Date.now()}" type="text" autofocus></div></div>`;break;
-case'fm':body=`<div class="app-fm"><div class="fm-toolbar"><button onclick="fmUp(this)">▲</button><button onclick="fmRoot(this)">⌂</button><button onclick="fmRefresh(this)">↻</button><span class="fm-path" id="fpath-${Date.now()}">${termDir}</span></div><div class="fm-list" id="flist-${Date.now()}"></div><div class="fm-status" id="fstat-${Date.now()}"></div></div>`;break;
-case'editor':body=`<div class="app-editor"><div class="ed-menu"><span onclick="editorNew(this)">📄 Новый</span><span onclick="editorSave(this)">💾 Сохранить</span><span onclick="editorOpen(this)">📂 Открыть</span><span>✂️</span><span>📋</span></div><textarea class="ed-content" placeholder="// 4aykaOS Text Editor\n// Начните печатать..."></textarea></div>`;break;
-case'calc':body=`<div class="app-calc"><div class="calc-display"><div class="calc-expr" id="cexpr-${Date.now()}"></div><div class="calc-result" id="cres-${Date.now()}">0</div></div><div class="calc-grid" id="cgrid-${Date.now()}"></div></div>`;break;
-case'net':body=`<div class="app-net"><div class="sys-title">🌐 Сетевой монитор</div><div class="net-chart"><canvas class="net-canvas" id="ncanvas-${Date.now()}"></canvas></div><div class="net-stats"><div class="net-stat"><div class="net-stat-label">Загрузка</div><div class="net-stat-val" id="ndown-${Date.now()}">0 KB/s</div></div><div class="net-stat"><div class="net-stat-label">Отправка</div><div class="net-stat-val" id="nup-${Date.now()}">0 KB/s</div></div><div class="net-stat"><div class="net-stat-label">Пакеты RX</div><div class="net-stat-val" id="nrx-${Date.now()}">0</div></div><div class="net-stat"><div class="net-stat-label">Пакеты TX</div><div class="net-stat-val" id="ntx-${Date.now()}">0</div></div></div></div>`;break;
-case'passgen':body=`<div class="app-passgen"><div class="sys-title">🔐 Генератор паролей</div><div class="passgen-output" id="pgout-${Date.now()}">Нажмите сгенерировать</div><div class="passgen-controls"><div class="passgen-row"><label>Длина: <span id="pglenv-${Date.now()}">16</span></label><input type="range" min="8" max="64" value="16" id="pglen-${Date.now()}" oninput="document.getElementById('pglenv-${Date.now()}').textContent=this.value"></div><div class="passgen-row"><label>Заглавные A-Z</label><input type="checkbox" checked id="pgu-${Date.now()}"></div><div class="passgen-row"><label>Строчные a-z</label><input type="checkbox" checked id="pgl-${Date.now()}"></div><div class="passgen-row"><label>Цифры 0-9</label><input type="checkbox" checked id="pgd-${Date.now()}"></div><div class="passgen-row"><label>Символы !@#$</label><input type="checkbox" checked id="pgs-${Date.now()}"></div><div class="passgen-btns"><button class="passgen-btn" onclick="genPass(this)">⚡ Сгенерировать</button><button class="passgen-btn" onclick="copyPass(this)">📋 Копировать</button></div></div></div>`;break;
-case'sys':body=`<div class="app-sys"><div class="sys-title">📊 Системный монитор</div><div id="sysContent-${Date.now()}"></div></div>`;break;
-case'about':body=`<div class="app-about"><div class="about-logo">4AYKA</div><div class="about-ver">4aykaOS v2.0 • Build 2026.08</div><div class="about-info"><span>OS:</span> 4aykaOS v2.0<br><span>Kernel:</span> 5.15.4ayka<br><span>Shell:</span> 4sh v1.0<br><span>Crypto:</span> AES-256-GCM<br><span>RAM:</span> 16384 MB<br><span>CPU:</span> 8 cores<br><span>Display:</span> Wayland<br><span>Uptime:</span> <span id="aboutUp">0:00</span><br><span>Studio:</span> 4ayka Studio</div></div>`;break;
+  var titles={term:'Terminal',fm:'Файловый менеджер',editor:'Текстовый редактор',calc:'Калькулятор',net:'Сетевой монитор',passgen:'Генератор паролей',sys:'Системный монитор',about:'О системе 4aykaOS'};
+  var body='';
+  var uid=Date.now();
+  switch(id){
+    case 'term':
+      body='<div class="app-term"><div class="term-bar"><span class="active">user@4ayka</span><span>bash</span></div><div class="term-output" id="tout-'+uid+'"></div><div class="term-input-area"><span class="p">['+termUser+' '+termDir+']$ </span><input class="term-in" id="tin-'+uid+'" type="text" autofocus></div></div>';
+      break;
+    case 'fm':
+      body='<div class="app-fm"><div class="fm-toolbar"><button onclick="fmUp(this)">&#x25B2;</button><button onclick="fmRoot(this)">&#x2302;</button><button onclick="fmRefresh(this)">&#x21BB;</button><span class="fm-path" id="fpath-'+uid+'">'+termDir+'</span></div><div class="fm-list" id="flist-'+uid+'"></div><div class="fm-status" id="fstat-'+uid+'"></div></div>';
+      break;
+    case 'editor':
+      body='<div class="app-editor"><div class="ed-menu"><span onclick="editorNew(this)">New</span><span onclick="editorSave(this)">Save</span><span onclick="editorOpen(this)">Open</span></div><textarea class="ed-content" placeholder="// 4aykaOS Text Editor"></textarea></div>';
+      break;
+    case 'calc':
+      body='<div class="app-calc"><div class="calc-display"><div class="calc-expr" id="cexpr-'+uid+'"></div><div class="calc-result" id="cres-'+uid+'">0</div></div><div class="calc-grid" id="cgrid-'+uid+'"></div></div>';
+      break;
+    case 'net':
+      body='<div class="app-net"><div class="sys-title">Network Monitor</div><div class="net-chart"><canvas class="net-canvas" id="ncanvas-'+uid+'"></canvas></div><div class="net-stats"><div class="net-stat"><div class="net-stat-label">Download</div><div class="net-stat-val" id="ndown-'+uid+'">0 KB/s</div></div><div class="net-stat"><div class="net-stat-label">Upload</div><div class="net-stat-val" id="nup-'+uid+'">0 KB/s</div></div><div class="net-stat"><div class="net-stat-label">RX Packets</div><div class="net-stat-val" id="nrx-'+uid+'">0</div></div><div class="net-stat"><div class="net-stat-label">TX Packets</div><div class="net-stat-val" id="ntx-'+uid+'">0</div></div></div></div>';
+      break;
+    case 'passgen':
+      body='<div class="app-passgen"><div class="sys-title">Password Generator</div><div class="passgen-output" id="pgout-'+uid+'">Click generate</div><div class="passgen-controls"><div class="passgen-row"><label>Length: <span id="pglenv-'+uid+'">16</span></label><input type="range" min="8" max="64" value="16" id="pglen-'+uid+'"></div><div class="passgen-row"><label>Uppercase A-Z</label><input type="checkbox" checked id="pgu-'+uid+'"></div><div class="passgen-row"><label>Lowercase a-z</label><input type="checkbox" checked id="pgl-'+uid+'"></div><div class="passgen-row"><label>Digits 0-9</label><input type="checkbox" checked id="pgd-'+uid+'"></div><div class="passgen-row"><label>Symbols !@#$</label><input type="checkbox" checked id="pgs-'+uid+'"></div><div class="passgen-btns"><button class="passgen-btn" onclick="genPass(this)">Generate</button><button class="passgen-btn" onclick="copyPass(this)">Copy</button></div></div></div>';
+      break;
+    case 'sys':
+      body='<div class="app-sys"><div class="sys-title">System Monitor</div><div id="sysContent-'+uid+'"></div></div>';
+      break;
+    case 'about':
+      body='<div class="app-about"><div class="about-logo">4AYKA</div><div class="about-ver">4aykaOS v2.0 - Build 2026.08</div><div class="about-info"><span>OS:</span> 4aykaOS v2.0<br><span>Kernel:</span> 5.15.4ayka<br><span>Shell:</span> 4sh v1.0<br><span>Crypto:</span> AES-256-GCM<br><span>RAM:</span> 16384 MB<br><span>CPU:</span> 8 cores<br><span>Studio:</span> 4ayka Studio</div></div>';
+      break;
+  }
+  return '<div class="win-head"><div class="win-dots"><div class="win-dot r" onclick="closeWin(\''+id+'\')"></div><div class="win-dot y" onclick="minWin(\''+id+'\')"></div><div class="win-dot g" onclick="maxWin(\''+id+'\')"></div></div><div class="win-title">'+(titles[id]||id)+'</div></div><div class="win-body">'+body+'</div><div class="win-resize"></div>';
 }
-return`<div class="win-head"><div class="win-dots"><div class="win-dot r" onclick="closeWin('${id}')"></div><div class="win-dot y" onclick="minWin('${id}')"></div><div class="win-dot g" onclick="maxWin('${id}')"></div></div><div class="win-title">${titles[id]||id}</div></div><div class="win-body">${body}</div><div class="win-resize" onmousedown="startResize(event,'${id}')"></div>`}// Window drag & resize
-function initDrag(w,handle){let ox,oy,sx,sy,dragging=false;
-handle.onmousedown=e=>{if(e.target.closest('.win-dot'))return;dragging=true;sx=e.clientX;sy=e.clientY;ox=w.offsetLeft;oy=w.offsetTop;focusWin(w.id.replace('win-',''));e.preventDefault()};
-document.addEventListener('mousemove',e=>{if(!dragging)return;w.style.left=(ox+e.clientX-sx)+'px';w.style.top=(oy+e.clientY-sy)+'px'});
-document.addEventListener('mouseup',()=>{dragging=false})}
-function initResize(w){const r=w.querySelector('.win-resize');let ox,oy,sw,sh,sx,sy,resizing=false;
-r.onmousedown=e=>{resizing=true;sx=e.clientX;sy=e.clientY;ox=w.offsetWidth;oy=w.offsetHeight;e.preventDefault();e.stopPropagation()};
-document.addEventListener('mousemove',e=>{if(!resizing)return;w.style.width=Math.max(320,ox+e.clientX-sx)+'px';w.style.height=Math.max(220,oy+e.clientY-sy)+'px'});
-document.addEventListener('mouseup',()=>{resizing=false})}
-function setupWinEvents(w,id){w.onmousedown=()=>focusWin(id);
-w.querySelectorAll('.win-head')[0].addEventListener('dblclick',e=>{if(!e.target.closest('.win-dot'))maxWin(id)})}
-function focusWin(id){if(!wins[id])return;Object.keys(wins).forEach(k=>{wins[k].el.classList.remove('focused')});
-wins[id].el.classList.add('focused');wins[id].el.style.zIndex=++winZ;activeWin=id;updateTaskbar()}
-function closeWin(id){if(!wins[id])return;wins[id].el.remove();delete wins[id];if(activeWin===id)activeWin=null;updateTaskbar()}
-function minWin(id){if(!wins[id])return;wins[id].el.style.display='none';if(activeWin===id)activeWin=null;updateTaskbar()}
-function maxWin(id){if(!wins[id])return;const w=wins[id];w.max=!w.max;w.el.classList.toggle('max',w.max)}
-function updateTaskbar(){const c=document.getElementById('tbApps');c.innerHTML='';Object.keys(wins).forEach(id=>{
-const d=document.createElement('div');d.className='tb-app'+(activeWin===id?' active':'');d.textContent=appName(id);
-d.onclick=()=>{if(wins[id].el.style.display==='none'){wins[id].el.style.display='flex';focusWin(id)}else if(activeWin===id){minWin(id)}else{focusWin(id)}};c.appendChild(d)})}
-// Shutdown & reboot
-function doShutdown(){closeMenus();document.getElementById('shutdown').classList.add('show');setTimeout(()=>{document.getElementById('shutdown').innerHTML='<div class="shut-text" style="color:#000">●</div>';setTimeout(()=>location.reload(),2000)},2500)}
-function doReboot(){closeMenus();document.getElementById('shutdown').classList.add('show');setTimeout(()=>{location.reload()},2000)}
-// Notifications
-function showNotif(title,msg){const c=document.getElementById('notifs');const n=document.createElement('div');n.className='notif';
-n.innerHTML=`<div class="notif-title">${title}</div><div>${msg}</div>`;c.appendChild(n);requestAnimationFrame(()=>n.classList.add('show'));
-setTimeout(()=>{n.classList.remove('show');setTimeout(()=>n.remove(),400)},3500)}
-// Terminal
-function initTerm(w){const out=w.querySelector('[id^=tout-]');const inp=w.querySelector('[id^=tin-]');const id=inp.id.replace('tin-','');
-const hist=[];let histIdx=-1;
-printTerm(out,`4aykaOS Terminal v1.0\nType "help" for commands.\n`,'#777');
-inp.onkeydown=e=>{if(e.key==='Enter'){const cmd=inp.value.trim();inp.value='';if(cmd){hist.push(cmd);histIdx=hist.length;printTerm(out,`\n${termUser} ${termDir}$ ${cmd}\n`,'#0af');execCmd(cmd,out,w)}}
-if(e.key==='ArrowUp'){e.preventDefault();if(histIdx>0){histIdx--;inp.value=hist[histIdx]}}
-if(e.key==='ArrowDown'){e.preventDefault();if(histIdx<hist.length-1){histIdx++;inp.value=hist[histIdx]}else{histIdx=hist.length;inp.value=''}}
-if(e.key==='Tab'){e.preventDefault();const c=inp.value.toLowerCase();if(c){const cmds=['help','clear','ls','cd','cat','pwd','echo','whoami','uname','date','uptime','neofetch','cowsay','fortune','hack','matrix','tree','ps','df','free','reboot','exit'];const m=cmds.filter(x=>x.startsWith(c));if(m.length===1)inp.value=m[0]}}};
-inp.focus();w.onclick=()=>inp.focus()}
-function printTerm(el,txt,color='var(--tx)'){const s=document.createElement('div');s.className='t';s.style.color=color;s.textContent=txt;el.appendChild(s);el.scrollTop=el.scrollHeight}function execCmd(cmd,out,w){
-const parts=cmd.split(/\s+/);const c=parts[0];const a=parts.slice(1).join(' ');
-const commands={
-help:()=>{printTerm(out,`\n4aykaOS Shell Commands:\n`,'#0af');
-['help    - Show this help','clear   - Clear terminal','ls      - List directory','cd      - Change directory','cat     - View file content','pwd     - Print working dir','echo    - Print text','whoami  - Current user','uname   - System info','date    - Current date/time','uptime  - System uptime','neofetch- System info (fancy)','cowsay  - ASCII cow','fortune - Random quote','hack    - Hack simulation','matrix  - Matrix rain (5s)','tree    - Directory tree','ps      - Process list','df      - Disk usage','free    - Memory usage','top     - Task manager','ping    - Ping host','curl    - HTTP request','nmap    - Network scan','ssh     - SSH connect','whois   - Domain info','nano    - Open editor','exit    - Close terminal','reboot  - Reboot system'].forEach(l=>printTerm(out,'  '+l,'#5a5'))},
-clear:()=>{out.innerHTML=''},
-pwd:()=>printTerm(out,termDir.replace('~',`/home/${termUser.split('@')[0]}`)),
-whoami:()=>printTerm(out,termUser),
-uname:()=>printTerm(out,'4aykaOS 2.0 x86_64 GNU/Linux'),
-date:()=>printTerm(out,new Date().toString()),
-uptime:()=>{const u=Math.floor((Date.now()-startTime)/1000);const h=Math.floor(u/3600);const m=Math.floor((u%3600)/60);printTerm(out,`${h}h ${m}m up`)},
-echo:()=>printTerm(out,a||''),
-ls:()=>{const dir=termDir;const item=termFS[dir];if(item&&item.children){item.children.forEach(n=>{const child=termFS[dir+'/'+n]||VFS[dir+'/'+n];
-const isDir=child&&(child.type==='dir')||(!child&&VFS[dir+'/'+n]?.type==='dir');
-printTerm(out,(isDir?'📁 ':'📄 ')+n,isDir?'#0af':'#5a5')})}else{printTerm(out,'ls: cannot access: No such directory','var(--r)')}},
-cd:()=>{if(!a||a==='~'){termDir='~';return}let target=a;if(a==='..'){const parts=termDir.split('/');parts.pop();target=parts.join('/')||'~'}
-const item=termFS[target]||VFS[target];if(item&&item.type==='dir'){termDir=target}else{printTerm(out,`cd: ${a}: No such directory`,'var(--r)')}},
-cat:()=>{if(!a){printTerm(out,'cat: missing file','var(--r)');return}
-const fp=termDir==='~'?a:termDir+'/'+a;const item=termFS[fp]||VFS[fp];
-if(item&&item.type==='file'){printTerm(out,item.content||'[binary file]')}else{printTerm(out,`cat: ${a}: No such file`,'var(--r)')}},
-tree:()=>{function t(d,pre=''){const item=termFS[d]||VFS[d];if(!item||!item.children)return;
-item.children.forEach((n,i)=>{const last=i===item.children.length-1;const ch=last?'└── ':'├── ';
-const fp=d+'/'+n;const c=termFS[fp]||VFS[fp];const isDir=c&&c.type==='dir';
-printTerm(out,pre+ch+n+(isDir?'/':''),isDir?'#0af':'#5a5');if(isDir)t(fp,pre+(last?'    ':'│   '))})}
-printTerm(out,termDir,'#0af');t(termDir)},
-ps:()=>{printTerm(out,'\n  PID TTY          TIME CMD\n');['1 ? 00:00:01 init','42 ? 00:00:03 4sh','100 ? 00:00:00 sshd','137 ? 00:00:02 bash','200 pts/0 00:00:00 ps'].forEach(l=>printTerm(out,'  '+l,'#5a5'))},
-df:()=>{printTerm(out,'\nFilesystem     1K-blocks    Used Available Use% Mounted on\n/dev/sda1      262144000 12478464 249665536   5% /\ntmpfs            8192000        0   8192000   0% /dev/shm\n/dev/sda2      104857600 31457280  73400320  30% /home','#5a5')},
-free:()=>{printTerm(out,`              total        used        free      shared  buff/cache   available\nMem:       16384000     4096000     8192000      262144     4096000    12288000\nSwap:       4194304      131072     4063232`,'#5a5')},
-top:()=>{printTerm(out,`top - 4aykaOS\n%Cpu(s): 12.3 us, 2.1 sy, 0.0 ni, 85.1 id, 0.5 wa\nMiB Mem: 16384.0 total, 8192.0 free, 4096.0 used, 4096.0 buff/cache\n\n  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND\n    1 root      20   0  168932  13456   9856 S   0.3  0.1   0:01.47 init\n   42 root      20   0  148928   8192   5120 S   0.7  0.0   0:03.12 sshd\n  137 user      20   0  289536  24576  16384 S   1.3  0.2   0:02.88 bash\n  201 user      20   0  412672  35840  22528 R   2.7  0.3   0:00.15 top`,'#5a5')},
-ping:()=>{if(!a){printTerm(out,'ping: usage: ping host','var(--r)');return}
-let i=0;const iv=setInterval(()=>{if(i>=4){clearInterval(iv);return}
-printTerm(out,`64 bytes from ${a}: icmp_seq=${i+1} ttl=64 time=${(Math.random()*50+5).toFixed(1)}ms`,'#5a5');i++},500)},
-cowsay:()=>{const m=a||'moo';const line='_' .repeat(m.length+2);
-printTerm(out,`\n${line}\n< ${m} >\n${line}\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||`,'#5a5')},
-fortune:()=>{const f=['You will segfault tomorrow.','Segmentation fault (core dumped)','There are 10 types of people: those who understand binary and those who don\'t.','It works on my machine.','There\'s no place like 127.0.0.1','Have you tried turning it off and on again?','sudo rm -rf / — Just kidding, don\'t do that.','404: Fortune not found.','The cake is a lie.','rm -rf /* has left the chat.'];
-printTerm(out,'\n🔮 '+f[Math.floor(Math.random()*f.length)],'#ff0')},
-hack:()=>{let i=0;const iv=setInterval(()=>{if(i>=20){clearInterval(iv);printTerm(out,'\n[HACK] ACCESS GRANTED! 🔓','#0f0');return}
-printTerm(out,String.fromCharCode(33+Math.random()*94),'#0f0');i++},80)},
-matrix:()=>{printTerm(out,'\n[matrix] Running matrix rain for 5 seconds...','#0f0');setTimeout(()=>printTerm(out,'[matrix] Done.','var(--dm)'),5000)},
-nmap:()=>{if(!a){printTerm(out,'nmap: usage: nmap <host>','var(--r)');return}
-printTerm(out,`\nStarting Nmap scan on ${a}...\n\nPORT     STATE   SERVICE\n22/tcp   open    ssh\n80/tcp   open    http\n443/tcp  open    https\n8080/tcp closed  http-proxy\n3000/tcp open    http\n\nNmap done: 1 IP address (1 host up) scanned in 0.47s`,'#5a5')},
-whois:()=>{if(!a){printTerm(out,'whois: usage: whois <domain>','var(--r)');return}
-printTerm(out,`\nDomain Name: ${a}\nRegistrar: 4ayka Registrar\nUpdated: ${new Date().toDateString()}\nCreation: 2024-01-15\nExpiry: 2027-01-15\nName Server: ns1.4ayka.studio\nStatus: active\n\n[Whois server: whois.4ayka.studio]`,'#5a5')},
-ssh:()=>{if(!a){printTerm(out,'ssh: usage: ssh user@host','var(--r)');return}
-printTerm(out,`\nConnecting to ${a}...\nLast login: ${new Date().toDateString()}\nWelcome to 4aykaOS!\n`,'#5a5')},
-curl:()=>{printTerm(out,`\nHTTP/1.1 200 OK\nContent-Type: text/html\nContent-Length: 1234\nServer: 4ayka/2.0\nDate: ${new Date().toUTCString()}\n\n<!DOCTYPE html><html>...</html>`,'#5a5')},
-nano:()=>{openApp('editor')},
-exit:()=>{closeWin('term')},
-reboot:()=>{doReboot()}
-};
-if(commands[c])commands[c]();
-else if(cmd.startsWith('sudo')){printTerm(out,`\n[sudo] password for ${termUser.split('@')[0]}: \n[sudo] ${termUser.split('@')[0]} is not in sudoers. This incident will be reported.`,'var(--r)')}
-else{printTerm(out,`4sh: ${c}: command not found\nType "help" for available commands.`,'var(--r)')}}
-const startTime=Date.now();// File Manager
-function initFM(w){const list=w.querySelector('[id^=flist-]');const pathEl=w.querySelector('[id^=fpath-]');const stat=w.querySelector('[id^=fstat-]');
-let curDir='~';function render(){pathEl.textContent=curDir;
-const item=termFS[curDir]||VFS[curDir];
-if(!item||!item.children){list.innerHTML='<div style="padding:12px;color:#555">Пустая директория</div>';return}
-list.innerHTML='';let files=0,folders=0;
-item.children.forEach(n=>{const fp=curDir+'/'+n;const child=termFS[fp]||VFS[fp];
-const isDir=child&&(child.type==='dir')||(!child&&VFS[fp]?.type==='dir');
-if(isDir)folders++;else files++;
-const d=document.createElement('div');d.className='fm-item'+(isDir?' dir':'');
-d.innerHTML=`<span class="fm-icon">${isDir?'📁':'📄'}</span><span class="fm-name">${n}</span><span class="fm-size">${isDir?(child?.children?.length||0)+' items':child?.size||''}</span>`;
-d.onclick=ev=>{w.querySelectorAll('.fm-item').forEach(x=>x.classList.remove('selected'));d.classList.add('selected')};
-d.ondblclick=()=>{if(isDir){curDir=fp;render()}else if(child?.content){printTerm(w.querySelector('.term-output')||list,child.content);showNotif('Файлы','Открыт: '+n)}}
-list.appendChild(d)});
-stat.textContent=`📁 ${folders} папок, 📄 ${files} файлов`}
-render();w._fmRender=render;w._fmDir=()=>curDir;w._fmSetDir=d=>{curDir=d;render()}}
-function fmUp(btn){const w=btn.closest('.win');if(!w)return;const p=w._fmDir().split('/');if(p.length>1){p.pop();w._fmSetDir(p.join('/')||'~')}}
-function fmRoot(btn){const w=btn.closest('.win');if(w&&w._fmSetDir)w._fmSetDir('~')}
-function fmRefresh(btn){const w=btn.closest('.win');if(w&&w._fmRender)w._fmRender()}
-// Calculator
-function initCalc(w){const grid=w.querySelector('[id^=cgrid-]');const exprEl=w.querySelector('[id^=cexpr-]');const resEl=w.querySelector('[id^=cres-]');
-let expr='';let lastWasOp=false;
-const btns=['C','⌫','%','÷','7','8','9','×','4','5','6','−','1','2','3','+','±','0','.','=',''];
-grid.style.gridTemplateColumns='repeat(4,1fr)';
-btns.forEach(b=>{const d=document.createElement('button');d.className='calc-btn';d.textContent=b;
-if('÷×−+%=±'.includes(b))d.classList.add('op');if(b==='=')d.classList.add('eq');if(b==='C'||b==='⌫')d.classList.add('clear');
-d.onclick=()=>{if(b==='C'){expr='';lastWasOp=false}else if(b==='⌫'){expr=expr.slice(0,-1);lastWasOp=false}
-else if(b==='='){try{let ev=expr.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-');
-let r=eval(ev);resEl.textContent=isNaN(r)||!isFinite(r)?'Error':parseFloat(r.toFixed(10));expr=''+resEl.textContent;lastWasOp=true}catch{resEl.textContent='Error'}}
-else if(b==='±'){expr=expr.startsWith('-')?expr.slice(1):'-'+expr}
-else if(b==='%'){expr+='%';lastWasOp=false}
-else{if('÷×−+'.includes(b)&&lastWasOp){expr=expr.slice(0,-1)}lastWasOp='÷×−+'.includes(b);expr+=b}
-exprEl.textContent=expr};grid.appendChild(d)})}
-// Password Generator
-function initPassGen(w){genPass(w.querySelector('.passgen-btn'))}
-function genPass(btn){const w=btn.closest('.win');const out=w.querySelector('[id^=pgout-]');
-const len=parseInt(w.querySelector('[id^=pglen-]').value);
-const u=w.querySelector('[id^=pgu-]').checked,l=w.querySelector('[id^=pgl-]').checked;
-const d=w.querySelector('[id^=pgd-]').checked,s=w.querySelector('[id^=pgs-]').checked;
-let ch='';if(u)ch+='ABCDEFGHIJKLMNOPQRSTUVWXYZ';if(l)ch+='abcdefghijklmnopqrstuvwxyz';
-if(d)ch+='0123456789';if(s)ch+='!@#$%^&*()_+-=[]{}|;:,.<>?';
-if(!ch){out.textContent='Выберите хотя бы один тип';out.style.color=C.r;return}
-const arr=new Uint32Array(len);crypto.getRandomValues(arr);
-out.textContent=[...arr].map(x=>ch[x%ch.length]).join('');out.style.color=C.g;
-const p=out.textContent;const sc=p.length>=20?3:p.length>=14?2:1;
-showNotif('🔐 PassGen',`Пароль создан • Длина: ${len} • Уровень: ${['','🟢 Слабый','🟡 Средний','🟢 Сильный'][sc]}`)}
-function copyPass(btn){const w=btn.closest('.win');const out=w.querySelector('[id^=pgout-]');
-if(out.textContent&&out.textContent.length>5){navigator.clipboard.writeText(out.textContent).then(()=>showNotif('📋 Скопировано','Пароль скопирован в буфер обмена')).catch(()=>showNotif('❌ Ошибка','Не удалось скопировать'))}}// Network Monitor
-function initNet(w){const canvas=w.querySelector('[id^=ncanvas-]');if(!canvas)return;
-const ctx=canvas.getContext('2d');const downEl=w.querySelector('[id^=ndown-]');const upEl=w.querySelector('[id^=nup-]');
-const rxEl=w.querySelector('[id^=nrx-]');const txEl=w.querySelector('[id^=ntx-]');
-let downData=[],upData=[],rxTotal=0,txTotal=0;
-function resize(){canvas.width=canvas.parentElement.offsetWidth;canvas.height=canvas.parentElement.offsetHeight}
-resize();window.addEventListener('resize',resize);
-function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);
-const max=Math.max(...downData,...upData,100);
-const step=canvas.width/60;
-ctx.strokeStyle='rgba(0,60,0,0.3)';ctx.lineWidth=0.5;
-for(let y=0;y<canvas.height;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke()}
-if(downData.length>1){ctx.beginPath();ctx.strokeStyle='#00ff41';ctx.lineWidth=1.5;
-ctx.shadowColor='#00ff41';ctx.shadowBlur=4;
-downData.forEach((v,i)=>{const x=i*step;const y=canvas.height-v/max*canvas.height*0.9;
-i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)});ctx.stroke();ctx.shadowBlur=0}
-if(upData.length>1){ctx.beginPath();ctx.strokeStyle='#00ffff';ctx.lineWidth=1.5;
-ctx.shadowColor='#00ffff';ctx.shadowBlur=4;
-upData.forEach((v,i)=>{const x=i*step;const y=canvas.height-v/max*canvas.height*0.9;
-i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)});ctx.stroke();ctx.shadowBlur=0}}
-function update(){const d=50+Math.random()*300;const u=20+Math.random()*150;
-downData.push(d);upData.push(u);if(downData.length>60)downData.shift();if(upData.length>60)upData.shift();
-rxTotal+=Math.floor(d*10);txTotal+=Math.floor(u*10);
-downEl.textContent=d.toFixed(0)+' KB/s';upEl.textContent=u.toFixed(0)+' KB/s';
-rxEl.textContent=rxTotal.toLocaleString();txEl.textContent=txTotal.toLocaleString();draw()}
-w._netIv=setInterval(update,1000);update()}
-// System Monitor
-function initSys(w){const c=w.querySelector('[id^=sysContent-]');if(!c)return;
-let cpuData=15,memData=25,diskData=30;
-function render(){cpuData=Math.max(5,Math.min(95,cpuData+Math.random()*20-10));
-memData=Math.max(15,Math.min(85,memData+Math.random()*8-4));
-diskData=Math.min(99,diskData+Math.random()*0.3);
-const uptime=Math.floor((Date.now()-startTime)/1000);const h=Math.floor(uptime/3600);const m=Math.floor((uptime%3600)/60);const s=uptime%60;
-c.innerHTML=`
-<div class="sys-section"><div class="sys-row"><span>CPU Usage</span><span class="val">${cpuData.toFixed(1)}%</span></div>
-<div class="sys-bar"><div class="sys-fill ${cpuData>80?'red':cpuData>50?'yellow':'green'}" style="width:${cpuData}%"></div></div>
-<div class="sys-row"><span>Cores</span><span class="val">8 / 8 active</span></div>
-<div class="sys-row"><span>Frequency</span><span class="val">3.6 GHz</span></div>
-<div class="sys-row"><span>Temperature</span><span class="val">${(45+cpuData*0.4).toFixed(0)}°C</span></div></div>
-<div class="sys-section"><div class="sys-row"><span>Memory</span><span class="val">${(memData*163.84).toFixed(0)} MB / 16384 MB</span></div>
-<div class="sys-bar"><div class="sys-fill cyan" style="width:${memData}%"></div></div>
-<div class="sys-row"><span>Swap</span><span class="val">128 / 4096 MB</span></div></div>
-<div class="sys-section"><div class="sys-row"><span>Disk /dev/sda1</span><span class="val">${(diskData*2.62).toFixed(0)} GB / 262 GB</span></div>
-<div class="sys-bar"><div class="sys-fill green" style="width:${diskData}%"></div></div>
-<div class="sys-row"><span>IO Read</span><span class="val">${(Math.random()*50).toFixed(1)} MB/s</span></div>
-<div class="sys-row"><span>IO Write</span><span class="val">${(Math.random()*30).toFixed(1)} MB/s</span></div></div>
-<div class="sys-section"><div class="sys-row"><span>Uptime</span><span class="val">${h}h ${m}m ${s}s</span></div>
-<div class="sys-row"><span>Processes</span><span class="val">${Math.floor(120+Math.random()*30)}</span></div>
-<div class="sys-row"><span>Threads</span><span class="val">${Math.floor(800+Math.random()*200)}</span></div>
-<div class="sys-row"><span>Load Avg</span><span class="val">${(cpuData/25).toFixed(2)} ${(cpuData/30).toFixed(2)} ${(cpuData/40).toFixed(2)}</span></div></div>
-<div class="sys-section"><div class="sys-row"><span>Network</span><span class="val" style="color:${C.cy}">eth0 UP</span></div>
-<div class="sys-row"><span>IP Address</span><span class="val">192.168.1.42</span></div>
-<div class="sys-row"><span>Gateway</span><span class="val">192.168.1.1</span></div>
-<div class="sys-row"><span>DNS</span><span class="val">1.1.1.1, 8.8.8.8</span></div></div>`}
-render();w._sysIv=setInterval(render,2000)}
-// Editor
-function initEditor(w){const ta=w.querySelector('.ed-content');if(!ta)return;
-ta.value=`// 4aykaOS Text Editor v1.0\n// =========================\n// Добро пожаловать в редактор!\n\nfunction hello() {\n    console.log("Hello from 4aykaOS!");\n    return "4ayka Studio";\n}\n\nhello();\n`;ta.focus();
-w.querySelectorAll('.ed-menu span').forEach(s=>{s.style.cursor='pointer'})}
-function editorNew(btn){const w=btn.closest('.win');const ta=w.querySelector('.ed-content');if(ta)ta.value='';showNotif('Редактор','Новый файл создан')}
-function editorSave(btn){const w=btn.closest('.win');const ta=w.querySelector('.ed-content');
-if(ta&&ta.value){navigator.clipboard.writeText(ta.value).then(()=>showNotif('Редактор','Файл сохранён в буфер обмена')).catch(()=>showNotif('Редактор','Не удалось сохранить'))}}
-function editorOpen(btn){showNotif('Редактор','Файловый менеджер: используйте cat для просмотра файлов')}
-// Keyboard shortcuts
-document.addEventListener('keydown',e=>{
-if(e.key==='Escape'){closeMenus();if(activeWin)closeWin(activeWin)}
-if(e.ctrlKey&&e.key==='t'){e.preventDefault();openApp('term')}
-if(e.ctrlKey&&e.key==='f'){e.preventDefault();openApp('fm')}
-if(e.ctrlKey&&e.key==='n'){e.preventDefault();openApp('net')}
-if(e.ctrlKey&&e.key==='d'){e.preventDefault();openApp('sys')}
-if(e.ctrlKey&&e.key==='b'){e.preventDefault();openApp('calc')}
-if(e.ctrlKey&&e.key==='p'){e.preventDefault();openApp('passgen')}});
-// Login
-document.addEventListener('keydown',e=>{if(e.key==='Enter'){const li=document.getElementById('login');if(li&&li.classList.contains('show')&&!li.classList.contains('hide')){login()}})
-document.getElementById('loginBtn').onclick=()=>login();
-// Boot
+
+function initDrag(w,handle){
+  var ox,oy,sx,sy,dragging=false;
+  handle.onmousedown=function(e){
+    if(e.target.closest('.win-dot'))return;
+    dragging=true;sx=e.clientX;sy=e.clientY;ox=w.offsetLeft;oy=w.offsetTop;
+    focusWin(w.id.replace('win-',''));e.preventDefault();
+  };
+  document.addEventListener('mousemove',function(e){
+    if(!dragging)return;
+    w.style.left=(ox+e.clientX-sx)+'px';
+    w.style.top=(oy+e.clientY-sy)+'px';
+  });
+  document.addEventListener('mouseup',function(){dragging=false;});
+}
+
+function initResize(w){
+  var r=w.querySelector('.win-resize');
+  var ox,oy,sx,sy,resizing=false;
+  r.onmousedown=function(e){
+    resizing=true;sx=e.clientX;sy=e.clientY;ox=w.offsetWidth;oy=w.offsetHeight;
+    e.preventDefault();e.stopPropagation();
+  };
+  document.addEventListener('mousemove',function(e){
+    if(!resizing)return;
+    w.style.width=Math.max(320,ox+e.clientX-sx)+'px';
+    w.style.height=Math.max(220,oy+e.clientY-sy)+'px';
+  });
+  document.addEventListener('mouseup',function(){resizing=false;});
+}
+
+function setupWinEvents(w,id){
+  w.onmousedown=function(){focusWin(id);};
+  var head=w.querySelector('.win-head');
+  if(head)head.addEventListener('dblclick',function(e){
+    if(!e.target.closest('.win-dot'))maxWin(id);
+  });
+}
+
+function focusWin(id){
+  if(!wins[id])return;
+  Object.keys(wins).forEach(function(k){wins[k].el.classList.remove('focused')});
+  wins[id].el.classList.add('focused');
+  wins[id].el.style.zIndex=++winZ;
+  activeWin=id;
+  updateTaskbar();
+}
+
+function closeWin(id){
+  if(!wins[id])return;
+  wins[id].el.remove();
+  delete wins[id];
+  if(activeWin===id)activeWin=null;
+  updateTaskbar();
+}
+
+function minWin(id){
+  if(!wins[id])return;
+  wins[id].el.style.display='none';
+  if(activeWin===id)activeWin=null;
+  updateTaskbar();
+}
+
+function maxWin(id){
+  if(!wins[id])return;
+  var w=wins[id];
+  w.max=!w.max;
+  w.el.classList.toggle('max',w.max);
+}
+
+function updateTaskbar(){
+  var c=document.getElementById('tbApps');
+  c.innerHTML='';
+  Object.keys(wins).forEach(function(id){
+    var d=document.createElement('div');
+    d.className='tb-app'+(activeWin===id?' active':'');
+    d.textContent=appName(id);
+    d.onclick=function(){
+      if(wins[id].el.style.display==='none'){wins[id].el.style.display='flex';focusWin(id);}
+      else if(activeWin===id){minWin(id);}
+      else{focusWin(id);}
+    };
+    c.appendChild(d);
+  });
+}
+
+function doShutdown(){
+  closeMenus();
+  document.getElementById('shutdown').classList.add('show');
+  setTimeout(function(){
+    document.getElementById('shutdown').innerHTML='<div class="shut-text" style="color:#000">.</div>';
+    setTimeout(function(){location.reload();},2000);
+  },2500);
+}
+
+function doReboot(){
+  closeMenus();
+  document.getElementById('shutdown').classList.add('show');
+  setTimeout(function(){location.reload();},2000);
+}
+
+function showNotif(title,msg){
+  var c=document.getElementById('notifs');
+  var n=document.createElement('div');
+  n.className='notif';
+  n.innerHTML='<div class="notif-title">'+title+'</div><div>'+msg+'</div>';
+  c.appendChild(n);
+  requestAnimationFrame(function(){n.classList.add('show')});
+  setTimeout(function(){
+    n.classList.remove('show');
+    setTimeout(function(){n.remove();},400);
+  },3500);
+}
+
+function printTerm(el,txt,color){
+  var s=document.createElement('div');
+  s.className='t';
+  s.style.color=color||'var(--tx)';
+  s.textContent=txt;
+  el.appendChild(s);
+  el.scrollTop=el.scrollHeight;
+}
+
+function initTerm(w){
+  var out=w.querySelector('[id^=tout-]');
+  var inp=w.querySelector('[id^=tin-]');
+  var hist=[];
+  var histIdx=-1;
+  printTerm(out,'4aykaOS Terminal v1.0\nType "help" for commands.\n','#777');
+  inp.onkeydown=function(e){
+    if(e.key==='Enter'){
+      var cmd=inp.value.trim();
+      inp.value='';
+      if(cmd){hist.push(cmd);histIdx=hist.length;printTerm(out,'\n'+termUser+' '+termDir+'$ '+cmd+'\n','#0af');execCmd(cmd,out);}
+    }
+    if(e.key==='ArrowUp'){e.preventDefault();if(histIdx>0){histIdx--;inp.value=hist[histIdx];}}
+    if(e.key==='ArrowDown'){e.preventDefault();if(histIdx<hist.length-1){histIdx++;inp.value=hist[histIdx];}else{histIdx=hist.length;inp.value='';}}
+    if(e.key==='Tab'){
+      e.preventDefault();
+      var cv=inp.value.toLowerCase();
+      if(cv){
+        var cmds=['help','clear','ls','cd','cat','pwd','echo','whoami','uname','date','uptime','hack','matrix','tree','ps','df','free','top','ping','cowsay','fortune','nmap','ssh','nano','exit','reboot'];
+        var m=cmds.filter(function(x){return x.indexOf(cv)===0;});
+        if(m.length===1)inp.value=m[0];
+      }
+    }
+  };
+  inp.focus();
+  w.onclick=function(){inp.focus();};
+}
+
+function execCmd(cmd,out){
+  var parts=cmd.split(/\s+/);
+  var c=parts[0];
+  var a=parts.slice(1).join(' ');
+  var commands={
+    help:function(){
+      printTerm(out,'\n4aykaOS Shell Commands:\n','#0af');
+      ['help    - Show this help','clear   - Clear terminal','ls      - List directory','cd      - Change directory','cat     - View file content','pwd     - Print working dir','echo    - Print text','whoami  - Current user','uname   - System info','date    - Current date/time','uptime  - System uptime','tree    - Directory tree','ps      - Process list','df      - Disk usage','free    - Memory usage','top     - Task manager','ping    - Ping host','hack    - Hack simulation','matrix  - Matrix rain','cowsay  - ASCII cow','fortune - Random quote','nmap    - Network scan','ssh     - SSH connect','nano    - Open editor','exit    - Close terminal','reboot  - Reboot system'].forEach(function(l){printTerm(out,'  '+l,'#5a5')});
+    },
+    clear:function(){out.innerHTML='';},
+    pwd:function(){printTerm(out,termDir.replace('~','/home/'+termUser.split('@')[0]));},
+    whoami:function(){printTerm(out,termUser);},
+    uname:function(){printTerm(out,'4aykaOS 2.0 x86_64 GNU/Linux');},
+    date:function(){printTerm(out,new Date().toString());},
+    uptime:function(){
+      var u=Math.floor((Date.now()-startTime)/1000);
+      var h=Math.floor(u/3600);
+      var m=Math.floor((u%3600)/60);
+      printTerm(out,h+'h '+m+'m up');
+    },
+    echo:function(){printTerm(out,a||'');},
+    ls:function(){
+      var dir=termDir;
+      var item=termFS[dir];
+      if(item&&item.children){
+        item.children.forEach(function(n){
+          var child=termFS[dir+'/'+n]||VFS[dir+'/'+n];
+          var isDir=child&&child.type==='dir';
+          printTerm(out,(isDir?'[DIR] ':'[FILE] ')+n,isDir?'#0af':'#5a5');
+        });
+      }else{printTerm(out,'ls: No such directory','var(--r)');}
+    },
+    cd:function(){
+      if(!a||a==='~'){termDir='~';return;}
+      var target=a;
+      if(a==='..'){var p=termDir.split('/');p.pop();target=p.join('/')||'~';}
+      var item=termFS[target]||VFS[target];
+      if(item&&item.type==='dir'){termDir=target;}
+      else{printTerm(out,'cd: '+a+': No such directory','var(--r)');}
+    },
+    cat:function(){
+      if(!a){printTerm(out,'cat: missing file','var(--r)');return;}
+      var fp=termDir==='~'?a:termDir+'/'+a;
+      var item=termFS[fp]||VFS[fp];
+      if(item&&item.type==='file'){printTerm(out,item.content||'[binary]');}
+      else{printTerm(out,'cat: '+a+': No such file','var(--r)');}
+    },
+    tree:function(){
+      function t(d,pre){
+        var item=termFS[d]||VFS[d];
+        if(!item||!item.children)return;
+        item.children.forEach(function(n,i){
+          var last=i===item.children.length-1;
+          var ch=last?'  +-- ':'  |-- ';
+          var fp=d+'/'+n;
+          var cc=termFS[fp]||VFS[fp];
+          var isDir=cc&&cc.type==='dir';
+          printTerm(out,pre+ch+n+(isDir?'/':''),isDir?'#0af':'#5a5');
+          if(isDir)t(fp,pre+(last?'    ':'  |   '));
+        });
+      }
+      printTerm(out,termDir,'#0af');
+      t(termDir,'');
+    },
+    ps:function(){
+      printTerm(out,'\n  PID TTY          TIME CMD');
+      ['1 ? 00:00:01 init','42 ? 00:00:03 4sh','100 ? 00:00:00 sshd','137 ? 00:00:02 bash'].forEach(function(l){printTerm(out,'  '+l,'#5a5')});
+    },
+    df:function(){
+      printTerm(out,'\nFilesystem     1K-blocks    Used Available\n/dev/sda1      262144000 12478464 249665536\ntmpfs            8192000        0   8192000','#5a5');
+    },
+    free:function(){
+      printTerm(out,'              total        used        free\nMem:       16384000     4096000     8192000\nSwap:       4194304      131072     4063232','#5a5');
+    },
+    top:function(){
+      printTerm(out,'top - 4aykaOS\n%Cpu(s): 12 us, 2 sy, 85 id\nMiB Mem: 16384 total, 8192 free, 4096 used\n\n  PID USER      %CPU %MEM  COMMAND\n    1 root      0.3  0.1  init\n   42 root      0.7  0.0  sshd\n  137 user      1.3  0.2  bash','#5a5');
+    },
+    ping:function(){
+      if(!a){printTerm(out,'ping: usage: ping host','var(--r)');return;}
+      var i=0;
+      var iv=setInterval(function(){
+        if(i>=4){clearInterval(iv);return;}
+        printTerm(out,'64 bytes from '+a+': icmp_seq='+(i+1)+' time='+(Math.random()*50+5).toFixed(1)+'ms','#5a5');
+        i++;
+      },500);
+    },
+    hack:function(){
+      var i=0;
+      var iv=setInterval(function(){
+        if(i>=20){clearInterval(iv);printTerm(out,'\n[HACK] ACCESS GRANTED!','#0f0');return;}
+        printTerm(out,String.fromCharCode(33+Math.random()*94),'#0f0');
+        i++;
+      },80);
+    },
+    matrix:function(){
+      printTerm(out,'\n[matrix] Running for 5 seconds...','#0f0');
+      setTimeout(function(){printTerm(out,'[matrix] Done.','var(--dm)');},5000);
+    },
+    cowsay:function(){
+      var m=a||'moo';
+      var line='_'.repeat(m.length+2);
+      printTerm(out,'\n'+line+'\n< '+m+' >\n'+line+'\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||','#5a5');
+    },
+    fortune:function(){
+      var f=['You will segfault tomorrow.','There are 10 types: those who understand binary.','It works on my machine.','There is no place like 127.0.0.1','404: Fortune not found.','The cake is a lie.'];
+      printTerm(out,'\n'+f[Math.floor(Math.random()*f.length)],'#ff0');
+    },
+    nmap:function(){
+      if(!a){printTerm(out,'nmap: usage: nmap <host>','var(--r)');return;}
+      printTerm(out,'\nStarting Nmap scan on '+a+'...\n\nPORT     STATE   SERVICE\n22/tcp   open    ssh\n80/tcp   open    http\n443/tcp  open    https\n\nNmap done.','#5a5');
+    },
+    ssh:function(){
+      if(!a){printTerm(out,'ssh: usage: ssh user@host','var(--r)');return;}
+      printTerm(out,'\nConnecting to '+a+'...\nLast login: '+new Date().toDateString()+'\nWelcome to 4aykaOS!\n','#5a5');
+    },
+    nano:function(){openApp('editor');},
+    exit:function(){closeWin('term');},
+    reboot:function(){doReboot();}
+  };
+  if(commands[c])commands[c]();
+  else if(cmd.indexOf('sudo')===0){printTerm(out,'\n[sudo] user is not in sudoers.','var(--r)');}
+  else{printTerm(out,'4sh: '+c+': command not found','var(--r)');}
+}
+
+function initFM(w){
+  var list=w.querySelector('[id^=flist-]');
+  var pathEl=w.querySelector('[id^=fpath-]');
+  var stat=w.querySelector('[id^=fstat-]');
+  var curDir='~';
+  function render(){
+    pathEl.textContent=curDir;
+    var item=termFS[curDir]||VFS[curDir];
+    if(!item||!item.children){list.innerHTML='<div style="padding:12px;color:#555">Empty</div>';return;}
+    list.innerHTML='';
+    var files=0,folders=0;
+    item.children.forEach(function(n){
+      var fp=curDir+'/'+n;
+      var child=termFS[fp]||VFS[fp];
+      var isDir=child&&child.type==='dir';
+      if(isDir)folders++;else files++;
+      var d=document.createElement('div');
+      d.className='fm-item'+(isDir?' dir':'');
+      d.innerHTML='<span class="fm-icon">'+(isDir?'[DIR]':'[FILE]')+'</span><span class="fm-name">'+n+'</span><span class="fm-size">'+(isDir?(child.children?child.children.length+' items':''):child.size||'')+'</span>';
+      d.onclick=function(){w.querySelectorAll('.fm-item').forEach(function(x){x.classList.remove('selected')});d.classList.add('selected');};
+      d.ondblclick=function(){
+        if(isDir){curDir=fp;render();}
+        else if(child&&child.content){showNotif('Files',n);}
+      };
+      list.appendChild(d);
+    });
+    stat.textContent=folders+' folders, '+files+' files';
+  }
+  render();
+  w._fmRender=render;
+  w._fmDir=function(){return curDir;};
+  w._fmSetDir=function(d){curDir=d;render();};
+}
+
+function fmUp(btn){
+  var w=btn.closest('.win');
+  if(!w||!w._fmDir)return;
+  var p=w._fmDir().split('/');
+  if(p.length>1){p.pop();w._fmSetDir(p.join('/')||'~');}
+}
+function fmRoot(btn){
+  var w=btn.closest('.win');
+  if(w&&w._fmSetDir)w._fmSetDir('~');
+}
+function fmRefresh(btn){
+  var w=btn.closest('.win');
+  if(w&&w._fmRender)w._fmRender();
+}
+
+function initCalc(w){
+  var grid=w.querySelector('[id^=cgrid-]');
+  var exprEl=w.querySelector('[id^=cexpr-]');
+  var resEl=w.querySelector('[id^=cres-]');
+  var expr='';
+  var lastWasOp=false;
+  var btns=['C','B','%','/','7','8','9','*','4','5','6','-','1','2','3','+','M','0','.','=',''];
+  grid.style.gridTemplateColumns='repeat(4,1fr)';
+  btns.forEach(function(b){
+    var d=document.createElement('button');
+    d.className='calc-btn';
+    d.textContent=b;
+    if('/*-+%'.indexOf(b)>=0&&b!=='M')d.classList.add('op');
+    if(b==='=')d.classList.add('eq');
+    if(b==='C'||b==='B')d.classList.add('clear');
+    d.onclick=function(){
+      if(b==='C'){expr='';lastWasOp=false;}
+      else if(b==='B'){expr=expr.slice(0,-1);lastWasOp=false;}
+      else if(b==='='){
+        try{var r=eval(expr);resEl.textContent=isNaN(r)||!isFinite(r)?'Error':parseFloat(r.toFixed(10));expr=''+resEl.textContent;lastWasOp=true;}
+        catch(e){resEl.textContent='Error';}
+      }
+      else if(b==='M'){expr=expr.startsWith('-')?expr.slice(1):'-'+expr;}
+      else{if('/*-+'.indexOf(b)>=0&&lastWasOp){expr=expr.slice(0,-1);}lastWasOp='/*-+'.indexOf(b)>=0;expr+=b;}
+      exprEl.textContent=expr;
+    };
+    grid.appendChild(d);
+  });
+}
+
+function initPassGen(w){
+  var lenEl=w.querySelector('[id^=pglen-]');
+  var lenV=w.querySelector('[id^=pglenv-]');
+  if(lenEl&&lenV){lenEl.oninput=function(){lenV.textContent=lenEl.value;};}
+}
+
+function genPass(btn){
+  var w=btn.closest('.win');
+  var out=w.querySelector('[id^=pgout-]');
+  var len=parseInt(w.querySelector('[id^=pglen-]').value);
+  var u=w.querySelector('[id^=pgu-]').checked;
+  var l=w.querySelector('[id^=pgl-]').checked;
+  var d=w.querySelector('[id^=pgd-]').checked;
+  var s=w.querySelector('[id^=pgs-]').checked;
+  var ch='';
+  if(u)ch+='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  if(l)ch+='abcdefghijklmnopqrstuvwxyz';
+  if(d)ch+='0123456789';
+  if(s)ch+='!@#$%^&*()_+-=[]{}|;:,.<>?';
+  if(!ch){out.textContent='Select at least one type';out.style.color=C.r;return;}
+  var arr=new Uint32Array(len);
+  crypto.getRandomValues(arr);
+  out.textContent=Array.from(arr).map(function(x){return ch[x%ch.length];}).join('');
+  out.style.color=C.g;
+  showNotif('PassGen','Password generated - Length: '+len);
+}
+
+function copyPass(btn){
+  var w=btn.closest('.win');
+  var out=w.querySelector('[id^=pgout-]');
+  if(out.textContent&&out.textContent.length>5){
+    navigator.clipboard.writeText(out.textContent).then(function(){showNotif('Copied','Password copied');}).catch(function(){showNotif('Error','Failed to copy');});
+  }
+}
+
+function initNet(w){
+  var canvas=w.querySelector('[id^=ncanvas-]');
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var downEl=w.querySelector('[id^=ndown-]');
+  var upEl=w.querySelector('[id^=nup-]');
+  var rxEl=w.querySelector('[id^=nrx-]');
+  var txEl=w.querySelector('[id^=ntx-]');
+  var downData=[],upData=[],rxTotal=0,txTotal=0;
+  function resize(){canvas.width=canvas.parentElement.offsetWidth;canvas.height=canvas.parentElement.offsetHeight;}
+  resize();
+  window.addEventListener('resize',resize);
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    var mx=Math.max.apply(null,downData.concat(upData).concat([100]));
+    var step=canvas.width/60;
+    ctx.strokeStyle='rgba(0,60,0,0.3)';ctx.lineWidth=0.5;
+    for(var y=0;y<canvas.height;y+=20){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}
+    if(downData.length>1){
+      ctx.beginPath();ctx.strokeStyle='#00ff41';ctx.lineWidth=1.5;
+      downData.forEach(function(v,i){
+        var x=i*step;var yy=canvas.height-v/mx*canvas.height*0.9;
+        if(i===0)ctx.moveTo(x,yy);else ctx.lineTo(x,yy);
+      });ctx.stroke();
+    }
+    if(upData.length>1){
+      ctx.beginPath();ctx.strokeStyle='#00ffff';ctx.lineWidth=1.5;
+      upData.forEach(function(v,i){
+        var x=i*step;var yy=canvas.height-v/mx*canvas.height*0.9;
+        if(i===0)ctx.moveTo(x,yy);else ctx.lineTo(x,yy);
+      });ctx.stroke();
+    }
+  }
+  function update(){
+    var d=50+Math.random()*300;
+    var u=20+Math.random()*150;
+    downData.push(d);upData.push(u);
+    if(downData.length>60)downData.shift();
+    if(upData.length>60)upData.shift();
+    rxTotal+=Math.floor(d*10);txTotal+=Math.floor(u*10);
+    downEl.textContent=d.toFixed(0)+' KB/s';
+    upEl.textContent=u.toFixed(0)+' KB/s';
+    rxEl.textContent=rxTotal.toLocaleString();
+    txEl.textContent=txTotal.toLocaleString();
+    draw();
+  }
+  w._netIv=setInterval(update,1000);
+  update();
+}
+
+function initSys(w){
+  var c=w.querySelector('[id^=sysContent-]');
+  if(!c)return;
+  var cpuData=15,memData=25,diskData=30;
+  function render(){
+    cpuData=Math.max(5,Math.min(95,cpuData+Math.random()*20-10));
+    memData=Math.max(15,Math.min(85,memData+Math.random()*8-4));
+    diskData=Math.min(99,diskData+Math.random()*0.3);
+    var uptime=Math.floor((Date.now()-startTime)/1000);
+    var h=Math.floor(uptime/3600);
+    var m=Math.floor((uptime%3600)/60);
+    var s=uptime%60;
+    var cpuClass=cpuData>80?'red':cpuData>50?'yellow':'green';
+    c.innerHTML='<div class="sys-section"><div class="sys-row"><span>CPU Usage</span><span class="val">'+cpuData.toFixed(1)+'%</span></div><div class="sys-bar"><div class="sys-fill '+cpuClass+'" style="width:'+cpuData+'%"></div></div><div class="sys-row"><span>Cores</span><span class="val">8 / 8 active</span></div><div class="sys-row"><span>Temp</span><span class="val">'+(45+cpuData*0.4).toFixed(0)+' C</span></div></div><div class="sys-section"><div class="sys-row"><span>Memory</span><span class="val">'+(memData*163.84).toFixed(0)+' MB / 16384 MB</span></div><div class="sys-bar"><div class="sys-fill cyan" style="width:'+memData+'%"></div></div></div><div class="sys-section"><div class="sys-row"><span>Disk</span><span class="val">'+(diskData*2.62).toFixed(0)+' GB / 262 GB</span></div><div class="sys-bar"><div class="sys-fill green" style="width:'+diskData+'%"></div></div></div><div class="sys-section"><div class="sys-row"><span>Uptime</span><span class="val">'+h+'h '+m+'m '+s+'s</span></div><div class="sys-row"><span>Processes</span><span class="val">'+Math.floor(120+Math.random()*30)+'</span></div></div>';
+  }
+  render();
+  w._sysIv=setInterval(render,2000);
+}
+
+function initEditor(w){
+  var ta=w.querySelector('.ed-content');
+  if(!ta)return;
+  ta.value='// 4aykaOS Text Editor v1.0\n\nfunction hello(){\n    console.log("Hello from 4aykaOS!");\n    return "4ayka Studio";\n}\n\nhello();\n';
+  ta.focus();
+}
+function editorNew(btn){
+  var w=btn.closest('.win');
+  var ta=w.querySelector('.ed-content');
+  if(ta)ta.value='';
+}
+function editorSave(btn){
+  var w=btn.closest('.win');
+  var ta=w.querySelector('.ed-content');
+  if(ta&&ta.value){navigator.clipboard.writeText(ta.value).then(function(){showNotif('Editor','Saved to clipboard');}).catch(function(){});}
+}
+function editorOpen(btn){showNotif('Editor','Use cat in terminal to view files');}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){closeMenus();if(activeWin)closeWin(activeWin);}
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Enter'){
+    var li=document.getElementById('login');
+    if(li&&li.classList.contains('show')&&!li.classList.contains('hide')){login();}
+  }
+});
+document.getElementById('loginBtn').onclick=function(){login();};
+
 bootSeq();
 </script>
 </body>
