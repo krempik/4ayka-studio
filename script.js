@@ -1,4 +1,41 @@
-﻿// MATRIX RAIN
+﻿// SPLASH SCREEN
+(function() {
+    const splash = document.getElementById('splash');
+    const fill = document.getElementById('splash-fill');
+    const splashText = document.getElementById('splash-text');
+    if (!splash) return;
+
+    const messages = [
+        '[+] Initializing system...',
+        '[+] Loading kernel modules...',
+        '[+] Compiling shaders...',
+        '[+] Spawning matrix rain...',
+        '[+] Encrypting connections...',
+        '[+] Starting 4ayka OS...',
+        '[+] System ready.'
+    ];
+
+    let progress = 0;
+    let msgIndex = 0;
+    const interval = setInterval(() => {
+        progress += Math.random() * 18 + 5;
+        if (progress > 100) progress = 100;
+        fill.style.width = progress + '%';
+
+        if (progress > (msgIndex + 1) * (100 / messages.length) && msgIndex < messages.length - 1) {
+            msgIndex++;
+            splashText.textContent = messages[msgIndex];
+        }
+
+        if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(() => splash.classList.add('hidden'), 400);
+            setTimeout(() => { splash.remove(); }, 1100);
+        }
+    }, 120);
+})();
+
+// MATRIX RAIN
 const canvas = document.getElementById('matrix');
 const ctx = canvas.getContext('2d');
 
@@ -42,7 +79,7 @@ window.addEventListener('resize', () => {
 const typedText = document.getElementById('typed-text');
 const outputLine = document.getElementById('output-line');
 const phrases = [
-    { cmd: 'python3 -c "import tblocks"', out: '[+] T-Blocks loaded. 4 game modes, 6 powerups.' },
+    { cmd: 'python3 -c "import tblocks"', out: '[+] T-Blocks v2.0 loaded. 4 modes, 8 powerups, 3 bosses.' },
     { cmd: 'curl -X POST /api/auth/login', out: '[+] JWT token issued. H4ck Messenger online.' },
     { cmd: 'git log --oneline -2', out: 'f4k3c0d H4ck: E2E encryption\n7a2b1e9 T-Blocks: boss battle mode' },
     { cmd: 'ls -la /projects/', out: 'tblocks/  messenger/' },
@@ -290,7 +327,7 @@ const commands = {
         cls: 'term-success'
     }),
     projects: () => ({
-        text: '[ACTIVE] H4ck Messenger - E2E encrypted messenger (FastAPI + WebSocket)\n[DONE]   T-Blocks - Tetris++ with 4 modes, 3 bosses, 6 powerups (721 lines)',
+        text: '[ACTIVE] H4ck Messenger - E2E encrypted messenger (FastAPI + WebSocket)\n[DONE]   T-Blocks v2.0 - Tetris++ with 4 modes, 3 bosses, 8 powerups (~1400 lines)',
         cls: 'term-out'
     }),
     tblocks: () => {
