@@ -297,6 +297,52 @@ setInterval(() => {
     }
 }, 2000);
 
+// VISITOR COUNTER & ONLINE
+const API_BASE = 'https://tblocks-server.onrender.com';
+const SESSION_ID = Math.random().toString(36).substring(2, 14);
+
+async function trackVisit() {
+    try {
+        await fetch(API_BASE + '/api/visit', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({page: location.pathname, ip: ''})
+        });
+    } catch(e) {}
+}
+
+async function heartbeat() {
+    try {
+        const r = await fetch(API_BASE + '/api/online', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({session_id: SESSION_ID})
+        });
+        if (r.ok) {
+            const d = await r.json();
+            const el = document.getElementById('online-count');
+            if (el) el.textContent = d.online;
+        }
+    } catch(e) {}
+}
+
+async function loadVisitors() {
+    try {
+        const r = await fetch(API_BASE + '/api/visitors');
+        if (r.ok) {
+            const d = await r.json();
+            const el = document.getElementById('visitors');
+            if (el) el.textContent = d.total + ' (today: ' + d.today + ')';
+        }
+    } catch(e) {}
+}
+
+trackVisit();
+heartbeat();
+loadVisitors();
+setInterval(heartbeat, 15000);
+setInterval(loadVisitors, 30000);
+
 // INTERACTIVE TERMINAL
 const termOutput = document.getElementById('terminal-output');
 const termInput = document.getElementById('interactive-input');
