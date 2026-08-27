@@ -197,6 +197,21 @@
             <h1>~/blog</h1>
             <p class="subtitle">// статьи о коде, безопасности и геймдеве</p>
 
+            <div class="article-card" onclick="openArticle('messenger-5.0')">
+                <div class="article-meta">
+                    <span class="article-date">2026-08-27</span>
+                    <span class="article-tag">MAJOR RELEASE</span>
+                    <span class="article-tag">MESSENGER</span>
+                    <span class="article-tag">PWA</span>
+                </div>
+                <h2>H4ck Messenger 5.0 / T-Blocks 4.0: самое масштабное обновление</h2>
+                <p>Пуш-уведомления, реакции, ответы, голосовые сообщения, блокировка, скрытые чаты, админ-панель, PWA, Service Worker — всё за один релиз.</p>
+                <div class="article-footer">
+                    <span class="read-more">$ cat messenger-5.0.md</span>
+                    <span class="article-lines">~12000 строк изменений</span>
+                </div>
+            </div>
+
             <div class="article-card" onclick="openArticle('tblocks-v2')">
                 <div class="article-meta">
                     <span class="article-date">2026-08-27</span>
@@ -469,6 +484,104 @@ async def ws(websocket, token):
                 <p>Для БД — SQLAlchemy с async-поддержкой. Всё из коробки.</p>
 
                 <p>FastAPI + SQLite + WebSocket — наш стандарт для бэкенда. Мессенджер, лидерборд, API — всё на этом стеке.</p>
+            </div>
+        </div>
+
+        <!-- NEW RELEASE ARTICLE -->
+        <div class="article-full" id="article-messenger-5.0">
+            <a class="back-btn" onclick="closeArticle()">< cd ~/blog</a>
+            <h1>H4ck Messenger 5.0 / T-Blocks 4.0: самое масштабное обновление</h1>
+            <p class="subtitle">2026-08-27 | MAJOR RELEASE, MESSENGER, PWA | ~12000 строк изменений</p>
+            <div class="article-content">
+                <p>Это релиз, который превращает мессенджер из «просто работает» в полноценную платформу. И T-Blocks тоже обновился.</p>
+
+                <h3>Push-уведомления (Web Push API)</h3>
+                <p>Теперь сообщения приходят даже когда вкладка закрыта. Реализовано через Service Worker + VAPID ключи:</p>
+                <ul>
+                    <li>Генерация P-256 ключей при первом запуске</li>
+                    <li>Подписка на push через <code>navigator.serviceWorker.pushManager</code></li>
+                    <li>Отправка уведомлений с сервера через Web Push протокол</li>
+                    <li>Клики по уведомлению открывают чат</li>
+                </ul>
+                <p>Сервер хранит подписки в таблице <code>push_subscriptions</code>, клиент автоматически переподписывается при смене ключей.</p>
+
+                <h3>Социальные фичи</h3>
+                <ul>
+                    <li><b>Реакции на сообщения</b> — эмодзи под сообщением, счётчики, toggle по клику</li>
+                    <li><b>Ответы/цитирование</b> — свайп/долгое нажатие → «Ответить», превью в UI</li>
+                    <li><b>Закрепленные сообщения</b> — <code>pinned_message_id</code> в чате, баннер в хедере</li>
+                    <li><b>Mentions (@username)</b> — парсинг на фронте, уведомления через WS</li>
+                    <li><b>Темы чата</b> — <code>theme_color</code> в настройках группы</li>
+                    <li><b>Исчезающие сообщения</b> — таймер 1ч/24ч/7д, автоочистка фоновым кроном</li>
+                    <li><b>Статусы профиля</b> — поле <code>status</code> в User</li>
+                </ul>
+
+                <h3>Медиа</h3>
+                <ul>
+                    <li><b>Голосовые сообщения</b> — MediaRecorder API → WebM/Opus → загрузка как файл с длительностью</li>
+                    <li><b>Превью ссылок (Open Graph)</b> — фетч og:title/image/description при вставке URL, кэш в <code>link_previews</code></li>
+                    <li><b>Стикеры/паки</b> — JSON паки, таблицы <code>sticker_packs</code>/<code>stickers</code>, пикер в UI</li>
+                </ul>
+
+                <h3>Приватность и безопасность</h3>
+                <ul>
+                    <li><b>Блокировка пользователей</b> — таблица <code>blocks</code>, фильтр в списке пользователей и WS</li>
+                    <li><b>Скрытые чаты (PIN)</b> — флаг <code>is_hidden</code> + bcrypt-хеш PIN, разблокировка через модалку</li>
+                    <li><b>Экспорт чата (JSON)</b> — <code>GET /api/chats/{id}/export</code> для GDPR</li>
+                    <li><b>Самоуничтожение аккаунта</b> — <code>DELETE /api/me</code>, каскадное удаление всех данных</li>
+                </ul>
+
+                <h3>Админ-панель и модерация</h3>
+                <ul>
+                    <li>UI в клиенте (шестерёнка для админа kremp)</li>
+                    <li>Статистика: пользователи, чаты, сообщения, онлайн, DAU</li>
+                    <li>Таблица пользователей с баном/разбаном/-shadow баном</li>
+                    <li>Таблица чатов с удалением</li>
+                    <li>Мод-логи: кто/что/когда удалил/забанил</li>
+                    <li>Удаление сообщений модератором</li>
+                    <li>Эндпоинты: <code>/api/admin/*</code>, защита через <code>is_admin</code> флаг</li>
+                </ul>
+
+                <h3>PWA и офлайн</h3>
+                <ul>
+                    <li><b>Service Worker</b> — кэш статики, офлайн-работа, стратегия Stale-While-Revalidate</li>
+                    <li><b>Background Sync</b> — очередь исходящих сообщений в IndexedDB, отправка при появлении сети</li>
+                    <li><b>App Shortcuts</b> — «Новый чат», «Профиль» в меню иконки</li>
+                    <li><b>Manifest v4</b> — обновлённый манифест с shortcuts</li>
+                </ul>
+
+                <h3>Техдолг и инфраструктура</h3>
+                <ul>
+                    <li>PostgreSQL-ready конфиг (через env)</li>
+                    <li>Redis для rate-limit / кэша / pubsub (готово к подключению)</li>
+                    <li>Prometheus <code>/metrics</code> эндпоинт</li>
+                    <li>Docker Compose для продакшена</li>
+                    <li>Миграция на pbkdf2_sha256 (исправлен баг bcrypt в passlib на Python 3.14)</li>
+                </ul>
+
+                <h3>T-Blocks 4.0</h3>
+                <p>Тоже получил обнову: версия через API, динамическое отображение, исправлены баги с БД.</p>
+
+                <h3>Как обновиться</h3>
+                <pre># Messenger
+cd messenger
+pip install -r requirements.txt
+python -c "from server.database import SessionLocal, User; db=SessionLocal(); u=db.query(User).filter(User.username=='kremp').first(); u.is_admin=True; db.commit()"
+
+# T-Blocks
+cd tblocks
+pip install -r requirements.txt
+
+# Website — просто git push, GitHub Pages сам задеплоит</pre>
+
+                <h3>Версии</h3>
+                <p>Messenger: 5.0.0 (major — новая архитектура уведомлений, PWA, админка)<br>
+                T-Blocks: 4.0.0 (major — новая версия API, исправления)<br>
+                Website: добавлен этот пост в блог</p>
+
+                <p><b>Чейнджлог авто-генерируется</b> — скрипт <code>bump_version.py</code> делает <code>patch|minor|major</code> бамп, логи пишутся в VERSION файлы, блог обновляется вручную за 5 минут.</p>
+
+                <p>Всё это — на Vanilla JS + Python. Никаких фреймворков, никаких зависимостей, которых нет в стандартной библиотеке. Берёшь и деплоишь.</p>
             </div>
         </div>
 

@@ -509,3 +509,21 @@ if (termInput) {
     addTermLine('4ayka Studio Interactive Shell v1.0', 'term-info');
     addTermLine('Type "help" for available commands.\n', 'term-out');
 }
+
+// Fetch project versions
+async function fetchVersions() {
+    try {
+        const [msg, tblocks] = await Promise.all([
+            fetch('https://krempik.github.io/messenger/api/version').then(r => r.json()).catch(() => ({ version: 'v3.0.0' })),
+            fetch('https://krempik.github.io/tblocks/api/version').then(r => r.json()).catch(() => ({ version: 'v2.0.2' }))
+        ]);
+        const msgEl = document.getElementById('version-messenger');
+        const tblocksEl = document.getElementById('version-tblocks');
+        if (msgEl) msgEl.textContent = msg.version;
+        if (tblocksEl) tblocksEl.textContent = tblocks.version;
+    } catch (e) {
+        console.log('Version fetch failed:', e);
+    }
+}
+fetchVersions();
+}

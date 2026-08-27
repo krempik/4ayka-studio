@@ -588,6 +588,8 @@ body.light ::selection {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.8rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 .commit-hash {
@@ -600,6 +602,24 @@ body.light ::selection {
 .project-status {
     font-size: 0.7rem;
     letter-spacing: 1px;
+}
+
+.project-version {
+    font-size: 0.7rem;
+    color: var(--green);
+    background: rgba(0, 255, 65, 0.1);
+    padding: 2px 8px;
+    border: 1px solid var(--green-dim);
+    letter-spacing: 1px;
+}
+
+.project-status.active {
+    color: var(--green);
+    animation: pulse 2s infinite;
+}
+
+.project-status.done {
+    color: var(--text-dim);
 }
 
 .project-status.active {
