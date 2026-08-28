@@ -622,15 +622,6 @@ body.light ::selection {
     color: var(--text-dim);
 }
 
-.project-status.active {
-    color: var(--green);
-    animation: pulse 2s infinite;
-}
-
-.project-status.done {
-    color: var(--text-dim);
-}
-
 @keyframes pulse {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.5; }
@@ -997,4 +988,15 @@ body.light .splash-fill {
 }
 body.light .splash-text {
     color: #008828;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
 }
