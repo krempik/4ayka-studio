@@ -15,22 +15,31 @@
         '[+] System ready.'
     ];
 
+    function dismissSplash() {
+        if (splash.__dismissed) return;
+        splash.__dismissed = true;
+        splash.classList.add('hidden');
+        setTimeout(() => { splash.remove(); }, 700);
+    }
+
+    // Failsafe: never let the splash block the site, even if timers fail
+    setTimeout(dismissSplash, 4000);
+
     let progress = 0;
     let msgIndex = 0;
     const interval = setInterval(() => {
         progress += Math.random() * 18 + 5;
         if (progress > 100) progress = 100;
-        fill.style.width = progress + '%';
+        if (fill) fill.style.width = progress + '%';
 
         if (progress > (msgIndex + 1) * (100 / messages.length) && msgIndex < messages.length - 1) {
             msgIndex++;
-            splashText.textContent = messages[msgIndex];
+            if (splashText) splashText.textContent = messages[msgIndex];
         }
 
         if (progress >= 100) {
             clearInterval(interval);
-            setTimeout(() => splash.classList.add('hidden'), 400);
-            setTimeout(() => { splash.remove(); }, 1100);
+            setTimeout(dismissSplash, 400);
         }
     }, 120);
 })();
@@ -79,7 +88,7 @@ window.addEventListener('resize', () => {
 const typedText = document.getElementById('typed-text');
 const outputLine = document.getElementById('output-line');
 const phrases = [
-    { cmd: 'python3 -c "import tblocks"', out: '[+] T-Blocks v2.0 loaded. 4 modes, 8 powerups, 3 bosses.' },
+    { cmd: 'python3 -c "import tblocks"', out: '[+] T-Blocks v4.0 loaded. 4 modes, 8 powerups, 3 bosses, leaderboard.' },
     { cmd: 'curl -X POST /api/auth/login', out: '[+] JWT token issued. H4ck Messenger online.' },
     { cmd: 'git log --oneline -2', out: 'f4k3c0d H4ck: E2E encryption\n7a2b1e9 T-Blocks: boss battle mode' },
     { cmd: 'ls -la /projects/', out: 'tblocks/  messenger/' },
@@ -373,7 +382,7 @@ const commands = {
         cls: 'term-success'
     }),
     projects: () => ({
-        text: '[ACTIVE] H4ck Messenger - E2E encrypted messenger (FastAPI + WebSocket)\n[DONE]   T-Blocks v2.0 - Tetris++ with 4 modes, 3 bosses, 8 powerups (~1400 lines)',
+        text: '[ACTIVE] H4ck Messenger v5.0 - E2E encrypted messenger (FastAPI + WebSocket + PWA)\n[DONE]   T-Blocks v4.0 - Tetris++ with 4 modes, 3 bosses, 8 powerups, leaderboard (~720 lines)',
         cls: 'term-out'
     }),
     tblocks: () => {
@@ -514,16 +523,16 @@ if (termInput) {
 async function fetchVersions() {
     try {
         const [msg, tblocks] = await Promise.all([
-            fetch('https://krempik.github.io/messenger/api/version').then(r => r.json()).catch(() => ({ version: 'v3.0.0' })),
-            fetch('https://krempik.github.io/tblocks/api/version').then(r => r.json()).catch(() => ({ version: 'v2.0.2' }))
+            fetch('https://krempik.github.io/messenger/api/version').then(r => r.json()).catch(() => ({ version: '5.0.0' })),
+            fetch('https://krempik.github.io/tblocks/api/version').then(r => r.json()).catch(() => ({ version: '4.0.0' }))
         ]);
         const msgEl = document.getElementById('version-messenger');
         const tblocksEl = document.getElementById('version-tblocks');
-        if (msgEl) msgEl.textContent = msg.version;
-        if (tblocksEl) tblocksEl.textContent = tblocks.version;
+        if (msgEl) msgEl.textContent = 'v' + msg.version;
+        if (tblocksEl) tblocksEl.textContent = 'v' + tblocks.version;
     } catch (e) {
         console.log('Version fetch failed:', e);
     }
 }
 fetchVersions();
-}
+

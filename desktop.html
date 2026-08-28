@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--g:#00ff41;--gd:#003b00;--cy:#00ffff;--r:#ff0040;--y:#ffff00;--bg:#050505;--wb:#0c0c0c;--wh:#151515;--bd:#1e1e1e;--tx:#b0b0b0;--dm:#555;--f:'Fira Code',monospace}
+body.light{--g:#008b30;--gd:#00611f;--cy:#0077a8;--r:#b30033;--y:#a89200;--bg:#e8e7e0;--wb:#f7f6f0;--wh:#ffffff;--bd:#c9c7ba;--tx:#2a2a2a;--dm:#757575}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--tx);font-family:var(--f);height:100vh;overflow:hidden;user-select:none}
 ::selection{background:var(--g);color:#000}
@@ -199,6 +200,7 @@ body{background:var(--bg);color:var(--tx);font-family:var(--f);height:100vh;over
 <div class="tb-sep"></div>
 <div class="tb-apps" id="tbApps"></div>
 <div class="tb-tray">
+<span class="tb-tray-item" id="tbTheme" title="Тема">◐</span>
 <span class="tb-tray-item" id="tbWifi" title="Wi-Fi">&#x1F4F6;</span>
 <span class="tb-tray-item" id="tbVol" title="Audio">&#x1F50A;</span>
 <span class="tb-tray-item" id="tbBat" title="Battery">&#x1F50B;</span>
@@ -206,6 +208,7 @@ body{background:var(--bg);color:var(--tx);font-family:var(--f);height:100vh;over
 <div class="tb-clock" id="tbClock" onclick="toggleStart()"></div>
 </div>
 <script>
+(function(){var t=localStorage.getItem('4ayka_theme');if(t==='light')document.body.classList.add('light');var b=document.getElementById('tbTheme');b.onclick=function(){var l=document.body.classList.toggle('light');localStorage.setItem('4ayka_theme',l?'light':'dark');};})();
 var C={g:'#00ff41',gd:'#003b00',cy:'#00ffff',r:'#ff0040',y:'#ffff00'};
 var wins={},winZ=100,activeWin=null,cmdHistory=[],cmdHistIdx=-1;
 var termDir='~',termUser='user@4ayka';

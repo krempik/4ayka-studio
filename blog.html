@@ -197,6 +197,21 @@
             <h1>~/blog</h1>
             <p class="subtitle">// статьи о коде, безопасности и геймдеве</p>
 
+            <div class="article-card" onclick="openArticle('messenger-4.0')">
+                <div class="article-meta">
+                    <span class="article-date">2026-08-26</span>
+                    <span class="article-tag">MAJOR RELEASE</span>
+                    <span class="article-tag">MESSENGER</span>
+                    <span class="article-tag">E2E</span>
+                </div>
+                <h2>H4ck Messenger 4.0: E2E мессенджер с нуля</h2>
+                <p>Как за один день построили зашифрованный мессенджер — архитектура, шифрование, WebSocket, FastAPI и vanilla JS без фреймворков.</p>
+                <div class="article-footer">
+                    <span class="read-more">$ cat messenger-4.0.md</span>
+                    <span class="article-lines">~3000 строк</span>
+                </div>
+            </div>
+
             <div class="article-card" onclick="openArticle('messenger-5.0')">
                 <div class="article-meta">
                     <span class="article-date">2026-08-27</span>
@@ -488,6 +503,63 @@ async def ws(websocket, token):
         </div>
 
         <!-- NEW RELEASE ARTICLE -->
+        <div class="article-full" id="article-messenger-4.0">
+            <a class="back-btn" onclick="closeArticle()">&lt; cd ~/blog</a>
+            <h1>H4ck Messenger 4.0: E2E мессенджер с нуля</h1>
+            <p class="subtitle">2026-08-26 | MAJOR RELEASE, MESSENGER, E2E | ~3000 строк</p>
+            <div class="article-content">
+                <p>Первая версия H4ck Messenger — зашифрованный мессенджер, построенный за один день. Никаких фреймворков, никаких компромиссов. FastAPI + WebSocket + Web Crypto API + Vanilla JS.</p>
+
+                <h3>Зачем ещё один мессенджер?</h3>
+                <p>Потому что существующие либо закрытые (WhatsApp, Telegram), либо сложные в развёртывании (Matrix). Мы хотели мессенджер, который можно запустить одной командой, где сервер не видит сообщения.</p>
+
+                <h3>Архитектура шифрования</h3>
+                <p>При регистрации генерируется RSA-2048 ключевая пара:</p>
+                <ul>
+                    <li>Публичный ключ уходит на сервер</li>
+                    <li>Приватный ключ остаётся в localStorage браузера</li>
+                    <li>Сервер хранит только зашифрованные данные</li>
+                </ul>
+                <p>При отправке сообщения:</p>
+                <ul>
+                    <li>Генерируется одноразовый AES-256-GCM ключ</li>
+                    <li>Сообщение шифруется AES'ом</li>
+                    <li>AES-ключ шифруется RSA-публичным ключом получателя</li>
+                    <li>На сервер уходит: <code>iv:ciphertext</code></li>
+                </ul>
+
+                <h3>Стек</h3>
+<pre>Backend:   Python 3, FastAPI, SQLAlchemy, WebSocket
+Frontend:  Vanilla JS, Web Crypto API
+DB:        SQLite
+Auth:      JWT (HS256), bcrypt хеши
+Realtime:  WebSocket</pre>
+
+                <h3>Что реализовано</h3>
+                <ul>
+                    <li>Регистрация и логин с JWT-токенами</li>
+                    <li>E2E шифрование: RSA-2048 + AES-256-GCM</li>
+                    <li>Личные и групповые чаты</li>
+                    <li>Отправка файлов (до 100 МБ)</li>
+                    <li>Статус «онлайн/offline» в реальном времени</li>
+                    <li>Индикатор набора текста</li>
+                    <li>Прочитано/доставлено (read receipts)</li>
+                    <li>Редактирование и удаление сообщений</li>
+                </ul>
+
+                <h3>Клиент</h3>
+                <p>Один HTML-файл + один JS-файл. Никакого сборщика, npm, webpack. Открываешь — и работает. CSS-переменные для тем, адаптивный дизайн, mobile-first.</p>
+
+                <h3>Сервер</h3>
+                <p>FastAPI с WebSocket-эндпоинтом. SQLAlchemy + SQLite. Cloudflare Tunnel для публичного доступа. Rate-limiting, JWT-авторизация, CORS.</p>
+
+                <p>Исходный код — на GitHub. Запуск: <code>pip install -r requirements.txt && python -m uvicorn server.main:app</code>.</p>
+
+                <h3>Версия</h3>
+                <p>H4ck Messenger: 4.0.0 (major — первая рабочая версия с E2E)</p>
+            </div>
+        </div>
+
         <div class="article-full" id="article-messenger-5.0">
             <a class="back-btn" onclick="closeArticle()">&lt; cd ~/blog</a>
             <h1>H4ck Messenger 5.0 / T-Blocks 4.0: самое масштабное обновление</h1>

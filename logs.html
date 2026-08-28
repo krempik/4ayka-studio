@@ -152,16 +152,39 @@
 
         // LOG DATA
         const logs = [
+            // === 2026-08-28 (багофиксы и безопасность) ===
+            { date: '2026-08-28', project: 'messenger', title: 'Починен логин и refresh-токены', desc: 'Импортированы <code>create_refresh_token</code>/<code>decode_refresh_token</code> — эндпоинты <code>/api/login</code> и <code>/api/refresh</code> падали с ошибкой. Теперь работают.' },
+            { date: '2026-08-28', project: 'messenger', title: 'Починены read-receipts', desc: 'Исправлена логика <code>mark_read</code> — прочитанные сообщения теперь фиксируются корректно, без смещения на одну запись.' },
+            { date: '2026-08-28', project: 'messenger', title: 'Починен расчёт DAU', desc: 'Использован <code>timedelta(days=7)</code> вместо вычитания из дня месяца — раньше падало в начале месяца с <code>ValueError</code>.' },
+            { date: '2026-08-28', project: 'messenger', title: 'Секрет-ключ теперь постоянный', desc: 'JWT-секрет сохраняется в файл — пользователи больше не разлогиниваются при каждом рестарте сервера.' },
+            { date: '2026-08-28', project: 'messenger', title: 'XSS в админ-панели', desc: 'Экранирование пользовательских данных в <code>admin.html</code> (users/chats/logs) — закрыта уязвимость инъекции HTML.' },
+            { date: '2026-08-28', project: 'messenger', title: 'Починена отправка GIF', desc: 'GIF отправлялся через несуществующий REST-эндпоинт. Переведён на WebSocket — теперь работает.' },
+            { date: '2026-08-28', project: 'messenger', title: 'Починен логин админа', desc: 'Исправлен эндпоинт в админ-панели: <code>/api/auth/login</code> → <code>/api/admin/login</code>.' },
+            { date: '2026-08-28', project: 'messenger', title: 'Ключи удаляются при logout', desc: 'При выходе теперь очищаются приватный/публичный ключи из localStorage (раньше оставались).' },
+            { date: '2026-08-28', project: 'messenger', title: 'Динамическая версия в service worker', desc: 'Кэш-имя PWA теперь привязано к версии из <code>VERSION</code> — обновления корректно сбрасывают кэш.' },
+            { date: '2026-08-28', project: 'site', title: 'Safe-eval в калькуляторе', desc: 'Расчёт по формуле в 4AYKA OS переписан с <code>eval()</code> на безопасный парсер выражений.' },
+            { date: '2026-08-28', project: 'site', title: 'Починены утечки памяти в 4AYKA OS', desc: 'Слушатели drag/resize больше не накапливаются; интервалы и ResizeObserver очищаются при закрытии окон.' },
+            { date: '2026-08-28', project: 'site', title: 'Адаптивность и доступность', desc: 'Favicon, aria-атрибуты, label/input-связи, поддержка <code>prefers-reduced-motion</code>.' },
+            { date: '2026-08-28', project: 'site', title: 'Починены опечатки и HTML', desc: 'Экранирован <code>&lt;</code> в блоге, убраны мусорные символы в логах, исправлена опечатка в crypto-tool.' },
+            { date: '2026-08-28', project: 'tblocks', title: 'Безопасность сервера', desc: 'Исправлен CORS (<code>*</code> + credentials), очистка rate-limit store от утечек памяти, <code>limit ≥ 1</code> в лидерборде.' },
+            { date: '2026-08-28', project: 'tblocks', title: 'Синхронизация версий', desc: 'Fallback версии приведён к <code>4.0.0</code>, обновлены ссылки версий в <code>index.html</code> и <code>manifest.json</code>.' },
+            { date: '2026-08-28', project: 'tblocks', title: 'Deploy-лаунчер объединён', desc: 'Отдельный репозиторий tblocks-server перенесён в tblocks как <code>deploy_main.py</code> — один репозиторий для сервера и деплоя.' },
+            { date: '2026-08-28', project: 'tblocks', title: 'Исправлена логика достижения', desc: 'Достижение «Первая кровь» теперь открывается при очистке первой линии (раньше логика была лишней).' },
+
             // === 2026-08-27 (вторая волна) ===
             { date: '2026-08-27', project: 'site', title: 'GitHub Actions автодеплой', desc: 'Workflow <code>deploy.yml</code> — автоматический деплой на GitHub Pages при пуше в main.' },
             { date: '2026-08-27', project: 'site', title: 'Счётчик посещений', desc: 'Visitor counter в футере: всего + сегодня. Данные хранятся в SQLite на сервере.' },
             { date: '2026-08-27', project: 'site', title: 'Виджет «Сейчас онлайн»', desc: 'Real-time счётчик онлайн-пользователей. Heartbeat каждые 15 секунд.' },
+            { date: '2026-08-27', project: 'tblocks', title: '4.0.0 — мажорный релиз', desc: 'Version API (<code>/api/version</code>), фиксы БД и позиций лидерборда, объединённый сервер+игра.' },
             { date: '2026-08-27', project: 'tblocks', title: 'PWA для T-Blocks', desc: 'manifest.json + service worker. Игру можно установить как приложение на телефон.' },
             { date: '2026-08-27', project: 'tblocks', title: 'Visitor/Online API', desc: 'Эндпоинты <code>/api/visit</code>, <code>/api/visitors</code>, <code>/api/online</code> на сервере.' },
             { date: '2026-08-27', project: 'tblocks', title: 'Тесты для сервера', desc: 'pytest: тесты на лидерборд, отправку очков, статистику, позицию.' },
+            { date: '2026-08-27', project: 'messenger', title: '5.0.0 — мажорный релиз', desc: 'Push-уведомления, реакции, ответы, голосовые, админ-панель, PWA, приватность. ~12000 строк изменений.' },
             { date: '2026-08-27', project: 'messenger', title: 'Админ-панель', desc: 'Веб-интерфейс: статистика, управление пользователями/чатами, логи. Доступ: <code>/admin.html</code>.' },
             { date: '2026-08-27', project: 'messenger', title: 'Admin API', desc: 'Эндпоинты: <code>/api/admin/login</code>, <code>/api/admin/stats</code>, <code>/api/admin/users</code>, <code>/api/admin/chats</code>.' },
             { date: '2026-08-27', project: 'messenger', title: 'Тесты для messenger', desc: 'pytest: тесты на регистрацию, логин, чаты, авторизацию, документацию.' },
+            { date: '2026-08-27', project: 'site', title: '4aykaOS v2.0 — десктоп', desc: 'Полный desktop-энвайронмент: boot, логин, терминал, файл-менеджер, редактор, калькулятор, network/system monitor, пароль-генератор, окна, меню, уведомления, хоткеи.' },
+            { date: '2026-08-27', project: 'site', title: 'Инструменты: crypto, typer, logo', desc: 'CryptoTool (base64/AES/RSA/hex/hash), Hacker Typer, Particle Logo — на vanilla JS.' },
 
             // === 2026-08-27 (первая волна) ===
             { date: '2026-08-27', project: 'site', title: 'Добавлена страница логов', desc: 'Журнал изменений всех проектов с фильтрацией по проектам.' },
@@ -174,9 +197,22 @@
             { date: '2026-08-27', project: 'tblocks', title: 'Обновлён README tblocks', desc: 'Актуальная информация: режимы, боссы, powerups, достижения, темы, API.' },
             { date: '2026-08-27', project: 'messenger', title: 'README для messenger', desc: 'Добавлена документация: запуск, архитектура шифрования, API, стек.' },
 
+            // === 2026-08-28 (сайт: версии и консистентность) ===
+            { date: '2026-08-28', project: 'site', title: 'Исправлены версии на сайте', desc: 'T-Blocks: <code>v2.0.2</code> → <code>v4.0.0</code>, Messenger: <code>v3.0.0</code> → <code>v5.0.0</code>. Обновлены fallback-значения, typing-эффект, описание проектов.' },
+            { date: '2026-08-28', project: 'messenger', title: 'Автомиграция БД', desc: 'При запуске сервера новые колонки добавляются автоматически через <code>ALTER TABLE ADD COLUMN</code>. Обновления больше не ломают существующую БД.' },
+            { date: '2026-08-28', project: 'messenger', title: 'Multi-domain поддержка', desc: 'Админ-панель, Service Worker и манифест теперь корректно работают за туннелями и на разных доменах. Добавлен авто-дetection URL сервера.' },
+            { date: '2026-08-28', project: 'messenger', title: 'Исправлена админ-панель', desc: 'Проверка <code>is_admin</code> через БД вместо хардкода. Каскадное удаление пользователей. Реальные логи модерации. Rate-limit для админ-API.' },
+            { date: '2026-08-28', project: 'messenger', title: 'MIME-валидация загрузок', desc: 'Проверка Content-Type при загрузке файлов. Блокировка опасных расширений (.html, .svg, .php). Валидация размера.' },
+            { date: '2026-08-28', project: 'site', title: 'CI/CD: GitHub Actions для всех проектов', desc: 'Workflow для messenger (pytest + deploy) и tblocks (pytest + deploy). Автотесты при каждом пуше.' },
+            { date: '2026-08-28', project: 'site', title: '.gitignore для 4ayka-studio', desc: 'Исключены <code>__pycache__</code>, <code>.DS_Store</code>, <code>node_modules</code>, <code>*.log</code>.' },
+            { date: '2026-08-28', project: 'site', title: 'Единая тема по всем страницам', desc: 'Переключатель темы (light/dark) теперь синхронизирован через <code>localStorage.4ayka_theme</code> и на страницах crypto-tool и 4ayka OS.' },
+            { date: '2026-08-28', project: 'messenger', title: 'Pinned-зависимости', desc: 'Добавлены <code>requirements.lock</code> (messenger и tblocks) — воспроизводимые сборки. <code>run.bat</code> предпочитает lock.' },
+            { date: '2026-08-28', project: 'messenger', title: 'Админ-панель: действия с пользователями', desc: 'В таблице пользователей добавлены кнопки ban/unban/delete, показаны статусы is_admin/is_banned/shadow. Таблица чатов показывает скрытые чаты.' },
+
             // === 2026-08-26 ===
             { date: '2026-08-26', project: 'tblocks', title: 'T-Blocks v2.0 — масштабное обновление', desc: '4 режима, 3 босса, 8 powerups, 4 темы, 12 достижений, лидерборд. ~1400 строк.' },
             { date: '2026-08-26', project: 'tblocks', title: 'Сервер лидерборда', desc: 'FastAPI + SQLite: <code>POST /api/score</code>, <code>GET /api/leaderboard</code>, <code>GET /api/stats</code>. Cloudflare Tunnel.' },
+            { date: '2026-08-26', project: 'messenger', title: 'H4ck Messenger запущен', desc: 'E2E мессенджер на FastAPI + WebSocket + Web Crypto. RSA-2048 + AES-256-GCM. Регистрация, логин, чаты, шифрование.' },
             { date: '2026-08-26', project: 'messenger', title: 'Рефакторинг messenger', desc: 'Переработан UI клиента, добавлены bio/avatar в БД, рефакторинг сервера. Коммит <code>c9f7414</code>.' },
 
             // === 2026-08-25 ===

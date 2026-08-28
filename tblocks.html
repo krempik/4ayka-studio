@@ -8,44 +8,46 @@
 <meta name="theme-color" content="#0a0a12">
 <title>T-Blocks — 4ayka Studio</title>
 <style>
+:root{--tb-bg:#0a0a12;--tb-text:#fff;--tb-border:#1a1a2e;--tb-border2:#3a3a5a;--tb-panel:linear-gradient(135deg,#12121f,#1a1a30);--tb-btnbg:linear-gradient(135deg,#1a1a30,#252545);--tb-panel-dark:#0d0d18;--tb-accent:#6a6aff;--tb-dim:#888;--tb-dim2:#555;--tb-hint:#444;--tb-overlay:rgba(5,5,15,.95);--tb-overlay2:rgba(5,5,15,.85);--tb-chip-border:#333}
+body.light{--tb-bg:#e9e9ef;--tb-text:#1a1a2a;--tb-border:#c3c3d6;--tb-border2:#b9b9d0;--tb-panel:linear-gradient(135deg,#ffffff,#f0f0f8);--tb-btnbg:linear-gradient(135deg,#ffffff,#ececf5);--tb-panel-dark:#f6f6fb;--tb-accent:#5a5ac9;--tb-dim:#6a6a80;--tb-dim2:#8a8aa0;--tb-hint:#777;--tb-overlay:rgba(245,245,250,.97);--tb-overlay2:rgba(245,245,250,.9);--tb-chip-border:#c0c0d4}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:#0a0a12;color:#fff;font-family:'Segoe UI',Tahoma,sans-serif;overflow:hidden;height:100vh;height:100dvh;display:flex;justify-content:center;align-items:center;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+body{background:var(--tb-bg);color:var(--tb-text);font-family:'Segoe UI',Tahoma,sans-serif;overflow:hidden;height:100vh;height:100dvh;display:flex;justify-content:center;align-items:center;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 #game-container{position:relative;display:flex;gap:20px;align-items:flex-start;padding:10px}
-canvas{border:2px solid #1a1a2e;border-radius:4px;image-rendering:pixelated;touch-action:none}
+canvas{border:2px solid var(--tb-border);border-radius:4px;image-rendering:pixelated;touch-action:none}
 #sidebar{width:220px;display:flex;flex-direction:column;gap:10px;flex-shrink:0}
-.panel{background:linear-gradient(135deg,#12121f,#1a1a30);border:1px solid #2a2a4a;border-radius:8px;padding:12px}
-.panel h3{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:#6a6aff;margin-bottom:8px;border-bottom:1px solid #2a2a4a;padding-bottom:5px}
-.panel .value{font-size:22px;font-weight:bold;color:#fff}
-.panel .sub{font-size:10px;color:#888;margin-top:2px}
+.panel{background:var(--tb-panel);border:1px solid var(--tb-border);border-radius:8px;padding:12px}
+.panel h3{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--tb-accent);margin-bottom:8px;border-bottom:1px solid var(--tb-border);padding-bottom:5px}
+.panel .value{font-size:22px;font-weight:bold;color:var(--tb-text)}
+.panel .sub{font-size:10px;color:var(--tb-dim);margin-top:2px}
 #next-preview{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
-#next-preview canvas{border:none;border-radius:3px;background:#0d0d18}
+#next-preview canvas{border:none;border-radius:3px;background:var(--tb-panel-dark)}
 #powerups-list{display:flex;gap:4px;flex-wrap:wrap}
-.powerup-icon{width:32px;height:32px;border-radius:6px;border:2px solid #333;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .15s;position:relative}
-.powerup-icon:active{transform:scale(1.1);border-color:#6a6aff}
+.powerup-icon{width:32px;height:32px;border-radius:6px;border:2px solid var(--tb-chip-border);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:all .15s;position:relative}
+.powerup-icon:active{transform:scale(1.1);border-color:var(--tb-accent)}
 .powerup-icon .count{position:absolute;bottom:-4px;right:-4px;background:#ff4444;color:#fff;font-size:9px;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:bold}
-#combo-bar{height:6px;background:#1a1a2e;border-radius:3px;overflow:hidden;margin-top:4px}
+#combo-bar{height:6px;background:var(--tb-border);border-radius:3px;overflow:hidden;margin-top:4px}
 #combo-fill{height:100%;background:linear-gradient(90deg,#ff6b00,#ff0066,#aa00ff);width:0%;transition:width .3s;border-radius:3px}
-#mode-select{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(5,5,15,.95);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;gap:20px;padding:20px}
+#mode-select{position:absolute;top:0;left:0;right:0;bottom:0;background:var(--tb-overlay);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;gap:20px;padding:20px}
 #mode-select h1{font-size:clamp(32px,8vw,48px);background:linear-gradient(135deg,#6a6aff,#ff6b6b,#ffcc00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:4px;text-align:center}
-#mode-select .studio{font-size:12px;color:#555;letter-spacing:3px;margin-top:-10px}
+#mode-select .studio{font-size:12px;color:var(--tb-dim2);letter-spacing:3px;margin-top:-10px}
 #mode-select .modes{display:flex;flex-direction:column;gap:10px;width:100%;max-width:320px}
-.mode-btn{background:linear-gradient(135deg,#1a1a30,#252545);border:2px solid #3a3a5a;border-radius:10px;padding:14px 18px;color:#fff;cursor:pointer;transition:all .2s;text-align:left}
-.mode-btn:active{transform:scale(0.97);border-color:#6a6aff}
+.mode-btn{background:var(--tb-btnbg);border:2px solid var(--tb-border2);border-radius:10px;padding:14px 18px;color:var(--tb-text);cursor:pointer;transition:all .2s;text-align:left}
+.mode-btn:active{transform:scale(0.97);border-color:var(--tb-accent)}
 .mode-btn .mode-name{font-size:clamp(15px,4vw,18px);font-weight:bold;margin-bottom:3px}
-.mode-btn .mode-desc{font-size:11px;color:#888}
-#overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(5,5,15,.85);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:90;gap:15px;padding:20px}
+.mode-btn .mode-desc{font-size:11px;color:var(--tb-dim)}
+#overlay{position:absolute;top:0;left:0;right:0;bottom:0;background:var(--tb-overlay2);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:90;gap:15px;padding:20px}
 #overlay h2{font-size:clamp(24px,6vw,32px);color:#ff6b6b;text-align:center}
-#overlay .stats{text-align:center;font-size:13px;color:#aaa;line-height:1.8}
+#overlay .stats{text-align:center;font-size:13px;color:var(--tb-dim2);line-height:1.8}
 #overlay button{background:linear-gradient(135deg,#6a6aff,#4a4add);border:none;color:#fff;padding:12px 30px;border-radius:8px;font-size:14px;cursor:pointer;transition:all .2s;min-width:160px}
 #overlay button:active{transform:scale(0.95)}
-#controls-hint{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:10px;color:#444;text-align:center;pointer-events:none;white-space:nowrap}
+#controls-hint{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--tb-hint);text-align:center;pointer-events:none;white-space:nowrap}
 .boss-bar{display:none}
 .boss-bar.active{display:block}
 .boss-bar .boss-name{font-size:11px;color:#ff4444;margin-bottom:3px}
-.boss-bar .hp-bg{height:8px;background:#1a1a2e;border-radius:4px;overflow:hidden}
+.boss-bar .hp-bg{height:8px;background:var(--tb-border);border-radius:4px;overflow:hidden}
 .boss-bar .hp-fill{height:100%;background:linear-gradient(90deg,#ff0000,#ff4444);width:100%;transition:width .3s;border-radius:4px}
-#gravity-indicator{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:11px;color:#6a6aff;display:none;pointer-events:none;z-index:10}
-.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#1a1a30;border:1px solid #6a6aff;color:#fff;padding:8px 20px;border-radius:20px;font-size:13px;z-index:200;animation:toastIn .3s,toastOut .3s 1.5s forwards;pointer-events:none}
+#gravity-indicator{position:absolute;top:10px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--tb-accent);display:none;pointer-events:none;z-index:10}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--tb-panel);border:1px solid var(--tb-accent);color:var(--tb-text);padding:8px 20px;border-radius:20px;font-size:13px;z-index:200;animation:toastIn .3s,toastOut .3s 1.5s forwards;pointer-events:none}
 @keyframes toastIn{from{opacity:0;transform:translateX(-50%) translateY(-20px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 @keyframes toastOut{to{opacity:0;transform:translateX(-50%) translateY(-20px)}}
 
@@ -164,6 +166,7 @@ canvas{border:2px solid #1a1a2e;border-radius:4px;image-rendering:pixelated;touc
 </div>
 
 <div id="mode-select">
+  <button id="theme-toggle" title="Сменить тему" aria-label="Сменить тему" style="position:absolute;top:14px;right:14px;background:none;border:1px solid var(--tb-border2);color:var(--tb-text);font-size:1.2rem;cursor:pointer;padding:6px 10px;border-radius:6px;line-height:1;font-family:inherit">&#9789;</button>
   <h1>T-BLOCKS</h1>
   <div class="studio">4ayka Studio</div>
   <div class="modes">
@@ -207,6 +210,15 @@ canvas{border:2px solid #1a1a2e;border-radius:4px;image-rendering:pixelated;touc
   </div>
 </div>
 
+<script>
+// THEME
+(function(){
+  const btn=document.getElementById('theme-toggle'),icon='\u00A0';
+  let light=false;try{light=localStorage.getItem('4ayka_theme')==='light';}catch(e){}
+  if(light)document.body.classList.add('light'),btn.innerHTML='\u2600';
+  btn.addEventListener('click',function(){light=!light;document.body.classList.toggle('light',light);btn.innerHTML=light?'\u2600':'\u263D';try{localStorage.setItem('4ayka_theme',light?'light':'dark');}catch(e){}});
+})();
+</script>
 <script>
 const COLS=10,ROWS=20,CELL=30;
 const canvas=document.getElementById('board');

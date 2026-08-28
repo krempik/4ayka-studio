@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>4AYKA | Particle Logo</title>
-    <style>
+<style>
         :root { --green: #00ff41; --bg: #0a0a0a; }
+        body.light { --bg: #f0efe8; }
+        body.light .header { background: rgba(255,255,255,0.85); border-bottom-color: #d0cfc0; }
+        body.light .back { color: #666; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); overflow: hidden; cursor: crosshair; }
         canvas { display: block; }
@@ -18,13 +21,30 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="header">
+<div class="header">
         <div class="logo">4AYKA</div>
-        <a class="back" href="index.html">&lt; back</a>
+        <div style="display:flex;align-items:center;gap:1rem;">
+            <button id="theme-toggle" title="Сменить тему" style="background:none;border:1px solid #1a1a1a;color:var(--green);font-family:'Fira Code',monospace;font-size:1.1rem;cursor:pointer;padding:4px 8px;border-radius:4px;line-height:1;">&#9789;</button>
+            <a class="back" href="index.html">&lt; back</a>
+        </div>
     </div>
     <canvas id="canvas"></canvas>
     <div class="hint">move mouse to interact | click to explode</div>
-    <script>
+<script>
+        // THEME
+        (function() {
+            const btn = document.getElementById('theme-toggle');
+            let light = false;
+            try { light = localStorage.getItem('4ayka_theme') === 'light'; } catch(e) {}
+            if (light) { document.body.classList.add('light'); btn.innerHTML = '\u2600'; }
+            btn.addEventListener('click', () => {
+                light = !light;
+                document.body.classList.toggle('light', light);
+                btn.innerHTML = light ? '\u2600' : '\u263D';
+                try { localStorage.setItem('4ayka_theme', light ? 'light' : 'dark'); } catch(e) {}
+            });
+        })();
+
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         let W, H;

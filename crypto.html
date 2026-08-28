@@ -5,16 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CryptoTool | 4ayka Studio</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <style>
+<style>
         :root { --green: #00ff41; --green-dark: #003b00; --cyan: #00ffff; --red: #ff0040; --bg: #0a0a0a; --card: #0d0d0d; --border: #1a1a1a; --text: #c0c0c0; --dim: #555; --font: 'Fira Code', monospace; }
+        body.light { --green: #00aa33; --green-dark: #00661f; --cyan: #0077cc; --red: #cc0033; --bg: #f0efe8; --card: #ffffff; --border: #d0cfc0; --text: #1a1a1a; --dim: #666; }
+        body.light .scanlines { opacity: 0.3; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
         .scanlines { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 3px); }
         .container { max-width: 900px; margin: 0 auto; padding: 2rem; position: relative; z-index: 2; }
         .header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+        .header-right { display: flex; align-items: center; gap: 1rem; }
         .logo { font-size: 1.3rem; color: var(--green); letter-spacing: 4px; text-shadow: 0 0 10px var(--green-dark); }
         .back { color: var(--dim); text-decoration: none; font-size: 0.8rem; transition: color 0.3s; }
         .back:hover { color: var(--green); }
+        .theme-toggle { background: none; border: 1px solid var(--border); color: var(--dim); font-size: 1.1rem; cursor: pointer; padding: 6px 10px; border-radius: 4px; transition: all 0.3s; line-height: 1; font-family: var(--font); }
+        .theme-toggle:hover { border-color: var(--green); color: var(--green); }
         h1 { color: var(--green); font-size: 1.5rem; margin-bottom: 0.5rem; text-shadow: 0 0 10px var(--green-dark); }
         .subtitle { color: var(--dim); font-size: 0.8rem; margin-bottom: 2rem; }
         .tabs { display: flex; gap: 0; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
@@ -53,9 +58,12 @@
 <body>
     <div class="scanlines"></div>
     <div class="container">
-        <div class="header">
+<div class="header">
             <div class="logo">CRYPTO</div>
-            <a href="index.html" class="back">&lt; back to 4ayka</a>
+            <div class="header-right">
+                <button class="theme-toggle" id="theme-toggle" title="Переключить тему">◐</button>
+                <a href="index.html" class="back">&lt; back to 4ayka</a>
+            </div>
         </div>
         <h1>CryptoTool</h1>
         <p class="subtitle">Шифрование и дешифрование в браузере. Данные не покидают твоё устройство.</p>
@@ -188,7 +196,18 @@
         </div>
     </div>
 
-    <script>
+<script>
+        // THEME
+        (function() {
+            const saved = localStorage.getItem('4ayka_theme') || 'dark';
+            if (saved === 'light') document.body.classList.add('light');
+            const btn = document.getElementById('theme-toggle');
+            btn.addEventListener('click', () => {
+                const isLight = document.body.classList.toggle('light');
+                localStorage.setItem('4ayka_theme', isLight ? 'light' : 'dark');
+            });
+        })();
+
         // TABS
         document.querySelectorAll('.tab').forEach(tab => {
             tab.addEventListener('click', () => {

@@ -923,6 +923,13 @@ body.light ::selection {
     align-items: center;
     justify-content: center;
     transition: opacity 0.6s, visibility 0.6s;
+    /* Failsafe: auto-hide even if JS fails to load */
+    animation: splash-auto-hide 6s 1 forwards;
+}
+@keyframes splash-auto-hide {
+    0%   { opacity: 1; visibility: visible; }
+    85%  { opacity: 1; visibility: visible; }
+    100% { opacity: 0; visibility: hidden; pointer-events: none; }
 }
 .splash.hidden {
     opacity: 0;
