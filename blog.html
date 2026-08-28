@@ -197,18 +197,17 @@
             <h1>~/blog</h1>
             <p class="subtitle">// статьи о коде, безопасности и геймдеве</p>
 
-            <div class="article-card" onclick="openArticle('messenger-4.0')">
+            <div class="article-card" onclick="openArticle('freeze')">
                 <div class="article-meta">
-                    <span class="article-date">2026-08-26</span>
-                    <span class="article-tag">MAJOR RELEASE</span>
-                    <span class="article-tag">MESSENGER</span>
-                    <span class="article-tag">E2E</span>
+                    <span class="article-date">2026-08-28</span>
+                    <span class="article-tag">FREEZE</span>
+                    <span class="article-tag">ANNOUNCEMENT</span>
                 </div>
-                <h2>H4ck Messenger 4.0: E2E мессенджер с нуля</h2>
-                <p>Как за один день построили зашифрованный мессенджер — архитектура, шифрование, WebSocket, FastAPI и vanilla JS без фреймворков.</p>
+                <h2>4ayka Studio: все проекты уходят в заморозку</h2>
+                <p>Команда распалась из-за разногласий — остался только создатель (kremp). Крупных обновлений не будет примерно месяц, максимум — мелкие фиксы и правки безопасности.</p>
                 <div class="article-footer">
-                    <span class="read-more">$ cat messenger-4.0.md</span>
-                    <span class="article-lines">~3000 строк</span>
+                    <span class="read-more">$ cat freeze.md</span>
+                    <span class="article-lines">~0 строк кода</span>
                 </div>
             </div>
 
@@ -233,11 +232,26 @@
                     <span class="article-tag">GAMEDEV</span>
                     <span class="article-tag">CANVAS</span>
                 </div>
-                <h2>T-Blocks v2.0: от Тетриса доszedł до боссов</h2>
+                <h2>T-Blocks v2.0: от Тетриса дошёл до боссов</h2>
                 <p>Как из простого Тетриса получилась аркада с 4 режимами, 3 боссами, 8 powerups и системой достижений. Всё на одном HTML-файле.</p>
                 <div class="article-footer">
                     <span class="read-more">$ cat tblocks-v2.md</span>
                     <span class="article-lines">~1400 строк</span>
+                </div>
+            </div>
+
+            <div class="article-card" onclick="openArticle('messenger-4.0')">
+                <div class="article-meta">
+                    <span class="article-date">2026-08-26</span>
+                    <span class="article-tag">MAJOR RELEASE</span>
+                    <span class="article-tag">MESSENGER</span>
+                    <span class="article-tag">E2E</span>
+                </div>
+                <h2>H4ck Messenger 4.0: E2E мессенджер с нуля</h2>
+                <p>Как за один день построили зашифрованный мессенджер — архитектура, шифрование, WebSocket, FastAPI и vanilla JS без фреймворков.</p>
+                <div class="article-footer">
+                    <span class="read-more">$ cat messenger-4.0.md</span>
+                    <span class="article-lines">~3000 строк</span>
                 </div>
             </div>
 
@@ -290,7 +304,7 @@
                     <span class="article-tag">SECURITY</span>
                 </div>
                 <h2>Криптография в браузере: AES, RSA и Web Crypto API</h2>
-                <p>Как использовать промышленное шифрование в JavaScript. RSA-OAEP, AES-GCM, ключи,盐 — всё на примерах.</p>
+                <p>Как использовать промышленное шифрование в JavaScript. RSA-OAEP, AES-GCM, ключи, соли — всё на примерах.</p>
                 <div class="article-footer">
                     <span class="read-more">$ cat crypto-basics.md</span>
                     <span class="article-lines">~500 строк</span>
@@ -313,6 +327,42 @@
         </div>
 
         <!-- FULL ARTICLES -->
+        <div class="article-full" id="article-freeze">
+            <a class="back-btn" onclick="closeArticle()">&lt; cd ~/blog</a>
+            <h1>4ayka Studio: все проекты уходят в заморозку</h1>
+            <p class="subtitle">2026-08-28 | FREEZE, ANNOUNCEMENT | ~0 строк кода</p>
+            <div class="article-content">
+                <p>Плохие новости для тех, кто ждал крупных обновлений: команда 4ayka Studio распалась. Разногласия оказались сильнее общего кода, и с этого дня за проектами остаётся один человек — <b>kremp</b> (создатель).</p>
+
+                <h3>Что это значит</h3>
+                <ul>
+                    <li>Все проекты и этот сайт уходят в <b>заморозку на ~1 месяц</b></li>
+                    <li><b>Крупных обновлений не будет</b> — ни новых механик, ни новых фич, ни больших релизов</li>
+                    <li>Максимум — <b>мелкие фиксы</b>, правки безопасности и опечатки</li>
+                    <li>Работающие серверы, CI и деплои продолжат работать как есть</li>
+                </ul>
+
+                <h3>Что остаётся живым</h3>
+                <pre> H4ck Messenger:  работает (E2E, PWA, админ-панель)
+ T-Blocks:        работает (игра + лидерборд)
+ 4ayka-kit:       опубликован на GitHub, v0.1.0
+ Сайт:            онлайн, блог и логи обновляют вручную</pre>
+
+                <h3>Почему так вышло</h3>
+                <p>Скажем прямо: голоса в команде разделились по направлению развития — кто-то хотел идти в игры, кто-то в инфраструктуру, кто-то вообще в другую сторону. Обсуждать дальше было некому, поэтому решили разойтись. Без драмы, без дележе — просто каждый пошёл своим путём.</p>
+
+                <h3>Что дальше</h3>
+                <p>Замораживаемся на месяц, чтобы передохнуть и решить — а стоит ли вообще возвращаться к большим идеям. Если захочешь написать, сказать спасибо или предложить фикс — kremp на связи:</p>
+                <ul>
+                    <li>Telegram: <code>@KR0VOSOS</code></li>
+                    <li>Email: <code>kremp577@gmail.com</code></li>
+                    <li>GitHub: <code>github.com/krempik</code></li>
+                </ul>
+
+                <p>Код остаётся открытым, ни один репозиторий не закрывается. Заморозка — это не смерть, это пауза. Может, через месяц снова закодим.</p>
+            </div>
+        </div>
+
         <div class="article-full" id="article-tblocks-v2">
             <a class="back-btn" onclick="closeArticle()">&lt; cd ~/blog</a>
             <h1>T-Blocks v2.0: от Тетриса дошёл до боссов</h1>
@@ -336,7 +386,7 @@
                 <p>Процедурная синтезация через Web Audio API. Ни одного внешнего аудиофайла. Все звуки генерируются в реальном времени.</p>
 
                 <h3>Темы и достижения</h3>
-                <p>4 темы визуального оформления (Matrix, Neon, Retro, Mono). 12 достижений от «Сделай первый квадрат» до «Убей все 3 босса за один прогоон».</p>
+                <p>4 темы визуального оформления (Matrix, Neon, Retro, Mono). 12 достижений от «Сделай первый квадрат» до «Убей все 3 босса за один прогон».</p>
 
                 <pre> Режим:   Classic | Mirror | Advanced | Retro
  Боссы:   CHUNK / SPIKE / BOMB
@@ -388,7 +438,7 @@
                 <h3>Зависимости — это проблемы</h3>
                 <p>Каждый npm-пакет — это:</p>
                 <ul>
-                    <li>node_modules размером с smallpox</li>
+                    <li>node_modules чудовищных размеров</li>
                     <li>Лицензии, которые ты никогда не читал</li>
                     <li>Уязвимости в транзитивных зависимостях</li>
                     <li>Обновления, которые ломают обратную совместимость</li>
@@ -443,7 +493,7 @@
             <h1>Криптография в браузере: AES, RSA и Web Crypto API</h1>
             <p class="subtitle">2026-08-23 | CRYPTO, SECURITY | ~500 строк</p>
             <div class="article-content">
-                <p>Web Crypto API — промышленная криптография прямо в браузере. Не поллифилл, не упрощённая версия — а настоящий стандарт.</p>
+                <p>Web Crypto API — промышленная криптография прямо в браузере. Не полифилл, не упрощённая версия — а настоящий стандарт.</p>
 
                 <h3>AES-256-GCM</h3>
                 <p>Симметричное шифрование. Один ключ для шифрования и расшифровки. Быстрое, подходит для данных.</p>

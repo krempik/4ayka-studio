@@ -90,12 +90,13 @@ const outputLine = document.getElementById('output-line');
 const phrases = [
     { cmd: 'python3 -c "import tblocks"', out: '[+] T-Blocks v4.0 loaded. 4 modes, 8 powerups, 3 bosses, leaderboard.' },
     { cmd: 'curl -X POST /api/auth/login', out: '[+] JWT token issued. H4ck Messenger online.' },
-    { cmd: 'git log --oneline -2', out: 'f4k3c0d H4ck: E2E encryption\n7a2b1e9 T-Blocks: boss battle mode' },
-    { cmd: 'ls -la /projects/', out: 'tblocks/  messenger/' },
+    { cmd: 'pip install 4ayka-kit', out: '[+] 4ayka-kit v0.1.0. FastAPI generated from YAML. 42 tests green.' },
+    { cmd: 'git log --oneline -2', out: 'b1734e5 4ayka-kit: v0.1.0 release\n7a2b1e9 T-Blocks: boss battle mode' },
+    { cmd: 'ls -la /projects/', out: 'tblocks/  messenger/  4ayka-kit/' },
     { cmd: 'echo "4ayka studio"', out: '4ayka studio' },
     { cmd: 'python3 -m http.server 8080', out: '[+] Serving on port 8080. All systems go.' },
     { cmd: 'cat /proc/uptime', out: '9999999.00 9999999.00' },
-    { cmd: 'wc -l tblocks/index.html', out: '721 tblocks/index.html' },
+    { cmd: 'echo "status"', out: '[WARN] Projects frozen ~1 month. Read the blog.' },
 ];
 
 let phraseIndex = 0;
@@ -363,9 +364,11 @@ const commands = {
         text: `Доступные команды:
   help       - эта справка
   about      - кто мы
+  status     - статус проектов
   projects   - наши проекты
   tblocks    - ссылка на T-Blocks
   h4ck       - ссылка на H4ck Messenger
+  kit        - ссылка на 4ayka-kit
   github     - ссылка на GitHub
   telegram   - написать в Telegram
   email      - отправить email
@@ -378,11 +381,15 @@ const commands = {
         cls: 'term-info'
     }),
     about: () => ({
-        text: '4ayka Studio - инди-студия разработки.\nДелаем браузерные игры и E2E мессенджеры.\nVanilla JS + Python. Без фреймворков. Без компромиссов.',
+        text: '4ayka Studio - соло-инди-разработка.\nДелаем браузерные игры и E2E мессенджеры.\nКоманда распалась - остался создатель kremp. Vanilla JS + Python. Без компромиссов.',
         cls: 'term-success'
     }),
+    status: () => ({
+        text: '[WARN] Все проекты в заморозке ~1 месяц.\nКрупных обновлений не будет, максимум мелкие фиксы.\nПодробности: blog.html',
+        cls: 'term-error'
+    }),
     projects: () => ({
-        text: '[ACTIVE] H4ck Messenger v5.0 - E2E encrypted messenger (FastAPI + WebSocket + PWA)\n[DONE]   T-Blocks v4.0 - Tetris++ with 4 modes, 3 bosses, 8 powerups, leaderboard (~720 lines)',
+        text: '[ACTIVE] H4ck Messenger v5.0 - E2E encrypted messenger (FastAPI + WebSocket + PWA)\n[DONE]   T-Blocks v4.0 - Tetris++ with 4 modes, 3 bosses, 8 powerups, leaderboard\n[DONE]   4ayka-kit v0.1.0 - FastAPI codegen from YAML + AI scanner',
         cls: 'term-out'
     }),
     tblocks: () => {
@@ -390,8 +397,12 @@ const commands = {
         return { text: '[+] Opening T-Blocks in new tab...', cls: 'term-success' };
     },
     h4ck: () => {
-        window.open('https://github.com/krempik/messenger', '_blank');
-        return { text: '[+] Opening H4ck Messenger repo...', cls: 'term-success' };
+        window.open('https://krempik.github.io/messenger', '_blank');
+        return { text: '[+] Opening H4ck Messenger...', cls: 'term-success' };
+    },
+    kit: () => {
+        window.open('https://github.com/krempik/4ayka-kit', '_blank');
+        return { text: '[+] Opening 4ayka-kit repo...', cls: 'term-success' };
     },
     github: () => {
         window.open('https://github.com/krempik', '_blank');
@@ -438,7 +449,7 @@ const commands = {
         cls: 'term-out'
     }),
     ls: () => ({
-        text: 'index.html  style.css  script.js  tblocks.html',
+        text: 'blog.html  logs.html  index.html  style.css  script.js  tblocks.html',
         cls: 'term-out'
     }),
     pwd: () => ({
@@ -453,8 +464,8 @@ const commands = {
         text: '4ayka-studio 1.0 x86_64 JavaScript/V8 Browser',
         cls: 'term-out'
     }),
-    neofetch: () => ({
-        text: '       _        _   _                _    \n      / \\   ___| |_(_)_ __ ___   ___| |_ \n     / _ \\ / __| __| | \'_ ` _ \\ / _ \\ __|\n    / ___ \\ (__| |_| | | | | | |  __/ |_ \n   /_/   \\_\\___|\\__|_|_| |_| |_|\\___|\\__|\n   \n   4ayka Studio | krempik\n   Stack: Python + JS + Canvas\n   Status: CODING',
+neofetch: () => ({
+        text: '       _        _   _                _    \n      / \\   ___| |_(_)_ __ ___   ___| |_ \n     / _ \\ / __| __| |\'_ ` _ \\ / _ \\ __|\n    / ___ \\ (__| |_| | | | | | |  __/ |_ \n   /_/   \\_\\___|\\__|_|_| |_| |_|\\___|\\__|\n   \n   ayka Studio | krempik\n   Solo dev. No team. No drama.\n   Stack: Python + JS + Canvas\n   Status: CODING (frozen ~1mo)',
         cls: 'term-success'
     }),
 };
