@@ -1,549 +1,247 @@
-﻿// SPLASH SCREEN
-(function() {
-    const splash = document.getElementById('splash');
-    const fill = document.getElementById('splash-fill');
-    const splashText = document.getElementById('splash-text');
-    if (!splash) return;
+﻿// 4ayka Studio — main site scripts
 
-    const messages = [
-        '[+] Initializing system...',
-        '[+] Loading kernel modules...',
-        '[+] Compiling shaders...',
-        '[+] Spawning matrix rain...',
-        '[+] Encrypting connections...',
-        '[+] Starting 4ayka OS...',
-        '[+] System ready.'
-    ];
-
-    function dismissSplash() {
-        if (splash.__dismissed) return;
-        splash.__dismissed = true;
-        splash.classList.add('hidden');
-        setTimeout(() => { splash.remove(); }, 700);
-    }
-
-    // Failsafe: never let the splash block the site, even if timers fail
-    setTimeout(dismissSplash, 4000);
-
-    let progress = 0;
-    let msgIndex = 0;
-    const interval = setInterval(() => {
-        progress += Math.random() * 18 + 5;
-        if (progress > 100) progress = 100;
-        if (fill) fill.style.width = progress + '%';
-
-        if (progress > (msgIndex + 1) * (100 / messages.length) && msgIndex < messages.length - 1) {
-            msgIndex++;
-            if (splashText) splashText.textContent = messages[msgIndex];
-        }
-
-        if (progress >= 100) {
-            clearInterval(interval);
-            setTimeout(dismissSplash, 400);
-        }
-    }, 120);
+(function initTheme() {
+    var isLight = false;
+    try { isLight = localStorage.getItem('4ayka_theme') === 'light'; } catch (e) { /* storage off */ }
+    if (isLight) document.body.classList.add('light');
 })();
 
-// MATRIX RAIN
-const canvas = document.getElementById('matrix');
-const ctx = canvas.getContext('2d');
+// ------------------------------------ NAV ------------------------------------
+(function initNav() {
+    var nav = document.getElementById('nav');
+    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
+    var burger = document.getElementById('burger');
+    var navLinks = document.querySelector('.nav-links');
+    var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
 
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
+    window.addEventListener('scroll', function () {
+        nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
 
-const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()_+-=[]{}|;:,.<>?/~`アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-const fontSize = 14;
-let columns = Math.floor(canvas.width / fontSize);
-let drops = Array(columns).fill(1);
+    window.addEventListener('scroll', function () {
+        var current = '';
+        var probe = window.scrollY + 140;
+        sections.forEach(function (s) {
+            if (probe >= s.offsetTop) current = s.getAttribute('id');
+        });
+        links.forEach(function (l) {
+            l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+        });
+    }, { passive: true });
 
-function drawMatrix() {
-    ctx.fillStyle = 'rgba(10, 10, 10, 0.04)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#00ff41';
-    ctx.font = fontSize + 'px monospace';
+    burger.addEventListener('click', function () {
+        navLinks.classList.toggle('active');
+    });
 
-    for (let i = 0; i < drops.length; i++) {
-        const text = chars[Math.floor(Math.random() * chars.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    links.forEach(function (l) {
+        l.addEventListener('click', function () {
+            navLinks.classList.remove('active');
+        });
+    });
+})();
 
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-            drops[i] = 0;
-        }
-        drops[i]++;
+// ------------------------------- SPACE CANVAS --------------------------------
+// Decor only: parallax starfield. DPR-aware, pauses when the tab is hidden,
+// and honours prefers-reduced-motion via CSS (element hidden).
+(function initSpace() {
+    var canvas = document.getElementById('space');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+
+    var W = 0, H = 0, dpr = 1;
+    var stars = [];
+    var MAX_STARS = 130;
+    var running = true;
+
+    function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        W = window.innerWidth;
+        H = window.innerHeight;
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        stars = Array(MAX_STARS).fill(0).map(spawn, true);
     }
-}
 
-setInterval(drawMatrix, 50);
-
-window.addEventListener('resize', () => {
-    columns = Math.floor(canvas.width / fontSize);
-    drops = Array(columns).fill(1);
-});
-
-// TYPING EFFECT
-const typedText = document.getElementById('typed-text');
-const outputLine = document.getElementById('output-line');
-const phrases = [
-    { cmd: 'python3 -c "import tblocks"', out: '[+] T-Blocks v4.0 loaded. 4 modes, 8 powerups, 3 bosses, leaderboard.' },
-    { cmd: 'curl -X POST /api/auth/login', out: '[+] JWT token issued. H4ck Messenger online.' },
-    { cmd: 'pip install 4ayka-kit', out: '[+] 4ayka-kit v0.1.0. FastAPI generated from YAML. 42 tests green.' },
-    { cmd: 'git log --oneline -2', out: 'b1734e5 4ayka-kit: v0.1.0 release\n7a2b1e9 T-Blocks: boss battle mode' },
-    { cmd: 'ls -la /projects/', out: 'tblocks/  messenger/  4ayka-kit/' },
-    { cmd: 'echo "4ayka studio"', out: '4ayka studio' },
-    { cmd: 'python3 -m http.server 8080', out: '[+] Serving on port 8080. All systems go.' },
-    { cmd: 'cat /proc/uptime', out: '9999999.00 9999999.00' },
-    { cmd: 'echo "status"', out: '[WARN] Projects frozen ~1 month. Read the blog.' },
-];
-
-let phraseIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
-let isWaiting = false;
-
-function typeEffect() {
-    const current = phrases[phraseIndex];
-
-    if (isWaiting) return;
-
-    if (!isDeleting) {
-        typedText.textContent = current.cmd.substring(0, charIndex + 1);
-        charIndex++;
-
-        if (charIndex === current.cmd.length) {
-            isWaiting = true;
-            setTimeout(() => {
-                outputLine.textContent = current.out;
-                outputLine.style.color = '#00ff41';
-                isWaiting = false;
-                isDeleting = true;
-                setTimeout(typeEffect, 2000);
-            }, 500);
-            return;
-        }
-        setTimeout(typeEffect, 50 + Math.random() * 50);
-    } else {
-        outputLine.textContent = '';
-        typedText.textContent = current.cmd.substring(0, charIndex);
-        charIndex--;
-
-        if (charIndex < 0) {
-            isDeleting = false;
-            phraseIndex = (phraseIndex + 1) % phrases.length;
-            charIndex = 0;
-            setTimeout(typeEffect, 500);
-            return;
-        }
-        setTimeout(typeEffect, 20);
+    function spawn() {
+        return {
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: Math.random() * 1.5 + 0.3,
+            v: Math.random() * 0.35 + 0.08,
+            hue: Math.random() < 0.18 ? 1 : 0
+        };
     }
-}
 
-setTimeout(typeEffect, 1000);
+    function draw(ts) {
+        if (!running) return;
+        ctx.clearRect(0, 0, W, H);
+        for (var i = 0; i < stars.length; i++) {
+            var s = stars[i];
+            s.x -= s.v;
+            if (s.x < -2) s.x = W + 2;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.r, 0, 6.2832);
+            ctx.fillStyle = s.hue ? 'rgba(139,92,246,0.85)' : 'rgba(210,220,250,0.55)';
+            ctx.fill();
+        }
+        requestAnimationFrame(draw);
+    }
 
-// SCROLL REVEAL
-const revealElements = document.querySelectorAll('[data-reveal]');
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-            setTimeout(() => {
+    function pause() { running = false; }
+    function resume() {
+        if (!running) { running = true; requestAnimationFrame(draw); }
+    }
+
+    window.addEventListener('resize', resize);
+    document.addEventListener('visibilitychange', function () {
+        if (document.hidden) pause(); else resume();
+    });
+
+    resize();
+    requestAnimationFrame(draw);
+})();
+
+// --------------------------------- TYPEWRITER --------------------------------
+(function initTyper() {
+    var el = document.getElementById('typed');
+    if (!el) return;
+    var phrases = [
+        'браузерные игры',
+        'мультиплеер на WebSocket',
+        'рогалики на Canvas',
+        'инструменты для разработки',
+        'сервер-авторитативную физику'
+    ];
+    var pi = 0, ci = 0, deleting = false;
+
+    function tick() {
+        var word = phrases[pi];
+        el.textContent = word.substring(0, ci);
+        if (!deleting) {
+            ci++;
+            if (ci > word.length) { deleting = true; setTimeout(tick, 2000); return; }
+            setTimeout(tick, 70 + Math.random() * 60);
+        } else {
+            ci--;
+            if (ci < 0) { deleting = false; pi = (pi + 1) % phrases.length; ci = 0; setTimeout(tick, 400); return; }
+            setTimeout(tick, 26);
+        }
+    }
+    setTimeout(tick, 600);
+})();
+
+// ---------------------------------- REVEAL -----------------------------------
+(function initReveal() {
+    var els = document.querySelectorAll('[data-reveal]');
+    if (!('IntersectionObserver' in window)) {
+        Array.prototype.forEach.call(els, function (el) { el.classList.add('revealed'); });
+        return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
                 entry.target.classList.add('revealed');
-            }, index * 100);
-            observer.unobserve(entry.target);
-        }
-    });
-}, { threshold: 0.1 });
-
-revealElements.forEach(el => observer.observe(el));
-
-// COUNTER ANIMATION
-const statNumbers = document.querySelectorAll('.stat-number');
-const counterObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const el = entry.target;
-            const target = parseInt(el.getAttribute('data-target'));
-            const duration = 1500;
-            const start = performance.now();
-
-            function update(now) {
-                const elapsed = now - start;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3);
-                el.textContent = Math.floor(target * eased);
-
-                if (progress < 1) {
-                    requestAnimationFrame(update);
-                } else {
-                    el.textContent = target;
-                }
+                io.unobserve(entry.target);
             }
-            requestAnimationFrame(update);
-            counterObserver.unobserve(el);
-        }
-    });
-}, { threshold: 0.5 });
-
-statNumbers.forEach(el => counterObserver.observe(el));
-
-// NAV SCROLL
-const nav = document.getElementById('nav');
-window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 50);
-});
-
-// ACTIVE NAV LINK
-const sections = document.querySelectorAll('section');
-const navLinks = document.querySelectorAll('.nav-links a');
-
-window.addEventListener('scroll', () => {
-    let current = '';
-    sections.forEach(section => {
-        const top = section.offsetTop - 100;
-        if (window.scrollY >= top) {
-            current = section.getAttribute('id');
-        }
-    });
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === '#' + current) {
-            link.classList.add('active');
-        }
-    });
-});
-
-// BURGER
-const burger = document.getElementById('burger');
-const navLinksContainer = document.querySelector('.nav-links');
-
-burger.addEventListener('click', () => {
-    burger.classList.toggle('active');
-    navLinksContainer.classList.toggle('active');
-});
-
-navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        burger.classList.remove('active');
-        navLinksContainer.classList.remove('active');
-    });
-});
-
-// FOOTER CLOCK & UPTIME
-const clockEl = document.getElementById('clock');
-const uptimeEl = document.getElementById('uptime');
-const startTime = Date.now();
-
-function updateClock() {
-    const now = new Date();
-    const time = now.toLocaleTimeString('en-US', { hour12: false });
-    clockEl.textContent = time;
-
-    const elapsed = Math.floor((Date.now() - startTime) / 1000);
-    const h = String(Math.floor(elapsed / 3600)).padStart(2, '0');
-    const m = String(Math.floor((elapsed % 3600) / 60)).padStart(2, '0');
-    const s = String(elapsed % 60).padStart(2, '0');
-    uptimeEl.textContent = h + ':' + m + ':' + s;
-
-    requestAnimationFrame(updateClock);
-}
-updateClock();
-
-// FORM
-document.getElementById('contact-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const btn = this.querySelector('.submit-btn');
-    const nick = this.querySelector('input[type="text"]').value || 'Anonymous';
-    const email = this.querySelector('input[type="email"]').value || '';
-    const message = this.querySelector('textarea').value || '';
-
-    btn.textContent = '> sending...';
-    btn.style.borderColor = 'var(--yellow)';
-    btn.style.color = 'var(--yellow)';
-
-    const text = encodeURIComponent(`Новое сообщение с сайта 4ayka Studio\n\nОт: ${nick}\nEmail: ${email}\n\nСообщение:\n${message}`);
-    const tgUrl = `https://t.me/KR0VOSOS?text=${text}`;
-
-    setTimeout(() => {
-        window.open(tgUrl, '_blank');
-        btn.textContent = '> [SENT] opening telegram...';
-        btn.style.borderColor = 'var(--green)';
-        btn.style.color = 'var(--green)';
-
-        setTimeout(() => {
-            btn.textContent = '> send --encrypt';
-            btn.style.borderColor = '';
-            btn.style.color = '';
-            this.reset();
-        }, 3000);
-    }, 800);
-});
-
-// THEME TOGGLE
-const themeToggle = document.getElementById('theme-toggle');
-let isLight = false;
-try { isLight = localStorage.getItem('4ayka_theme') === 'light'; } catch(e) {}
-if (isLight) { document.body.classList.add('light'); themeToggle.textContent = '\u2600'; }
-
-themeToggle.addEventListener('click', () => {
-    isLight = !isLight;
-    document.body.classList.toggle('light', isLight);
-    themeToggle.textContent = isLight ? '\u2600' : '\u263D';
-    try { localStorage.setItem('4ayka_theme', isLight ? 'light' : 'dark'); } catch(e) {}
-});
-
-// RANDOM GLITCH EFFECT ON PAGE
-function randomGlitch() {
-    document.body.style.filter = 'hue-rotate(' + (Math.random() * 360) + 'deg)';
-    setTimeout(() => {
-        document.body.style.filter = 'none';
-    }, 50);
-}
-
-setInterval(() => {
-    if (Math.random() > 0.95) {
-        randomGlitch();
-    }
-}, 2000);
-
-// VISITOR COUNTER & ONLINE
-const API_BASE = 'https://tblocks-server.onrender.com';
-const SESSION_ID = Math.random().toString(36).substring(2, 14);
-
-async function trackVisit() {
-    try {
-        await fetch(API_BASE + '/api/visit', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({page: location.pathname, ip: ''})
         });
-    } catch(e) {}
-}
+    }, { threshold: 0.12 });
+    Array.prototype.forEach.call(els, function (el) { io.observe(el); });
+})();
 
-async function heartbeat() {
-    try {
-        const r = await fetch(API_BASE + '/api/online', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({session_id: SESSION_ID})
+// ---------------------------------- COUNTERS ---------------------------------
+(function initCounters() {
+    var nums = document.querySelectorAll('.stat-number');
+    if (!('IntersectionObserver' in window) || !nums.length) return;
+    var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            var el = entry.target;
+            var target = parseInt(el.getAttribute('data-target'), 10) || 0;
+            var start = null;
+            io.unobserve(el);
+            function step(ts) {
+                if (start === null) start = ts;
+                var p = Math.min((ts - start) / 1400, 1);
+                var eased = 1 - Math.pow(1 - p, 3);
+                el.textContent = Math.round(target * eased);
+                if (p < 1) requestAnimationFrame(step);
+                else el.textContent = target;
+            }
+            requestAnimationFrame(step);
         });
-        if (r.ok) {
-            const d = await r.json();
-            const el = document.getElementById('online-count');
-            if (el) el.textContent = d.online;
-        }
-    } catch(e) {}
-}
+    }, { threshold: 0.5 });
+    Array.prototype.forEach.call(nums, function (el) { io.observe(el); });
+})();
 
-async function loadVisitors() {
-    try {
-        const r = await fetch(API_BASE + '/api/visitors');
-        if (r.ok) {
-            const d = await r.json();
-            const el = document.getElementById('visitors');
-            if (el) el.textContent = d.total + ' (today: ' + d.today + ')';
-        }
-    } catch(e) {}
-}
-
-trackVisit();
-heartbeat();
-loadVisitors();
-setInterval(heartbeat, 15000);
-setInterval(loadVisitors, 30000);
-
-// INTERACTIVE TERMINAL
-const termOutput = document.getElementById('terminal-output');
-const termInput = document.getElementById('interactive-input');
-const termBody = document.getElementById('interactive-body');
-const termSection = document.getElementById('terminal');
-
-const commands = {
-    help: () => ({
-        text: `Доступные команды:
-  help       - эта справка
-  about      - кто мы
-  status     - статус проектов
-  projects   - наши проекты
-  tblocks    - ссылка на T-Blocks
-  h4ck       - ссылка на H4ck Messenger
-  kit        - ссылка на 4ayka-kit
-  github     - ссылка на GitHub
-  telegram   - написать в Telegram
-  email      - отправить email
-  tech       - наш стек
-  uptime     - сколько сайт работает
-  clear      - очистить терминал
-  hack       - ???
-  matrix     - ???
-  whoami     - кто ты?`,
-        cls: 'term-info'
-    }),
-    about: () => ({
-        text: '4ayka Studio - соло-инди-разработка.\nДелаем браузерные игры и E2E мессенджеры.\nКоманда распалась - остался создатель kremp. Vanilla JS + Python. Без компромиссов.',
-        cls: 'term-success'
-    }),
-    status: () => ({
-        text: '[WARN] Все проекты в заморозке ~1 месяц.\nКрупных обновлений не будет, максимум мелкие фиксы.\nПодробности: blog.html',
-        cls: 'term-error'
-    }),
-    projects: () => ({
-        text: '[ACTIVE] H4ck Messenger v5.0 - E2E encrypted messenger (FastAPI + WebSocket + PWA)\n[DONE]   T-Blocks v4.0 - Tetris++ with 4 modes, 3 bosses, 8 powerups, leaderboard\n[DONE]   4ayka-kit v0.1.0 - FastAPI codegen from YAML + AI scanner',
-        cls: 'term-out'
-    }),
-    tblocks: () => {
-        window.open('https://krempik.github.io/tblocks', '_blank');
-        return { text: '[+] Opening T-Blocks in new tab...', cls: 'term-success' };
-    },
-    h4ck: () => {
-        window.open('https://krempik.github.io/messenger', '_blank');
-        return { text: '[+] Opening H4ck Messenger...', cls: 'term-success' };
-    },
-    kit: () => {
-        window.open('https://github.com/krempik/4ayka-kit', '_blank');
-        return { text: '[+] Opening 4ayka-kit repo...', cls: 'term-success' };
-    },
-    github: () => {
-        window.open('https://github.com/krempik', '_blank');
-        return { text: '[+] Opening github.com/krempik...', cls: 'term-success' };
-    },
-    telegram: () => {
-        window.open('https://t.me/KR0VOSOS', '_blank');
-        return { text: '[+] Opening Telegram @KR0VOSOS...', cls: 'term-success' };
-    },
-    email: () => {
-        window.location.href = 'mailto:kremp577@gmail.com';
-        return { text: '[+] Opening email client...', cls: 'term-success' };
-    },
-    tech: () => ({
-        text: 'Backend:   Python, FastAPI, SQLAlchemy, WebSockets\nFrontend:  HTML5 Canvas, Vanilla JS, Web Crypto API\nEncryption: RSA-2048, AES-256-GCM\nAudio:     Web Audio API (procedural synthesis)',
-        cls: 'term-out'
-    }),
-    uptime: () => {
-        const s = Math.floor((Date.now() - startTime) / 1000);
-        const h = String(Math.floor(s / 3600)).padStart(2, '0');
-        const m = String(Math.floor((s % 3600) / 60)).padStart(2, '0');
-        const sec = String(s % 60).padStart(2, '0');
-        return { text: h + ':' + m + ':' + sec, cls: 'term-success' };
-    },
-    clear: () => {
-        termOutput.innerHTML = '';
-        return { text: '', cls: '' };
-    },
-    hack: () => {
-        const chars = '0123456789ABCDEF';
-        let progress = '';
-        for (let i = 0; i < 20; i++) {
-            progress += chars[Math.floor(Math.random() * chars.length)];
-        }
-        return { text: '[+] Initializing hack sequence...\n[+] Bypassing firewall... ' + progress + '\n[+] Access granted. Just kidding. :)', cls: 'term-success' };
-    },
-    matrix: () => {
-        document.getElementById('matrix').style.opacity = '0.3';
-        setTimeout(() => { document.getElementById('matrix').style.opacity = '0.07'; }, 3000);
-        return { text: '[+] Matrix intensity increased. Wake up, Neo...', cls: 'term-info' };
-    },
-    whoami: () => ({
-        text: 'visitor@4ayka-studio\nuid=1337(visitor) gid=1337(hackers)',
-        cls: 'term-out'
-    }),
-    ls: () => ({
-        text: 'blog.html  logs.html  index.html  style.css  script.js  tblocks.html',
-        cls: 'term-out'
-    }),
-    pwd: () => ({
-        text: '/home/guest/4ayka-studio',
-        cls: 'term-out'
-    }),
-    date: () => ({
-        text: new Date().toLocaleString('ru-RU'),
-        cls: 'term-out'
-    }),
-    uname: () => ({
-        text: '4ayka-studio 1.0 x86_64 JavaScript/V8 Browser',
-        cls: 'term-out'
-    }),
-neofetch: () => ({
-        text: '       _        _   _                _    \n      / \\   ___| |_(_)_ __ ___   ___| |_ \n     / _ \\ / __| __| |\'_ ` _ \\ / _ \\ __|\n    / ___ \\ (__| |_| | | | | | |  __/ |_ \n   /_/   \\_\\___|\\__|_|_| |_| |_|\\___|\\__|\n   \n   ayka Studio | krempik\n   Solo dev. No team. No drama.\n   Stack: Python + JS + Canvas\n   Status: CODING (frozen ~1mo)',
-        cls: 'term-success'
-    }),
-};
-
-const defaultReply = (cmd) => ({
-    text: 'bash: ' + cmd + ': команда не найдена. Введи help для списка.',
-    cls: 'term-error'
-});
-
-function addTermLine(text, cls) {
-    const div = document.createElement('div');
-    div.className = 'term-line ' + cls;
-    div.textContent = text;
-    termOutput.appendChild(div);
-}
-
-function addTermCmd(cmd) {
-    const div = document.createElement('div');
-    div.className = 'term-line term-cmd';
-    div.textContent = '$ ' + cmd;
-    termOutput.appendChild(div);
-}
-
-function scrollTerm() {
-    termBody.scrollTop = termBody.scrollHeight;
-}
-
-function processCommand(cmd) {
-    const trimmed = cmd.trim().toLowerCase();
-    if (!trimmed) return;
-
-    addTermCmd(cmd);
-    const handler = commands[trimmed];
-    const result = handler ? handler(trimmed) : defaultReply(trimmed);
-    if (result.text) addTermLine(result.text, result.cls);
-    scrollTerm();
-}
-
-if (termInput) {
-    termInput.addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const cmd = this.textContent;
-            this.textContent = '';
-            processCommand(cmd);
-        }
+// ------------------------------------ THEME ----------------------------------
+(function initThemeToggle() {
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+    var isLight = document.body.classList.contains('light');
+    btn.textContent = isLight ? '\u2600' : '\u263D';
+    btn.addEventListener('click', function () {
+        isLight = !isLight;
+        document.body.classList.toggle('light', isLight);
+        btn.textContent = isLight ? '\u2600' : '\u263D';
+        try { localStorage.setItem('4ayka_theme', isLight ? 'light' : 'dark'); } catch (e) { /* storage off */ }
     });
+})();
 
-    termInput.addEventListener('focus', function() {
-        termBody.style.borderColor = 'var(--green-dim)';
+// ----------------------------------- FORM ------------------------------------
+(function initContactForm() {
+    var form = document.getElementById('contact-form');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var btn = form.querySelector('.btn');
+        var nick = form.querySelector('#contact-nick').value.trim() || 'Гость';
+        var email = form.querySelector('#contact-email').value.trim();
+        var message = form.querySelector('#contact-message').value.trim();
+
+        var text = 'Сообщение с сайта 4ayka Studio\n\nОт: ' + nick +
+            (email ? '\nEmail: ' + email : '') + '\n\n' + message;
+        var url = 'https://t.me/KR0VOSOS?text=' + encodeURIComponent(text);
+
+        btn.textContent = 'Открываю Telegram…';
+        btn.disabled = true;
+        setTimeout(function () {
+            window.open(url, '_blank');
+            btn.textContent = 'Готово! Ты молодец :)';
+            setTimeout(function () {
+                btn.textContent = 'Отправить в Telegram';
+                btn.disabled = false;
+                form.reset();
+            }, 2500);
+        }, 400);
     });
+})();
 
-    termInput.addEventListener('blur', function() {
-        termBody.style.borderColor = 'var(--border)';
+// --------------------------------- VERSIONS ----------------------------------
+(function initVersions() {
+    var map = {
+        'version-slingor': 'https://krempik.github.io/slingor/api/version',
+        'version-tblocks': 'https://krempik.github.io/tblocks/api/version',
+        'version-messenger': 'https://krempik.github.io/messenger/api/version'
+    };
+    Object.keys(map).forEach(function (id) {
+        fetch(map[id])
+            .then(function (r) { return r.json(); })
+            .then(function (d) {
+                var el = document.getElementById(id);
+                if (el && d && d.version) el.textContent = 'v' + d.version;
+            })
+            .catch(function () { /* keep the hardcoded fallback */ });
     });
+})();
 
-    termSection.addEventListener('click', function() {
-        termInput.focus();
-    });
-
-    addTermLine('4ayka Studio Interactive Shell v1.0', 'term-info');
-    addTermLine('Type "help" for available commands.\n', 'term-out');
-}
-
-// Fetch project versions
-async function fetchVersions() {
-    try {
-        const [msg, tblocks] = await Promise.all([
-            fetch('https://krempik.github.io/messenger/api/version').then(r => r.json()).catch(() => ({ version: '5.0.0' })),
-            fetch('https://krempik.github.io/tblocks/api/version').then(r => r.json()).catch(() => ({ version: '4.0.0' }))
-        ]);
-        const msgEl = document.getElementById('version-messenger');
-        const tblocksEl = document.getElementById('version-tblocks');
-        if (msgEl) msgEl.textContent = 'v' + msg.version;
-        if (tblocksEl) tblocksEl.textContent = 'v' + tblocks.version;
-    } catch (e) {
-        console.log('Version fetch failed:', e);
+// ----------------------------------- CLOCK -----------------------------------
+(function initClock() {
+    var el = document.getElementById('clock');
+    if (!el) return;
+    function tick() {
+        el.textContent = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+        setTimeout(tick, 30000);
     }
-}
-fetchVersions();
-
+    tick();
+})();

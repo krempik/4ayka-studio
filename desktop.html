@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>4aykaOS v2.0</title>
+<title>4aykaOS v2.1</title>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 :root{--g:#00ff41;--gd:#003b00;--cy:#00ffff;--r:#ff0040;--y:#ffff00;--bg:#050505;--wb:#0c0c0c;--wh:#151515;--bd:#1e1e1e;--tx:#b0b0b0;--dm:#555;--f:'Fira Code',monospace}
@@ -16,15 +16,15 @@ body{background:var(--bg);color:var(--tx);font-family:var(--f);height:100vh;over
 #boot.hide{opacity:0;pointer-events:none}
 .boot-logo{font-size:3rem;color:var(--g);text-shadow:0 0 30px var(--g),0 0 60px var(--gd);margin-bottom:2rem;letter-spacing:12px;animation:glow 2s ease-in-out infinite}
 @keyframes glow{0%,100%{text-shadow:0 0 30px var(--g),0 0 60px var(--gd)}50%{text-shadow:0 0 50px var(--g),0 0 100px var(--gd)}}
-.boot-text{width:600px;max-width:90vw;font-size:0.7rem;color:var(--gd);line-height:1.4;text-align:left;height:200px;overflow:hidden}
-.boot-text .ok{color:var(--g)}
+.boot-text{width:600px;max-width:90vw;font-size:0.7rem;color:#0f7a35;line-height:1.4;text-align:left;height:200px;overflow:hidden}
+.boot-text .ok{color:var(--g);text-shadow:0 0 6px var(--gd)}
 .boot-bar{width:300px;height:3px;background:#111;margin-top:2rem;border-radius:2px;overflow:hidden}
 .boot-bar-fill{height:100%;background:var(--g);width:0%;transition:width 0.3s;box-shadow:0 0 10px var(--g)}
 #login{position:fixed;top:0;left:0;width:100%;height:100%;z-index:9998;background:radial-gradient(ellipse at 30% 50%,#0a0a1a,#050505);display:none;flex-direction:column;justify-content:center;align-items:center;transition:opacity 0.8s}
 #login.show{display:flex}#login.hide{opacity:0;pointer-events:none}
 .login-avatar{width:90px;height:90px;border-radius:50%;border:2px solid var(--gd);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin-bottom:1rem;color:var(--g);background:rgba(0,255,65,0.03)}
 .login-name{font-size:1.1rem;color:var(--tx);margin-bottom:1.5rem}
-.login-hint{font-size:0.65rem;color:#333;margin-top:1rem}
+.login-hint{font-size:0.65rem;color:#999;margin-top:1rem}
 .login-btn{margin-top:1rem;padding:0.5rem 2rem;background:transparent;border:1px solid var(--gd);color:var(--g);font-family:var(--f);font-size:0.8rem;cursor:pointer;transition:all 0.3s}
 .login-btn:hover{background:var(--g);color:#000}
 #desktop{display:none;width:100%;height:calc(100vh - 42px);position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 50%,#0a0e1a 0%,#050505 80%)}
@@ -66,7 +66,8 @@ body{background:var(--bg);color:var(--tx);font-family:var(--f);height:100vh;over
 .ctx-item{padding:7px 14px;font-size:0.75rem;color:var(--tx);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;gap:8px}
 .ctx-item:hover{background:rgba(0,255,65,0.08);color:var(--g)}
 .ctx-sep{height:1px;background:var(--bd);margin:3px 0}
-.win{position:absolute;background:var(--wb);border:1px solid var(--bd);border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.6);display:none;flex-direction:column;overflow:hidden;min-width:320px;min-height:220px;transition:box-shadow 0.2s}
+.win{position:absolute;background:var(--wb);border:1px solid var(--bd);border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,0.6);display:none;flex-direction:column;overflow:hidden;min-width:320px;min-height:220px;transition:box-shadow 0.2s;animation:winAppear 0.18s ease}
+@keyframes winAppear{from{opacity:0;transform:scale(0.96)}to{opacity:1;transform:scale(1)}}
 .win.open{display:flex}.win.focused{box-shadow:0 12px 50px rgba(0,0,0,0.7),0 0 1px var(--gd)}
 .win.max{top:0!important;left:0!important;width:100%!important;height:100%!important;border-radius:0;z-index:400!important}
 .win-head{display:flex;align-items:center;padding:6px 10px;background:var(--wh);border-bottom:1px solid var(--bd);flex-shrink:0;gap:8px;cursor:move}
@@ -119,6 +120,12 @@ body{background:var(--bg);color:var(--tx);font-family:var(--f);height:100vh;over
 .ed-menu{padding:4px 10px;background:#111;border-bottom:1px solid var(--bd);font-size:0.65rem;color:var(--dm);display:flex;gap:12px}
 .ed-menu span{cursor:pointer}.ed-menu span:hover{color:var(--g)}
 .ed-content{flex:1;padding:10px;font-size:0.78rem;color:#aaa;background:var(--wb);border:none;outline:none;resize:none;font-family:var(--f);line-height:1.6}
+.ed-file{display:none;padding:4px 10px;background:#0a0a0a;border-bottom:1px solid var(--bd);gap:6px;align-items:center}
+.ed-file.show{display:flex}
+.ed-file-in{flex:1;background:#111;border:1px solid var(--bd);color:var(--tx);font-family:var(--f);font-size:0.7rem;padding:3px 8px;outline:none}
+.ed-file-in:focus{border-color:var(--gd)}
+.ed-file-btn{background:none;border:1px solid var(--gd);color:var(--g);font-family:var(--f);font-size:0.65rem;padding:3px 10px;cursor:pointer;transition:all 0.15s}
+.ed-file-btn:hover{background:var(--g);color:#000}
 .app-calc{padding:12px;display:flex;flex-direction:column;height:100%}
 .calc-display{background:#0a0a0a;border:1px solid var(--bd);border-radius:4px;padding:12px;text-align:right;margin-bottom:10px;min-height:50px;display:flex;flex-direction:column;justify-content:flex-end}
 .calc-expr{font-size:0.7rem;color:var(--dm);min-height:16px}
@@ -159,96 +166,145 @@ body{background:var(--bg);color:var(--tx);font-family:var(--f);height:100vh;over
 </div>
 <div id="login">
 <div class="login-avatar">&#x1F464;</div>
-<div class="login-name">user@4ayka</div>
-<div class="login-hint" style="color:#555">Нажмите Enter или кнопку ниже</div>
+<div class="login-name" id="loginName">user@4ayka</div>
+<div class="login-hint">Нажмите Enter или кнопку ниже</div>
 <button class="login-btn" id="loginBtn">&#x26A1; ВОЙТИ</button>
 </div>
 <div id="desktop">
 <div class="desk-grid"></div>
 <div class="desk-particles" id="deskParticles"></div>
-<div class="dicon" style="top:20px;left:20px" ondblclick="openApp('term')"><span class="dicon-img">&#x1F5A5;</span><span class="dicon-label">Terminal</span></div>
-<div class="dicon" style="top:20px;left:130px" ondblclick="openApp('fm')"><span class="dicon-img">&#x1F4C1;</span><span class="dicon-label">Файлы</span></div>
-<div class="dicon" style="top:115px;left:20px" ondblclick="openApp('editor')"><span class="dicon-img">&#x1F4DD;</span><span class="dicon-label">Editor</span></div>
-<div class="dicon" style="top:115px;left:130px" ondblclick="openApp('calc')"><span class="dicon-img">&#x1F9EE;</span><span class="dicon-label">Calculator</span></div>
-<div class="dicon" style="top:210px;left:20px" ondblclick="openApp('net')"><span class="dicon-img">&#x1F310;</span><span class="dicon-label">Network</span></div>
-<div class="dicon" style="top:210px;left:130px" ondblclick="openApp('passgen')"><span class="dicon-img">&#x1F510;</span><span class="dicon-label">PassGen</span></div>
-<div class="dicon" style="top:305px;left:20px" ondblclick="openApp('sys')"><span class="dicon-img">&#x1F4CA;</span><span class="dicon-label">System</span></div>
-<div class="dicon" style="top:305px;left:130px" ondblclick="openApp('about')"><span class="dicon-img">&#x2139;</span><span class="dicon-label">About</span></div>
+<div class="dicon" style="top:20px;left:20px" data-app="term"><span class="dicon-img">&#x1F5A5;</span><span class="dicon-label">Terminal</span></div>
+<div class="dicon" style="top:20px;left:130px" data-app="fm"><span class="dicon-img">&#x1F4C1;</span><span class="dicon-label">Файлы</span></div>
+<div class="dicon" style="top:115px;left:20px" data-app="editor"><span class="dicon-img">&#x1F4DD;</span><span class="dicon-label">Editor</span></div>
+<div class="dicon" style="top:115px;left:130px" data-app="calc"><span class="dicon-img">&#x1F9EE;</span><span class="dicon-label">Calculator</span></div>
+<div class="dicon" style="top:210px;left:20px" data-app="net"><span class="dicon-img">&#x1F310;</span><span class="dicon-label">Network</span></div>
+<div class="dicon" style="top:210px;left:130px" data-app="passgen"><span class="dicon-img">&#x1F510;</span><span class="dicon-label">PassGen</span></div>
+<div class="dicon" style="top:305px;left:20px" data-app="sys"><span class="dicon-img">&#x1F4CA;</span><span class="dicon-label">System</span></div>
+<div class="dicon" style="top:305px;left:130px" data-app="about"><span class="dicon-img">&#x2139;</span><span class="dicon-label">About</span></div>
 </div>
 <div id="startmenu">
-<div class="sm-header"><div class="sm-avatar">&#x1F464;</div><div class="sm-user">user<small>administrator</small></div></div>
+<div class="sm-header"><div class="sm-avatar">&#x1F464;</div><div class="sm-user" id="smUser">user<small>administrator</small></div></div>
 <div class="sm-apps">
-<div class="sm-app" onclick="openApp('term');toggleStart()"><div class="sm-app-icon">&#x1F5A5;</div><div class="sm-app-name">Terminal</div></div>
-<div class="sm-app" onclick="openApp('fm');toggleStart()"><div class="sm-app-icon">&#x1F4C1;</div><div class="sm-app-name">Файловый менеджер</div></div>
-<div class="sm-app" onclick="openApp('editor');toggleStart()"><div class="sm-app-icon">&#x1F4DD;</div><div class="sm-app-name">Текстовый редактор</div></div>
-<div class="sm-app" onclick="openApp('calc');toggleStart()"><div class="sm-app-icon">&#x1F9EE;</div><div class="sm-app-name">Калькулятор</div></div>
-<div class="sm-app" onclick="openApp('net');toggleStart()"><div class="sm-app-icon">&#x1F310;</div><div class="sm-app-name">Монитор сети</div></div>
-<div class="sm-app" onclick="openApp('passgen');toggleStart()"><div class="sm-app-icon">&#x1F510;</div><div class="sm-app-name">Генератор паролей</div></div>
-<div class="sm-app" onclick="openApp('sys');toggleStart()"><div class="sm-app-icon">&#x1F4CA;</div><div class="sm-app-name">Монитор системы</div></div>
-<div class="sm-app" onclick="openApp('about');toggleStart()"><div class="sm-app-icon">&#x2139;</div><div class="sm-app-name">О системе</div></div>
+<div class="sm-app" data-app="term"><div class="sm-app-icon">&#x1F5A5;</div><div class="sm-app-name">Terminal</div></div>
+<div class="sm-app" data-app="fm"><div class="sm-app-icon">&#x1F4C1;</div><div class="sm-app-name">Файловый менеджер</div></div>
+<div class="sm-app" data-app="editor"><div class="sm-app-icon">&#x1F4DD;</div><div class="sm-app-name">Текстовый редактор</div></div>
+<div class="sm-app" data-app="calc"><div class="sm-app-icon">&#x1F9EE;</div><div class="sm-app-name">Калькулятор</div></div>
+<div class="sm-app" data-app="net"><div class="sm-app-icon">&#x1F310;</div><div class="sm-app-name">Монитор сети</div></div>
+<div class="sm-app" data-app="passgen"><div class="sm-app-icon">&#x1F510;</div><div class="sm-app-name">Генератор паролей</div></div>
+<div class="sm-app" data-app="sys"><div class="sm-app-icon">&#x1F4CA;</div><div class="sm-app-name">Монитор системы</div></div>
+<div class="sm-app" data-app="about"><div class="sm-app-icon">&#x2139;</div><div class="sm-app-name">О системе</div></div>
 </div>
 <div class="sm-footer">
-<button class="sm-footer-btn" onclick="doShutdown()">&#x23FB; Выключить</button>
-<button class="sm-footer-btn" onclick="doReboot()">&#x1F504; Перезагрузка</button>
+<button class="sm-footer-btn" data-act="shutdown">&#x23FB; Выключить</button>
+<button class="sm-footer-btn" data-act="reboot">&#x1F504; Перезагрузка</button>
 </div>
 </div>
 <div id="ctxmenu"></div>
 <div id="notifs"></div>
 <div id="shutdown"><div class="shut-text">Завершение работы...</div></div>
 <div class="taskbar">
-<button class="tb-start" onclick="toggleStart()">&#x26A1; 4ayka</button>
+<button class="tb-start" data-act="start">&#x26A1; 4ayka</button>
 <div class="tb-sep"></div>
 <div class="tb-apps" id="tbApps"></div>
 <div class="tb-tray">
-<span class="tb-tray-item" id="tbTheme" title="Тема">◐</span>
-<span class="tb-tray-item" id="tbWifi" title="Wi-Fi">&#x1F4F6;</span>
-<span class="tb-tray-item" id="tbVol" title="Audio">&#x1F50A;</span>
-<span class="tb-tray-item" id="tbBat" title="Battery">&#x1F50B;</span>
+<span class="tb-tray-item" data-tray="theme" title="Тема">◐</span>
+<span class="tb-tray-item" data-tray="wifi" title="Wi-Fi">&#x1F4F6;</span>
+<span class="tb-tray-item" data-tray="vol" title="Audio">&#x1F50A;</span>
+<span class="tb-tray-item" data-tray="bat" title="Battery">&#x1F50B;</span>
 </div>
-<div class="tb-clock" id="tbClock" onclick="toggleStart()"></div>
+<div class="tb-clock" id="tbClock" data-act="start"></div>
 </div>
 <script>
-(function(){var t=localStorage.getItem('4ayka_theme');if(t==='light')document.body.classList.add('light');var b=document.getElementById('tbTheme');b.onclick=function(){var l=document.body.classList.toggle('light');localStorage.setItem('4ayka_theme',l?'light':'dark');};})();
+var OS_VER='2.1';
+var OS_BUILD='2026.09';
+var USER='kremp';
+var termUser=USER+'@4ayka';
+(function(){var t=localStorage.getItem('4ayka_theme');if(t==='light')document.body.classList.add('light');})();
 var C={g:'#00ff41',gd:'#003b00',cy:'#00ffff',r:'#ff0040',y:'#ffff00'};
-var wins={},winZ=100,activeWin=null,cmdHistory=[],cmdHistIdx=-1;
-var termDir='~',termUser='user@4ayka';
+var wins={},winZ=100,activeWin=null,cmdHistory=[];
+var termDir='~';
 var startTime=Date.now();
 
 var VFS={
 '~':{type:'dir',children:['Desktop','Documents','Downloads','System','Projects']},
 '~/Desktop':{type:'dir',children:['notes.txt','todo.txt']},
-'~/Documents':{type:'dir',children:['readme.md','hack_log.txt']},
+'~/Documents':{type:'dir',children:['readme.md','devlog.txt']},
 '~/Downloads':{type:'dir',children:[]},
 '~/System':{type:'dir',children:['kernel','config.sys','boot.dat']},
-'~/Projects':{type:'dir',children:['tblocks','messenger','4ayka-studio']},
-'~/Projects/tblocks':{type:'dir',children:['index.html','style.css','game.js']},
+'~/Projects':{type:'dir',children:['slingor','tblocks','dungeon','messenger','4ayka-studio']},
+'~/Projects/slingor':{type:'dir',children:['main.py','game.js','physics.py']},
+'~/Projects/tblocks':{type:'dir',children:['index.html','server.py']},
+'~/Projects/dungeon':{type:'dir',children:['index.html','game.js','worldgen.js']},
 '~/Projects/messenger':{type:'dir',children:['server.py','client.html','crypto.js']},
 '~/Projects/4ayka-studio':{type:'dir',children:['index.html','style.css','script.js','desktop.html']},
-'~/Desktop/notes.txt':{type:'file',size:'247B',content:'[+] Персональный сайт: 4ayka-studio\n[+] H4ck Messenger: E2E шифрование\n[+] T-Blocks: Написан с нуля на JS\n[+] Навыки: FastAPI, Python, JS, MongoDB'},
-'~/Desktop/todo.txt':{type:'file',size:'183B',content:'[ ] Добавить голосовые чаты в H4ck\n[x] Запустить сайт на GitHub Pages\n[x] Рефакторинг messenger\n[ ] Новые уровни для T-Blocks'},
-'~/Documents/readme.md':{type:'file',size:'312B',content:'# 4ayka Studio\n> Хакерская студия разработки\n\n## Проекты\n- H4ck Messenger - E2E messenger\n- T-Blocks - Tetris++ (721 line)\n- 4ayka-studio - Personal site'},
-'~/Documents/hack_log.txt':{type:'file',size:'428B',content:'[2026-01-15 03:22] Login attempt: FAIL\n[2026-01-15 03:23] Login attempt: FAIL\n[2026-01-15 03:24] Login attempt: SUCCESS\n[2026-01-15 04:00] H4ck Messenger: DEPLOYED'},
-'~/System/kernel':{type:'file',size:'2.4KB',content:'4aykaOS Kernel v2.0\n==================\n[OK] Memory init: 16384 MB\n[OK] CPU cores: 8 detected\n[OK] Network: eth0 UP\n[OK] Crypto: AES-256-GCM ready'},
-'~/System/config.sys':{type:'file',size:'156B',content:'OS=4aykaOS\nVER=2.0\nUSER=root\nSHELL=/bin/4sh\nCRYPTO=aes-256-gcm'},
-'~/System/boot.dat':{type:'file',size:'891B',content:'BOOT SEQUENCE LOG\nStage 1: BIOS OK\nStage 2: GRUB OK\nStage 3: Kernel OK\nTotal boot time: 1.47s'}
+'~/Desktop/notes.txt':{type:'file',size:'247B',content:'[+] Персональный сайт: 4ayka-studio\n[+] SLINGOR.IO: мультиплеер на пращах\n[+] T-Blocks: Тетрис на JS\n[+] Навыки: FastAPI, Python, JS, WebSocket'},
+'~/Desktop/todo.txt':{type:'file',size:'183B',content:'[ ] Полировка Dungeon: ещё 15 этажей\n[x] Запустить сайт на GitHub Pages\n[x] Сделать SLINGOR мультиплеером\n[ ] Новые боссы для T-Blocks'},
+'~/Documents/readme.md':{type:'file',size:'312B',content:'# 4ayka Studio\n> Инди-студия разработки браузерных игр\n\n## Проекты\n- SLINGOR.IO - мультиплеер на WebSocket\n- T-Blocks - Тетрис++\n- Dungeon of the Void - рогалик\n- 4ayka-studio - Personal site'},
+'~/Documents/devlog.txt':{type:'file',size:'428B',content:'[2026-09-19] 4aykaOS '+OS_VER+': финальный полиш симулятора\n[2026-09-19] Релизы: Messenger 6.0, T-Blocks 4.1, slingor 1.5\n[2026-09-18] SLINGOR 1.5: стабильность и полный тест-набор\n[2026-09-15] Dungeon: 100 этажей готово\n[2026-09-12] T-Blocks: режим боссов\n[2026-09-10] Messenger: E2E работает'},
+'~/System/kernel':{type:'file',size:'2.4KB',content:'4aykaOS Kernel v'+OS_VER+'\n==================\n[OK] Memory init: 16384 MB\n[OK] CPU cores: 8 detected\n[OK] Render: canvas 60 fps\n[OK] Audio: procedural ready'},
+'~/System/config.sys':{type:'file',size:'156B',content:'OS=4aykaOS\nVER='+OS_VER+'\nBUILD='+OS_BUILD+'\nUSER='+USER+'\nSHELL=/bin/4sh\nRENDER=canvas'},
+'~/System/boot.dat':{type:'file',size:'891B',content:'BOOT SEQUENCE LOG\nStage 1: BIOS OK\nStage 2: GRUB OK\nStage 3: Kernel OK\nStage 4: World gen OK\nTotal boot time: 1.47s'}
 };
 var termFS={};
 Object.keys(VFS).forEach(function(k){termFS[k]=JSON.parse(JSON.stringify(VFS[k]))});
+
+function persistFS(){
+  try{localStorage.setItem('4ayka_vfs',JSON.stringify(termFS));}
+  catch(err){console.warn('fs persist failed:',err);}
+}
+function overlayFS(){
+  var raw;
+  try{raw=localStorage.getItem('4ayka_vfs');}
+  catch(err){console.warn('fs load failed:',err);return;}
+  if(!raw)return;
+  var saved;
+  try{saved=JSON.parse(raw);}
+  catch(err){console.warn('fs load parse failed:',err);return;}
+  Object.keys(saved).forEach(function(k){termFS[k]=saved[k];});
+}
+overlayFS();
+
+function fsNode(fp){return termFS[fp]||VFS[fp];}
+
+function normPath(p){
+  p=(p||'').trim().replace(/^['"]|['"]$/g,'');
+  if(!p||p==='~')return '~';
+  var abs=p.charAt(0)==='/';
+  p=p.replace(/^~\/?/,'');
+  if(!abs&&p.charAt(0)==='/')p=p.replace(/^\//,'');
+  var parts=abs?[]:termDir.split('/');
+  p.split('/').forEach(function(seg){
+    if(!seg||seg==='.')return;
+    if(seg==='..'){if(parts.length>1)parts.pop();else if(parts.length===1&&parts[0]!=='~')parts.pop();}
+    else parts.push(seg);
+  });
+  var r=parts.join('/');
+  if(!r)r='~';
+  else if(r.indexOf('~')!==0)r='~/'.concat(r);
+  return r;
+}
+
+function splitPath(fp){
+  var i=fp.lastIndexOf('/');
+  if(i<0)return {parent:'~',name:fp};
+  return {parent:fp.slice(0,i),name:fp.slice(i+1)};
+}
 
 var bootMsgs=[
 ['[BIOS] POST test.............. ',1,200],
 ['[BIOS] Memory: 16384 MB OK.... ',1,300],
 ['[BIOS] CPU: 8 cores detected.. ',1,250],
-['[GRUB] Loading 4aykaOS v2.0... ',1,400],
+['[GRUB] Loading 4aykaOS '+OS_VER+'... ',1,400],
 ['[SYS]  Kernel: 5.15.4ayka..... ',1,350],
 ['[SYS]  Mounting filesystem..... ',1,300],
-['[SYS]  Loading crypto engine... ',1,400],
+['[SYS]  Loading world gen....... ',1,400],
+['[GFX]  Canvas: 60 fps ready.... ',1,250],
+['[AUD]  Procedural audio: ok.... ',1,350],
 ['[NET]  eth0: link up........... ',1,250],
 ['[NET]  DHCP: 192.168.1.42..... ',1,350],
-['[SEC]  Firewall: active........ ',1,200],
-['[SEC]  AES-256-GCM: ready..... ',1,300],
-['[SVC]  SSH daemon: running..... ',1,250],
-['[SVC]  4sh shell: ready........ ',1,200],
+['[GAME] Loading assets.......... ',1,200],
+['[GAME] Spawning planets........ ',1,300],
+['[SVC]  4sh shell: ready........ ',1,250],
 ['[SYS]  Desktop environment..... ',1,400],
 ['[OK]   4aykaOS boot complete!',0,500]
 ];
@@ -289,30 +345,54 @@ function initParticles(){
   for(var i=0;i<30;i++){
     var p=document.createElement('div');
     p.className='desk-particle';
-    p.style.left=Math.random()*100+'%';
+    p.style.left=Math.floor(Math.random()*100)+'%';
     p.style.animationDuration=(8+Math.random()*12)+'s';
-    p.style.animationDelay=Math.random()*10+'s';
+    p.style.animationDelay=Math.floor(Math.random()*10)+'s';
     c.appendChild(p);
   }
 }
 
+var _audio=null;
+function sfx(kind){
+  try{
+    if(!_audio)_audio=new (window.AudioContext||window.webkitAudioContext)();
+    if(_audio.state==='suspended')_audio.resume();
+    var o=_audio.createOscillator();
+    var g=_audio.createGain();
+    o.type='sine';
+    o.frequency.value=kind==='open'?880:kind==='close'?440:1320;
+    var t=_audio.currentTime;
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.exponentialRampToValueAtTime(0.02,t+0.005);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+0.12);
+    o.connect(g);
+    g.connect(_audio.destination);
+    o.start(t);
+    o.stop(t+0.14);
+  }catch(err){console.warn('sfx disabled:',err);}
+}
+
 function login(){
+  sfx('open');
   document.getElementById('login').classList.add('hide');
   setTimeout(function(){
     document.getElementById('desktop').classList.add('show');
     initParticles();
-    showNotif('4aykaOS v2.0','Добро пожаловать, user!');
+    showNotif('4aykaOS v'+OS_VER,'Добро пожаловать, '+USER+'!');
     updateClock();
   },500);
 }
 
 function updateClock(){
-  var d=new Date();
-  var h=String(d.getHours()).padStart(2,'0');
-  var m=String(d.getMinutes()).padStart(2,'0');
-  var el=document.getElementById('tbClock');
-  if(el)el.textContent=h+':'+m;
-  setTimeout(updateClock,10000);
+  var tick=function(){
+    var d=new Date();
+    var h=String(d.getHours()).padStart(2,'0');
+    var m=String(d.getMinutes()).padStart(2,'0');
+    var el=document.getElementById('tbClock');
+    if(el)el.textContent=h+':'+m;
+  };
+  tick();
+  setTimeout(tick,5000);
 }
 
 function toggleStart(){
@@ -336,6 +416,7 @@ document.addEventListener('click',function(e){
 document.addEventListener('contextmenu',function(e){
   e.preventDefault();
   var m=document.getElementById('ctxmenu');
+  m.innerHTML='';
   var items=[
     {i:'Terminal',a:function(){openApp('term')}},
     {i:'Файлы',a:function(){openApp('fm')}},
@@ -348,21 +429,27 @@ document.addEventListener('contextmenu',function(e){
     {i:'Перезагрузка',a:function(){doReboot()}},
     {i:'Выключить',a:function(){doShutdown()}}
   ];
-  m.innerHTML=items.map(function(it){
-    return it.sep?'<div class="ctx-sep"></div>':'<div class="ctx-item">'+it.i+'</div>';
-  }).join('');
-  var filtered=items.filter(function(x){return !x.sep});
-  m.querySelectorAll('.ctx-item').forEach(function(el,i){
-    el.onclick=function(){m.classList.remove('show');filtered[i].a()};
+  items.forEach(function(it){
+    if(it.sep){
+      var s=document.createElement('div');
+      s.className='ctx-sep';
+      m.appendChild(s);
+      return;
+    }
+    var d=document.createElement('div');
+    d.className='ctx-item';
+    d.textContent=it.i;
+    d.onclick=function(){m.classList.remove('show');it.a();};
+    m.appendChild(d);
   });
   m.style.left=Math.min(e.clientX,window.innerWidth-200)+'px';
   m.style.top=Math.min(e.clientY,window.innerHeight-300)+'px';
   m.classList.add('show');
 });
 
-function appName(id){
-  return {term:'Terminal',fm:'Файлы',editor:'Редактор',calc:'Калькулятор',net:'Сеть',passgen:'PassGen',sys:'Система',about:'О системе'}[id]||id;
-}
+var APP_TITLES={term:'Terminal',fm:'Файлы',editor:'Редактор',calc:'Калькулятор',net:'Сеть',passgen:'PassGen',sys:'Система',about:'О системе'};
+
+function appName(id){return APP_TITLES[id]||id;}
 
 function openApp(id){
   if(wins[id]&&document.getElementById('win-'+id)){focusWin(id);return;}
@@ -389,14 +476,15 @@ function openApp(id){
   setupWinEvents(w,id);
   focusWin(id);
   if(id==='term')initTerm(w);
-  if(id==='fm')initFM(w);
-  if(id==='passgen')initPassGen(w);
-  if(id==='calc')initCalc(w);
-  if(id==='net')initNet(w);
-  if(id==='sys')initSys(w);
-  if(id==='editor')initEditor(w);
+  else if(id==='fm')initFM(w);
+  else if(id==='passgen')initPassGen(w);
+  else if(id==='calc')initCalc(w);
+  else if(id==='net')initNet(w);
+  else if(id==='sys')initSys(w);
+  else if(id==='editor')initEditor(w);
   updateTaskbar();
-  showNotif('4aykaOS','Opened: '+appName(id));
+  sfx('open');
+  showNotif('4aykaOS','Открыто: '+appName(id));
 }
 
 function genWinHTML(id){
@@ -405,13 +493,13 @@ function genWinHTML(id){
   var uid=Date.now();
   switch(id){
     case 'term':
-      body='<div class="app-term"><div class="term-bar"><span class="active">user@4ayka</span><span>bash</span></div><div class="term-output" id="tout-'+uid+'"></div><div class="term-input-area"><span class="p">['+termUser+' '+termDir+']$ </span><input class="term-in" id="tin-'+uid+'" type="text" autofocus></div></div>';
+      body='<div class="app-term"><div class="term-bar"><span class="active">'+termUser+'</span><span>4sh</span></div><div class="term-output" id="tout-'+uid+'"></div><div class="term-input-area"><span class="p">['+termUser+' '+termDir+']$ </span><input class="term-in" id="tin-'+uid+'" type="text" autofocus></div></div>';
       break;
     case 'fm':
-      body='<div class="app-fm"><div class="fm-toolbar"><button onclick="fmUp(this)">&#x25B2;</button><button onclick="fmRoot(this)">&#x2302;</button><button onclick="fmRefresh(this)">&#x21BB;</button><span class="fm-path" id="fpath-'+uid+'">'+termDir+'</span></div><div class="fm-list" id="flist-'+uid+'"></div><div class="fm-status" id="fstat-'+uid+'"></div></div>';
+      body='<div class="app-fm"><div class="fm-toolbar"><button data-act="fm-up" title="Up">&#x25B2;</button><button data-act="fm-root" title="Root">&#x2302;</button><button data-act="fm-refresh" title="Refresh">&#x21BB;</button><span class="fm-path" id="fpath-'+uid+'">'+termDir+'</span></div><div class="fm-list" id="flist-'+uid+'"></div><div class="fm-status" id="fstat-'+uid+'"></div></div>';
       break;
     case 'editor':
-      body='<div class="app-editor"><div class="ed-menu"><span onclick="editorNew(this)">New</span><span onclick="editorSave(this)">Save</span><span onclick="editorOpen(this)">Open</span></div><textarea class="ed-content" placeholder="// 4aykaOS Text Editor"></textarea></div>';
+      body='<div class="app-editor"><div class="ed-menu"><span data-act="ed-new">New</span><span data-act="ed-save">Save</span><span data-act="ed-open">Open</span></div><div class="ed-file" id="efile-'+uid+'"><input class="ed-file-in" id="efin-'+uid+'" type="text" placeholder="~/Desktop/notes.txt"><button class="ed-file-btn" data-act="ed-load">Load</button></div><textarea class="ed-content" placeholder="// 4aykaOS Text Editor"></textarea></div>';
       break;
     case 'calc':
       body='<div class="app-calc"><div class="calc-display"><div class="calc-expr" id="cexpr-'+uid+'"></div><div class="calc-result" id="cres-'+uid+'">0</div></div><div class="calc-grid" id="cgrid-'+uid+'"></div></div>';
@@ -420,24 +508,28 @@ function genWinHTML(id){
       body='<div class="app-net"><div class="sys-title">Network Monitor</div><div class="net-chart"><canvas class="net-canvas" id="ncanvas-'+uid+'"></canvas></div><div class="net-stats"><div class="net-stat"><div class="net-stat-label">Download</div><div class="net-stat-val" id="ndown-'+uid+'">0 KB/s</div></div><div class="net-stat"><div class="net-stat-label">Upload</div><div class="net-stat-val" id="nup-'+uid+'">0 KB/s</div></div><div class="net-stat"><div class="net-stat-label">RX Packets</div><div class="net-stat-val" id="nrx-'+uid+'">0</div></div><div class="net-stat"><div class="net-stat-label">TX Packets</div><div class="net-stat-val" id="ntx-'+uid+'">0</div></div></div></div>';
       break;
     case 'passgen':
-      body='<div class="app-passgen"><div class="sys-title">Password Generator</div><div class="passgen-output" id="pgout-'+uid+'">Click generate</div><div class="passgen-controls"><div class="passgen-row"><label>Length: <span id="pglenv-'+uid+'">16</span></label><input type="range" min="8" max="64" value="16" id="pglen-'+uid+'"></div><div class="passgen-row"><label>Uppercase A-Z</label><input type="checkbox" checked id="pgu-'+uid+'"></div><div class="passgen-row"><label>Lowercase a-z</label><input type="checkbox" checked id="pgl-'+uid+'"></div><div class="passgen-row"><label>Digits 0-9</label><input type="checkbox" checked id="pgd-'+uid+'"></div><div class="passgen-row"><label>Symbols !@#$</label><input type="checkbox" checked id="pgs-'+uid+'"></div><div class="passgen-btns"><button class="passgen-btn" onclick="genPass(this)">Generate</button><button class="passgen-btn" onclick="copyPass(this)">Copy</button></div></div></div>';
+      body='<div class="app-passgen"><div class="sys-title">Password Generator</div><div class="passgen-output" id="pgout-'+uid+'">Click generate</div><div class="passgen-controls"><div class="passgen-row"><label>Length: <span id="pglenv-'+uid+'">16</span></label><input type="range" min="8" max="64" value="16" id="pglen-'+uid+'"></div><div class="passgen-row"><label>Uppercase A-Z</label><input type="checkbox" checked id="pgu-'+uid+'"></div><div class="passgen-row"><label>Lowercase a-z</label><input type="checkbox" checked id="pgl-'+uid+'"></div><div class="passgen-row"><label>Digits 0-9</label><input type="checkbox" checked id="pgd-'+uid+'"></div><div class="passgen-row"><label>Symbols !@#$</label><input type="checkbox" checked id="pgs-'+uid+'"></div><div class="passgen-btns"><button class="passgen-btn" data-act="pg-gen">Generate</button><button class="passgen-btn" data-act="pg-copy">Copy</button></div></div></div>';
       break;
     case 'sys':
       body='<div class="app-sys"><div class="sys-title">System Monitor</div><div id="sysContent-'+uid+'"></div></div>';
       break;
     case 'about':
-      body='<div class="app-about"><div class="about-logo">4AYKA</div><div class="about-ver">4aykaOS v2.0 - Build 2026.08</div><div class="about-info"><span>OS:</span> 4aykaOS v2.0<br><span>Kernel:</span> 5.15.4ayka<br><span>Shell:</span> 4sh v1.0<br><span>Crypto:</span> AES-256-GCM<br><span>RAM:</span> 16384 MB<br><span>CPU:</span> 8 cores<br><span>Studio:</span> 4ayka Studio</div></div>';
+      body='<div class="app-about"><div class="about-logo">4AYKA</div><div class="about-ver">4aykaOS v'+OS_VER+' - Build '+OS_BUILD+'</div><div class="about-info"><span>OS:</span> 4aykaOS v'+OS_VER+'<br><span>Kernel:</span> 5.15.4ayka<br><span>Shell:</span> 4sh v1.0<br><span>Render:</span> Canvas 60 fps<br><span>Audio:</span> Procedural<br><span>RAM:</span> 16384 MB<br><span>CPU:</span> 8 cores<br><span>User:</span> '+USER+'<br><span>Studio:</span> 4ayka Studio</div></div>';
       break;
   }
-  return '<div class="win-head"><div class="win-dots"><div class="win-dot r" onclick="closeWin(\''+id+'\')"></div><div class="win-dot y" onclick="minWin(\''+id+'\')"></div><div class="win-dot g" onclick="maxWin(\''+id+'\')"></div></div><div class="win-title">'+(titles[id]||id)+'</div></div><div class="win-body">'+body+'</div><div class="win-resize"></div>';
+  return '<div class="win-head"><div class="win-dots"><div class="win-dot r" data-act="close" data-wid="'+id+'"></div><div class="win-dot y" data-act="min" data-wid="'+id+'"></div><div class="win-dot g" data-act="max" data-wid="'+id+'"></div></div><div class="win-title">'+(titles[id]||id)+'</div></div><div class="win-body">'+body+'</div><div class="win-resize"></div>';
 }
 
 var _dragState=null;
 document.addEventListener('mousemove',function(e){
   if(!_dragState)return;
   if(_dragState.kind==='drag'){
-    _dragState.w.style.left=(_dragState.ox+e.clientX-_dragState.sx)+'px';
-    _dragState.w.style.top=(_dragState.oy+e.clientY-_dragState.sy)+'px';
+    var nx=_dragState.ox+e.clientX-_dragState.sx;
+    var ny=_dragState.oy+e.clientY-_dragState.sy;
+    nx=Math.max(-60,Math.min(nx,window.innerWidth-160));
+    ny=Math.max(0,Math.min(ny,window.innerHeight-84));
+    _dragState.w.style.left=nx+'px';
+    _dragState.w.style.top=ny+'px';
   }else{
     _dragState.w.style.width=Math.max(320,_dragState.ox+e.clientX-_dragState.sx)+'px';
     _dragState.w.style.height=Math.max(220,_dragState.oy+e.clientY-_dragState.sy)+'px';
@@ -449,7 +541,8 @@ function initDrag(w,handle){
   handle.onmousedown=function(e){
     if(e.target.closest('.win-dot'))return;
     _dragState={kind:'drag',w:w,sx:e.clientX,sy:e.clientY,ox:w.offsetLeft,oy:w.offsetTop};
-    focusWin(w.id.replace('win-',''));e.preventDefault();
+    focusWin(w.id.replace('win-',''));
+    e.preventDefault();
   };
 }
 
@@ -457,7 +550,8 @@ function initResize(w){
   var r=w.querySelector('.win-resize');
   r.onmousedown=function(e){
     _dragState={kind:'resize',w:w,sx:e.clientX,sy:e.clientY,ox:w.offsetWidth,oy:w.offsetHeight};
-    e.preventDefault();e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
   };
 }
 
@@ -487,6 +581,7 @@ function closeWin(id){
   delete wins[id];
   if(activeWin===id)activeWin=null;
   updateTaskbar();
+  sfx('close');
 }
 
 function minWin(id){
@@ -538,7 +633,13 @@ function showNotif(title,msg){
   var c=document.getElementById('notifs');
   var n=document.createElement('div');
   n.className='notif';
-  n.innerHTML='<div class="notif-title">'+title+'</div><div>'+msg+'</div>';
+  var t=document.createElement('div');
+  t.className='notif-title';
+  t.textContent=title;
+  var b=document.createElement('div');
+  b.textContent=msg;
+  n.appendChild(t);
+  n.appendChild(b);
   c.appendChild(n);
   requestAnimationFrame(function(){n.classList.add('show')});
   setTimeout(function(){
@@ -550,7 +651,7 @@ function showNotif(title,msg){
 function printTerm(el,txt,color){
   var s=document.createElement('div');
   s.className='t';
-  s.style.color=color||'var(--tx)';
+  if(color)s.style.color=color;
   s.textContent=txt;
   el.appendChild(s);
   el.scrollTop=el.scrollHeight;
@@ -561,6 +662,7 @@ function initTerm(w){
   var inp=w.querySelector('[id^=tin-]');
   var hist=[];
   var histIdx=-1;
+  var cmds=['help','clear','ls','cd','cat','pwd','echo','whoami','uname','date','uptime','tree','ps','df','free','top','ping','cowsay','fortune','nano','mkdir','rm','touch','history','exit','reboot'];
   printTerm(out,'4aykaOS Terminal v1.0\nType "help" for commands.\n','#777');
   inp.onkeydown=function(e){
     if(e.key==='Enter'){
@@ -568,15 +670,28 @@ function initTerm(w){
       inp.value='';
       if(cmd){hist.push(cmd);histIdx=hist.length;printTerm(out,'\n'+termUser+' '+termDir+'$ '+cmd+'\n','#0af');execCmd(cmd,out);}
     }
-    if(e.key==='ArrowUp'){e.preventDefault();if(histIdx>0){histIdx--;inp.value=hist[histIdx];}}
-    if(e.key==='ArrowDown'){e.preventDefault();if(histIdx<hist.length-1){histIdx++;inp.value=hist[histIdx];}else{histIdx=hist.length;inp.value='';}}
-    if(e.key==='Tab'){
+    else if(e.key==='ArrowUp'){e.preventDefault();if(histIdx>0){histIdx--;inp.value=hist[histIdx];}}
+    else if(e.key==='ArrowDown'){e.preventDefault();if(histIdx<hist.length-1){histIdx++;inp.value=hist[histIdx];}else{histIdx=hist.length;inp.value='';}}
+    else if(e.key==='Tab'){
       e.preventDefault();
-      var cv=inp.value.toLowerCase();
-      if(cv){
-        var cmds=['help','clear','ls','cd','cat','pwd','echo','whoami','uname','date','uptime','hack','matrix','tree','ps','df','free','top','ping','cowsay','fortune','nmap','ssh','nano','exit','reboot'];
-        var m=cmds.filter(function(x){return x.indexOf(cv)===0;});
-        if(m.length===1)inp.value=m[0];
+      var wd=inp.value.trim().split(/\s+/);
+      var last=wd[wd.length-1].toLowerCase();
+      if(!last)return;
+      var suggestions;
+      if(wd.length<=1){
+        suggestions=cmds.filter(function(x){return x.indexOf(last)===0;});
+      }else{
+        var dir=fsNode(termDir);
+        if(dir&&dir.children){
+          suggestions=dir.children.filter(function(n){return n.toLowerCase().indexOf(last)===0;})
+            .map(function(n){var ch=fsNode(termDir+'/'+n);return ch&&ch.type==='dir'?n+'/':n;});
+        }else{suggestions=[];}
+      }
+      if(suggestions.length===1){
+        wd[wd.length-1]=suggestions[0];
+        inp.value=wd.join(' ')+(suggestions[0].charAt(suggestions[0].length-1)==='/'?'':' ');
+      }else if(suggestions.length>1){
+        printTerm(out,suggestions.map(function(x){return x;}).join('  '),'#5a5');
       }
     }
   };
@@ -585,18 +700,19 @@ function initTerm(w){
 }
 
 function execCmd(cmd,out){
+  cmdHistory.push(cmd);
   var parts=cmd.split(/\s+/);
   var c=parts[0];
   var a=parts.slice(1).join(' ');
   var commands={
     help:function(){
       printTerm(out,'\n4aykaOS Shell Commands:\n','#0af');
-      ['help    - Show this help','clear   - Clear terminal','ls      - List directory','cd      - Change directory','cat     - View file content','pwd     - Print working dir','echo    - Print text','whoami  - Current user','uname   - System info','date    - Current date/time','uptime  - System uptime','tree    - Directory tree','ps      - Process list','df      - Disk usage','free    - Memory usage','top     - Task manager','ping    - Ping host','hack    - Hack simulation','matrix  - Matrix rain','cowsay  - ASCII cow','fortune - Random quote','nmap    - Network scan','ssh     - SSH connect','nano    - Open editor','exit    - Close terminal','reboot  - Reboot system'].forEach(function(l){printTerm(out,'  '+l,'#5a5')});
+      ['help    - Show this help','clear   - Clear terminal','ls      - List directory','cd      - Change directory','cat     - View file content','pwd     - Print working dir','echo    - Print text','whoami  - Current user','uname   - System info','date    - Current date/time','uptime  - System uptime','tree    - Directory tree','ps      - Process list','df      - Disk usage','free    - Memory usage','top     - Task manager','ping    - Ping host','cowsay  - ASCII cow','fortune - Random quote','mkdir   - Create directory','touch   - Create file','rm      - Remove file/dir','nano    - Open file in editor','history - Command history','exit    - Close terminal','reboot  - Reboot system'].forEach(function(l){printTerm(out,'  '+l,'#5a5')});
     },
     clear:function(){out.innerHTML='';},
-    pwd:function(){printTerm(out,termDir.replace('~','/home/'+termUser.split('@')[0]));},
+    pwd:function(){printTerm(out,termDir.replace('~','/home/'+USER));},
     whoami:function(){printTerm(out,termUser);},
-    uname:function(){printTerm(out,'4aykaOS 2.0 x86_64 GNU/Linux');},
+    uname:function(){printTerm(out,'4aykaOS '+OS_VER+' x86_64 GNU/Linux');},
     date:function(){printTerm(out,new Date().toString());},
     uptime:function(){
       var u=Math.floor((Date.now()-startTime)/1000);
@@ -605,41 +721,95 @@ function execCmd(cmd,out){
       printTerm(out,h+'h '+m+'m up');
     },
     echo:function(){printTerm(out,a||'');},
+    history:function(){
+      printTerm(out,'\n  History (last 25):\n','#0af');
+      cmdHistory.slice(-25).forEach(function(h){printTerm(out,'  '+h,'#5a5');});
+    },
     ls:function(){
-      var dir=termDir;
-      var item=termFS[dir];
+      var fp=a?normPath(a):termDir;
+      var item=fsNode(fp);
       if(item&&item.children){
-        item.children.forEach(function(n){
-          var child=termFS[dir+'/'+n]||VFS[dir+'/'+n];
+        item.children.slice().sort().forEach(function(n){
+          var child=fsNode(fp+'/'+n);
           var isDir=child&&child.type==='dir';
-          printTerm(out,(isDir?'[DIR] ':'[FILE] ')+n,isDir?'#0af':'#5a5');
+          printTerm(out,(isDir?'[DIR] ':'[FILE] ')+n+(isDir?'/':''),isDir?'#0af':'#5a5');
         });
-      }else{printTerm(out,'ls: No such directory','var(--r)');}
+      }else{printTerm(out,'ls: '+fp+': directory not found','var(--r)');}
     },
     cd:function(){
       if(!a||a==='~'){termDir='~';return;}
-      var target=a;
-      if(a==='..'){var p=termDir.split('/');p.pop();target=p.join('/')||'~';}
-      var item=termFS[target]||VFS[target];
-      if(item&&item.type==='dir'){termDir=target;}
+      var fp=normPath(a);
+      var item=fsNode(fp);
+      if(item&&item.type==='dir'){termDir=fp;}
       else{printTerm(out,'cd: '+a+': No such directory','var(--r)');}
     },
     cat:function(){
       if(!a){printTerm(out,'cat: missing file','var(--r)');return;}
-      var fp=termDir==='~'?a:termDir+'/'+a;
-      var item=termFS[fp]||VFS[fp];
-      if(item&&item.type==='file'){printTerm(out,item.content||'[binary]');}
-      else{printTerm(out,'cat: '+a+': No such file','var(--r)');}
+      a.split(/\s+/).forEach(function(f){
+        var fp=normPath(f);
+        var item=fsNode(fp);
+        if(item&&item.type==='file'){printTerm(out,item.content||'[binary]');}
+        else{printTerm(out,'cat: '+f+': No such file','var(--r)');}
+      });
+    },
+    mkdir:function(){
+      if(!a){printTerm(out,'mkdir: missing operand','var(--r)');return;}
+      a.split(/\s+/).forEach(function(d){
+        var fp=normPath(d);
+        if(fsNode(fp)){printTerm(out,'mkdir: '+d+': File exists','var(--r)');return;}
+        var e=splitPath(fp);
+        var pp=fsNode(e.parent);
+        if(!pp||pp.type!=='dir'){printTerm(out,'mkdir: '+d+': No such file or directory','var(--r)');return;}
+        if(pp.children.indexOf(e.name)<0)pp.children.push(e.name);
+        termFS[fp]={type:'dir',children:[]};
+      });
+      saveFSAndRefresh();
+    },
+    touch:function(){
+      if(!a){printTerm(out,'touch: missing file operand','var(--r)');return;}
+      a.split(/\s+/).forEach(function(f){
+        var fp=normPath(f);
+        var item=fsNode(fp);
+        if(item&&item.type==='dir'){printTerm(out,'touch: '+f+': Is a directory','var(--r)');return;}
+        var e=splitPath(fp);
+        var pp=fsNode(e.parent);
+        if(!pp||pp.type!=='dir'){printTerm(out,'touch: '+f+': No such file or directory','var(--r)');return;}
+        if(pp.children.indexOf(e.name)<0)pp.children.push(e.name);
+        termFS[fp]=termFS[fp]||{type:'file',size:'0B',content:''};
+      });
+      saveFSAndRefresh();
+    },
+    rm:function(){
+      if(!a){printTerm(out,'rm: missing operand','var(--r)');return;}
+      var recursive=a==='-r'||a==='--recursive';
+      if(recursive)a=parts.slice(2).join(' ');
+      if(!a){printTerm(out,'rm: missing operand','var(--r)');return;}
+      a.split(/\s+/).forEach(function(f){
+        var fp=normPath(f);
+        var item=fsNode(fp);
+        if(!item){printTerm(out,'rm: '+f+': No such file or directory','var(--r)');return;}
+        if(!recursive&&item.type==='dir'&&item.children.length){printTerm(out,'rm: '+f+': Is a directory (use rm -r)','var(--r)');return;}
+        if(item.type==='dir'){
+          Object.keys(termFS).forEach(function(k){if(k.indexOf(fp+'/')===0)delete termFS[k];});
+          Object.keys(VFS).forEach(function(k){if(k.indexOf(fp+'/')===0)delete VFS[k];});
+        }
+        var e=splitPath(fp);
+        var pp=fsNode(e.parent);
+        if(pp&&pp.children){var i=pp.children.indexOf(e.name);if(i>=0)pp.children.splice(i,1);}
+        delete termFS[fp];
+        delete VFS[fp];
+      });
+      saveFSAndRefresh();
     },
     tree:function(){
       function t(d,pre){
-        var item=termFS[d]||VFS[d];
+        var item=fsNode(d);
         if(!item||!item.children)return;
-        item.children.forEach(function(n,i){
+        item.children.slice().sort().forEach(function(n,i){
           var last=i===item.children.length-1;
           var ch=last?'  +-- ':'  |-- ';
           var fp=d+'/'+n;
-          var cc=termFS[fp]||VFS[fp];
+          var cc=fsNode(fp);
           var isDir=cc&&cc.type==='dir';
           printTerm(out,pre+ch+n+(isDir?'/':''),isDir?'#0af':'#5a5');
           if(isDir)t(fp,pre+(last?'    ':'  |   '));
@@ -650,7 +820,7 @@ function execCmd(cmd,out){
     },
     ps:function(){
       printTerm(out,'\n  PID TTY          TIME CMD');
-      ['1 ? 00:00:01 init','42 ? 00:00:03 4sh','100 ? 00:00:00 sshd','137 ? 00:00:02 bash'].forEach(function(l){printTerm(out,'  '+l,'#5a5')});
+      ['1 ? 00:00:01 init','42 ? 00:00:03 4sh','100 ? 00:00:00 renderer','137 ? 00:00:02 game'].forEach(function(l){printTerm(out,'  '+l,'#5a5')});
     },
     df:function(){
       printTerm(out,'\nFilesystem     1K-blocks    Used Available\n/dev/sda1      262144000 12478464 249665536\ntmpfs            8192000        0   8192000','#5a5');
@@ -659,7 +829,7 @@ function execCmd(cmd,out){
       printTerm(out,'              total        used        free\nMem:       16384000     4096000     8192000\nSwap:       4194304      131072     4063232','#5a5');
     },
     top:function(){
-      printTerm(out,'top - 4aykaOS\n%Cpu(s): 12 us, 2 sy, 85 id\nMiB Mem: 16384 total, 8192 free, 4096 used\n\n  PID USER      %CPU %MEM  COMMAND\n    1 root      0.3  0.1  init\n   42 root      0.7  0.0  sshd\n  137 user      1.3  0.2  bash','#5a5');
+      printTerm(out,'top - 4aykaOS\n%Cpu(s): 12 us, 2 sy, 85 id\nMiB Mem: 16384 total, 8192 free, 4096 used\n\n  PID USER      %CPU %MEM  COMMAND\n    1 root      0.3  0.1  init\n   42 root      0.7  0.0  renderer\n  137 '+USER+'      1.3  0.2  game','#5a5');
     },
     ping:function(){
       if(!a){printTerm(out,'ping: usage: ping host','var(--r)');return;}
@@ -670,42 +840,60 @@ function execCmd(cmd,out){
         i++;
       },500);
     },
-    hack:function(){
-      var i=0;
-      var iv=setInterval(function(){
-        if(i>=20){clearInterval(iv);printTerm(out,'\n[HACK] ACCESS GRANTED!','#0f0');return;}
-        printTerm(out,String.fromCharCode(33+Math.random()*94),'#0f0');
-        i++;
-      },80);
-    },
-    matrix:function(){
-      printTerm(out,'\n[matrix] Running for 5 seconds...','#0f0');
-      setTimeout(function(){printTerm(out,'[matrix] Done.','var(--dm)');},5000);
-    },
     cowsay:function(){
       var m=a||'moo';
-      var line='_'.repeat(m.length+2);
-      printTerm(out,'\n'+line+'\n< '+m+' >\n'+line+'\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||','#5a5');
+      var line='_'+'_'.repeat(m.length+2)+'_';
+      printTerm(out,'\n  '+line+'\n< '+m+' >\n  '+line+'\n        \\   ^__^\n         \\  (oo)\\_______\n            (__)\\       )\\/\\\n                ||----w |\n                ||     ||','#5a5');
     },
     fortune:function(){
       var f=['You will segfault tomorrow.','There are 10 types: those who understand binary.','It works on my machine.','There is no place like 127.0.0.1','404: Fortune not found.','The cake is a lie.'];
       printTerm(out,'\n'+f[Math.floor(Math.random()*f.length)],'#ff0');
     },
-    nmap:function(){
-      if(!a){printTerm(out,'nmap: usage: nmap <host>','var(--r)');return;}
-      printTerm(out,'\nStarting Nmap scan on '+a+'...\n\nPORT     STATE   SERVICE\n22/tcp   open    ssh\n80/tcp   open    http\n443/tcp  open    https\n\nNmap done.','#5a5');
+    nano:function(){
+      if(a){
+        var fp=normPath(a);
+        var item=fsNode(fp);
+        if(!item){printTerm(out,'nano: '+a+': No such file','var(--r)');return;}
+        if(item.type==='dir'){printTerm(out,'nano: '+a+': Is a directory','var(--r)');return;}
+        openEditorFile(fp);
+      }else{openApp('editor');}
     },
-    ssh:function(){
-      if(!a){printTerm(out,'ssh: usage: ssh user@host','var(--r)');return;}
-      printTerm(out,'\nConnecting to '+a+'...\nLast login: '+new Date().toDateString()+'\nWelcome to 4aykaOS!\n','#5a5');
-    },
-    nano:function(){openApp('editor');},
     exit:function(){closeWin('term');},
     reboot:function(){doReboot();}
   };
   if(commands[c])commands[c]();
-  else if(cmd.indexOf('sudo')===0){printTerm(out,'\n[sudo] user is not in sudoers.','var(--r)');}
+  else if(cmd.indexOf('sudo')===0){printTerm(out,'\n[sudo] '+USER+' is not in the sudoers file. This incident will be reported.','var(--r)');}
   else{printTerm(out,'4sh: '+c+': command not found','var(--r)');}
+}
+
+function saveFSAndRefresh(){
+  persistFS();
+  Object.keys(wins).forEach(function(k){if(wins[k]&&wins[k].el._fmRender)wins[k].el._fmRender();});
+}
+
+function humanSize(n){
+  var u=['B','KB','MB'];
+  var i=0;
+  while(n>=1024&&i<u.length-1){n/=1024;i++;}
+  return (i?n.toFixed(1):String(n))+u[i];
+}
+
+function writeFile(fp,content){
+  var item=fsNode(fp);
+  if(!item){
+    var e=splitPath(fp);
+    var pp=fsNode(e.parent);
+    if(!pp||pp.type!=='dir')return false;
+    if(pp.children.indexOf(e.name)<0)pp.children.push(e.name);
+    termFS[fp]={type:'file',size:humanSize(content.length),content:content};
+  }else{
+    if(!termFS[fp])termFS[fp]=JSON.parse(JSON.stringify(item));
+    termFS[fp].content=content;
+    termFS[fp].size=humanSize(content.length);
+    termFS[fp].type='file';
+  }
+  persistFS();
+  return true;
 }
 
 function initFM(w){
@@ -715,22 +903,34 @@ function initFM(w){
   var curDir='~';
   function render(){
     pathEl.textContent=curDir;
-    var item=termFS[curDir]||VFS[curDir];
-    if(!item||!item.children){list.innerHTML='<div style="padding:12px;color:#555">Empty</div>';return;}
-    list.innerHTML='';
+    var item=fsNode(curDir);
+    if(!item||!item.children){list.textContent='';var empty=document.createElement('div');empty.style.cssText='padding:12px;color:#555';empty.textContent='Empty';list.appendChild(empty);return;}
+    list.textContent='';
     var files=0,folders=0;
-    item.children.forEach(function(n){
+    item.children.slice().sort().forEach(function(n){
       var fp=curDir+'/'+n;
-      var child=termFS[fp]||VFS[fp];
+      var child=fsNode(fp);
       var isDir=child&&child.type==='dir';
       if(isDir)folders++;else files++;
       var d=document.createElement('div');
       d.className='fm-item'+(isDir?' dir':'');
-      d.innerHTML='<span class="fm-icon">'+(isDir?'[DIR]':'[FILE]')+'</span><span class="fm-name">'+n+'</span><span class="fm-size">'+(isDir?(child.children?child.children.length+' items':''):child.size||'')+'</span>';
+      var ic=document.createElement('span');
+      ic.className='fm-icon';
+      ic.textContent=isDir?'[DIR]':'[FILE]';
+      var nm=document.createElement('span');
+      nm.className='fm-name';
+      nm.textContent=n;
+      var sz=document.createElement('span');
+      sz.className='fm-size';
+      sz.textContent=isDir?(child&&child.children?child.children.length+' items':''):(child&&child.size?child.size:'');
+      d.appendChild(ic);
+      d.appendChild(nm);
+      d.appendChild(sz);
       d.onclick=function(){w.querySelectorAll('.fm-item').forEach(function(x){x.classList.remove('selected')});d.classList.add('selected');};
       d.ondblclick=function(){
         if(isDir){curDir=fp;render();}
-        else if(child&&child.content){showNotif('Files',n);}
+        else if(child&&child.content!==undefined){openEditorFile(fp);}
+        else{showNotif('Файлы',n);}
       };
       list.appendChild(d);
     });
@@ -757,6 +957,96 @@ function fmRefresh(btn){
   if(w&&w._fmRender)w._fmRender();
 }
 
+function openEditorFile(fp){
+  openApp('editor');
+  var w=wins.editor&&wins.editor.el;
+  if(!w)return;
+  var item=fsNode(fp);
+  if(!item)return;
+  var ta=w.querySelector('.ed-content');
+  if(!ta)return;
+  ta.value=item.content||'';
+  w._edSetFname(fp);
+}
+
+function initEditor(w){
+  var ta=w.querySelector('.ed-content');
+  if(!ta)return;
+  var fileIn=w.querySelector('.ed-file-in');
+  var fname=ta.dataset.fname||'';
+  function setFname(fp){
+    fname=fp||'';
+    ta.dataset.fname=fname;
+    var t=w.querySelector('.win-title');
+    if(t)t.textContent='Текстовый редактор'+(fname?' - '+fname:'');
+  }
+  w._edSetFname=setFname;
+  w._edGetFname=function(){return fname;};
+  if(fileIn)fileIn.onkeydown=function(e){
+    if(e.key==='Enter'){e.preventDefault();loadEditorPath(w);}
+  };
+  if(fname){
+    var item=fsNode(fname);
+    if(item&&item.type==='file')ta.value=item.content||'';
+    setFname(fname);
+  }else{
+    ta.value='// 4aykaOS Text Editor\n\nfunction hello(){\n    console.log("Hello from 4aykaOS v'+OS_VER+'!");\n    return "4ayka Studio";\n}\n\nhello();\n';
+  }
+  ta.focus();
+}
+function editorNew(btn){
+  var w=btn.closest('.win');
+  var ta=w.querySelector('.ed-content');
+  if(!ta)return;
+  ta.value='';
+  if(w._edSetFname)w._edSetFname('');
+  var row=w.querySelector('.ed-file');
+  if(row)row.classList.remove('show');
+  ta.focus();
+}
+function editorSave(btn){
+  var w=btn.closest('.win');
+  var ta=w.querySelector('.ed-content');
+  if(!ta)return;
+  var fname=ta.dataset.fname;
+  if(!fname){
+    var row=w.querySelector('.ed-file');
+    var inp=w.querySelector('.ed-file-in');
+    if(!row||!inp)return;
+    row.classList.add('show');
+    inp.value='~/Desktop/notes.txt';
+    inp.focus();
+    return;
+  }
+  if(!writeFile(fname,ta.value)){showNotif('Editor','Ошибка сохранения: '+fname);return;}
+  if(w._edSetFname)w._edSetFname(fname);
+  showNotif('Editor','Сохранено: '+fname);
+  saveFSAndRefresh();
+}
+function editorOpen(btn){
+  var w=btn.closest('.win');
+  var row=w.querySelector('.ed-file');
+  var inp=w.querySelector('.ed-file-in');
+  if(!row||!inp)return;
+  row.classList.add('show');
+  inp.value=(w._edGetFname?w._edGetFname():'')||'~/Desktop/notes.txt';
+  inp.focus();
+  inp.select();
+}
+function loadEditorPath(w){
+  var inp=w.querySelector('.ed-file-in');
+  var ta=w.querySelector('.ed-content');
+  if(!inp||!ta)return;
+  var fp=normPath(inp.value);
+  var item=fsNode(fp);
+  ta.value=(item&&item.type==='file')?(item.content||''):'';
+  if(w._edSetFname)w._edSetFname(fp);
+  var row=w.querySelector('.ed-file');
+  if(row)row.classList.remove('show');
+  ta.focus();
+  showNotif('Editor',(item&&item.type==='file')?'Открыт: '+fp:'Новый файл: '+fp);
+}
+
 function initCalc(w){
   var grid=w.querySelector('[id^=cgrid-]');
   var exprEl=w.querySelector('[id^=cexpr-]');
@@ -770,18 +1060,13 @@ function initCalc(w){
     var idx=0;
     function parseExpr(){
       var v=parseTerm();
-      while(idx<s.length&&(s[idx]==='+'||s[idx]==='-')){
-        var op=s[idx++];
-        var r=parseTerm();
-        v=op==='+'?v+r:v-r;
-      }
+      while(idx<s.length&&(s[idx]==='+'||s[idx]==='-')){var op=s[idx++];var r=parseTerm();v=op==='+'?v+r:v-r;}
       return v;
     }
     function parseTerm(){
       var v=parseFactor();
       while(idx<s.length&&(s[idx]==='*'||s[idx]==='/'||s[idx]==='%')){
-        var op=s[idx++];
-        var r=parseFactor();
+        var op=s[idx++];var r=parseFactor();
         if(op==='*')v=v*r;
         else if(op==='/'){if(r===0)throw new Error('div0');v=v/r;}
         else v=v%r;
@@ -813,7 +1098,7 @@ function initCalc(w){
       else if(b==='B'){expr=expr.slice(0,-1);lastWasOp=false;}
       else if(b==='='){
         try{var r=safeEval(expr);resEl.textContent=isNaN(r)||!isFinite(r)?'Error':parseFloat(r.toFixed(10));expr=''+resEl.textContent;lastWasOp=true;}
-        catch(e){resEl.textContent='Error';}
+        catch(err){resEl.textContent='Error';}
       }
       else if(b==='M'){expr=expr.startsWith('-')?expr.slice(1):'-'+expr;}
       else{if('/*-+'.indexOf(b)>=0&&lastWasOp){expr=expr.slice(0,-1);}lastWasOp='/*-+'.indexOf(b)>=0;expr+=b;}
@@ -842,19 +1127,19 @@ function genPass(btn){
   if(l)ch+='abcdefghijklmnopqrstuvwxyz';
   if(d)ch+='0123456789';
   if(s)ch+='!@#$%^&*()_+-=[]{}|;:,.<>?';
-  if(!ch){out.textContent='Select at least one type';out.style.color=C.r;return;}
+  if(!ch){out.textContent='Выберите хотя бы один набор символов';out.style.color=C.r;return;}
   var arr=new Uint32Array(len);
   crypto.getRandomValues(arr);
   out.textContent=Array.from(arr).map(function(x){return ch[x%ch.length];}).join('');
   out.style.color=C.g;
-  showNotif('PassGen','Password generated - Length: '+len);
+  showNotif('PassGen','Сгенерирован пароль, длина: '+len);
 }
 
 function copyPass(btn){
   var w=btn.closest('.win');
   var out=w.querySelector('[id^=pgout-]');
   if(out.textContent&&out.textContent.length>5){
-    navigator.clipboard.writeText(out.textContent).then(function(){showNotif('Copied','Password copied');}).catch(function(){showNotif('Error','Failed to copy');});
+    navigator.clipboard.writeText(out.textContent).then(function(){showNotif('PassGen','Пароль скопирован');}).catch(function(){showNotif('PassGen','Не удалось скопировать');});
   }
 }
 
@@ -869,13 +1154,14 @@ function initNet(w){
   var downData=[],upData=[],rxTotal=0,txTotal=0;
   function resize(){canvas.width=canvas.parentElement.offsetWidth;canvas.height=canvas.parentElement.offsetHeight;}
   resize();
+  var ro=null;
   if(window.ResizeObserver){
-    var ro=new ResizeObserver(resize);
+    ro=new ResizeObserver(resize);
     ro.observe(canvas.parentElement);
-    w._netRO=ro;
   }else{
     window.addEventListener('resize',resize);
   }
+  w._netRO=ro;
   function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
     var mx=Math.max.apply(null,downData.concat(upData).concat([100]));
@@ -927,29 +1213,36 @@ function initSys(w){
     var m=Math.floor((uptime%3600)/60);
     var s=uptime%60;
     var cpuClass=cpuData>80?'red':cpuData>50?'yellow':'green';
-    c.innerHTML='<div class="sys-section"><div class="sys-row"><span>CPU Usage</span><span class="val">'+cpuData.toFixed(1)+'%</span></div><div class="sys-bar"><div class="sys-fill '+cpuClass+'" style="width:'+cpuData+'%"></div></div><div class="sys-row"><span>Cores</span><span class="val">8 / 8 active</span></div><div class="sys-row"><span>Temp</span><span class="val">'+(45+cpuData*0.4).toFixed(0)+' C</span></div></div><div class="sys-section"><div class="sys-row"><span>Memory</span><span class="val">'+(memData*163.84).toFixed(0)+' MB / 16384 MB</span></div><div class="sys-bar"><div class="sys-fill cyan" style="width:'+memData+'%"></div></div></div><div class="sys-section"><div class="sys-row"><span>Disk</span><span class="val">'+(diskData*2.62).toFixed(0)+' GB / 262 GB</span></div><div class="sys-bar"><div class="sys-fill green" style="width:'+diskData+'%"></div></div></div><div class="sys-section"><div class="sys-row"><span>Uptime</span><span class="val">'+h+'h '+m+'m '+s+'s</span></div><div class="sys-row"><span>Processes</span><span class="val">'+Math.floor(120+Math.random()*30)+'</span></div></div>';
+    function row(label,val){var r=document.createElement('div');r.className='sys-row';var a=document.createElement('span');a.textContent=label;var b=document.createElement('span');b.className='val';b.textContent=val;r.appendChild(a);r.appendChild(b);return r;}
+    c.textContent='';
+    var sec1=document.createElement('div');sec1.className='sys-section';
+    sec1.appendChild(row('CPU Usage',cpuData.toFixed(1)+'%'));
+    var bar1=document.createElement('div');bar1.className='sys-bar';
+    var fill1=document.createElement('div');fill1.className='sys-fill '+cpuClass;fill1.style.width=cpuData+'%';
+    bar1.appendChild(fill1);sec1.appendChild(bar1);
+    sec1.appendChild(row('Cores','8 / 8 active'));
+    sec1.appendChild(row('Temp',(45+cpuData*0.4).toFixed(0)+' C'));
+    c.appendChild(sec1);
+    var sec2=document.createElement('div');sec2.className='sys-section';
+    sec2.appendChild(row('Memory',(memData*163.84).toFixed(0)+' MB / 16384 MB'));
+    var bar2=document.createElement('div');bar2.className='sys-bar';
+    var fill2=document.createElement('div');fill2.className='sys-fill cyan';fill2.style.width=memData+'%';
+    bar2.appendChild(fill2);sec2.appendChild(bar2);
+    c.appendChild(sec2);
+    var sec3=document.createElement('div');sec3.className='sys-section';
+    sec3.appendChild(row('Disk',(diskData*2.62).toFixed(0)+' GB / 262 GB'));
+    var bar3=document.createElement('div');bar3.className='sys-bar';
+    var fill3=document.createElement('div');fill3.className='sys-fill green';fill3.style.width=diskData+'%';
+    bar3.appendChild(fill3);sec3.appendChild(bar3);
+    c.appendChild(sec3);
+    var sec4=document.createElement('div');sec4.className='sys-section';
+    sec4.appendChild(row('Uptime',h+'h '+m+'m '+s+'s'));
+    sec4.appendChild(row('Processes',String(Math.floor(120+Math.random()*30))));
+    c.appendChild(sec4);
   }
   render();
   w._sysIv=setInterval(render,2000);
 }
-
-function initEditor(w){
-  var ta=w.querySelector('.ed-content');
-  if(!ta)return;
-  ta.value='// 4aykaOS Text Editor v1.0\n\nfunction hello(){\n    console.log("Hello from 4aykaOS!");\n    return "4ayka Studio";\n}\n\nhello();\n';
-  ta.focus();
-}
-function editorNew(btn){
-  var w=btn.closest('.win');
-  var ta=w.querySelector('.ed-content');
-  if(ta)ta.value='';
-}
-function editorSave(btn){
-  var w=btn.closest('.win');
-  var ta=w.querySelector('.ed-content');
-  if(ta&&ta.value){navigator.clipboard.writeText(ta.value).then(function(){showNotif('Editor','Saved to clipboard');}).catch(function(){});}
-}
-function editorOpen(btn){showNotif('Editor','Use cat in terminal to view files');}
 
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape'){closeMenus();if(activeWin)closeWin(activeWin);}
@@ -961,6 +1254,60 @@ document.addEventListener('keydown',function(e){
   }
 });
 document.getElementById('loginBtn').onclick=function(){login();};
+var loginName=document.getElementById('loginName');
+if(loginName)loginName.textContent=termUser;
+var smUser=document.getElementById('smUser');
+if(smUser){smUser.childNodes[0].nodeValue=USER;}
+
+// Event delegation: all clickable OS chrome uses data-act/data-app/data-tray.
+document.addEventListener('click',function(e){
+  var el=e.target;
+  while(el&&!el.dataset.act&&!el.dataset.app&&!el.dataset.tray){el=el.parentElement;}
+  if(!el)return;
+  if(el.dataset.app){
+    if(el.classList.contains('dicon'))return;
+    openApp(el.dataset.app);
+    toggleStart();
+    return;
+  }
+  if(el.dataset.tray){
+    switch(el.dataset.tray){
+      case 'theme':{
+        var l=document.body.classList.toggle('light');
+        try{localStorage.setItem('4ayka_theme',l?'light':'dark');}
+        catch(err){console.warn('theme persist failed:',err);}
+        showNotif('Вид','Тема: '+(l?'светлая':'тёмная'));
+        break;
+      }
+      case 'wifi':showNotif('Сеть','Wi-Fi: 4ayka_Studio_5G - 120 Мбит/с');break;
+      case 'vol':showNotif('Аудио','Звук: Procedural, 100%');break;
+      case 'bat':showNotif('Батарея','98%, заряжается');break;
+    }
+    return;
+  }
+  switch(el.dataset.act){
+    case 'start': toggleStart(); break;
+    case 'shutdown': closeMenus(); doShutdown(); break;
+    case 'reboot': closeMenus(); doReboot(); break;
+    case 'close': closeWin(el.dataset.wid); break;
+    case 'min': minWin(el.dataset.wid); break;
+    case 'max': maxWin(el.dataset.wid); break;
+    case 'fm-up': fmUp(el); break;
+    case 'fm-root': fmRoot(el); break;
+    case 'fm-refresh': fmRefresh(el); break;
+    case 'ed-new': editorNew(el); break;
+    case 'ed-save': editorSave(el); break;
+    case 'ed-open': editorOpen(el); break;
+    case 'ed-load': {var w=el.closest('.win');if(w)loadEditorPath(w);} break;
+    case 'pg-gen': genPass(el); break;
+    case 'pg-copy': copyPass(el); break;
+  }
+});
+document.addEventListener('dblclick',function(e){
+  var el=e.target;
+  while(el&&!el.classList.contains('dicon')){el=el.parentElement;}
+  if(el&&el.dataset.app)openApp(el.dataset.app);
+});
 
 bootSeq();
 </script>

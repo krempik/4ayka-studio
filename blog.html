@@ -3,741 +3,534 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog | 4ayka Studio</title>
-    <meta name="description" content="Блог 4ayka Studio — статьи о кибербезопасности, геймдеве, криптографии и разработке.">
-    <meta property="og:title" content="Blog | 4ayka Studio">
-    <meta property="og:description" content="Статьи о кибербезопасности, геймдеве, криптографии и разработке.">
+    <title>Блог | 4ayka Studio</title>
+    <meta name="description" content="Блог 4ayka Studio — про геймдев, браузерные игры, E2E-шифрование и инструменты разработчика.">
+    <meta property="og:title" content="Блог | 4ayka Studio">
+    <meta property="og:description" content="Про геймдев, браузерные игры, E2E-шифрование и инструменты разработчика.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://krempik.github.io/4ayka-studio/blog.html">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="canonical" href="https://krempik.github.io/4ayka-studio/blog.html">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0e1a'/><text x='50' y='74' font-size='62' text-anchor='middle' fill='%2322d3ee' font-family='monospace' font-weight='bold'>4</text></svg>">
     <style>
-        :root { --green: #00ff41; --green-dim: #00cc33; --green-dark: #003b00; --cyan: #00ffff; --red: #ff0040; --yellow: #ffff00; --bg: #0a0a0a; --bg-card: #0d0d0d; --border: #1a1a1a; --text: #c0c0c0; --text-dim: #555; --font: 'Fira Code', monospace; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); color: var(--text); font-family: var(--font); min-height: 100vh; }
-        body.light { --green: #00aa33; --green-dim: #008828; --green-dark: #00661f; --cyan: #0077cc; --red: #cc0033; --yellow: #cc9900; --bg: #f0efe8; --bg-card: #ffffff; --border: #d0cfc0; --text: #1a1a1a; --text-dim: #666; }
-        .scanlines { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.15) 0px, rgba(0,0,0,0.15) 1px, transparent 1px, transparent 3px); }
-        body.light .scanlines { opacity: 0.3; }
-        .container { max-width: 900px; margin: 0 auto; padding: 2rem; position: relative; z-index: 2; }
+        .blog-top { position: relative; z-index: 1; padding: 2rem 0 0; }
+        .blog-top nav {
+            display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+            flex-wrap: wrap; padding-bottom: 1.2rem; border-bottom: 1px solid var(--border);
+        }
+        .blog-links { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+        .blog-links a { color: var(--text-dim); font-size: 0.9rem; padding: 0.4rem 0.7rem; border-radius: 8px; }
+        .blog-links a:hover { color: var(--text); background: var(--bg-elev); }
+        .blog-title { margin-top: 2.5rem; font-size: clamp(1.6rem, 4vw, 2.3rem); font-weight: 700; }
+        .blog-sub { color: var(--text-dim); margin-bottom: 2.5rem; }
 
-        /* NAV */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
-        .logo { font-size: 1.3rem; color: var(--green); letter-spacing: 4px; text-shadow: 0 0 10px var(--green-dark); text-decoration: none; }
-        .header-right { display: flex; align-items: center; gap: 1rem; }
-        .back { color: var(--text-dim); text-decoration: none; font-size: 0.8rem; transition: color 0.3s; }
-        .back:hover { color: var(--green); }
-        .theme-toggle { background: none; border: 1px solid var(--border); color: var(--text-dim); font-size: 1.1rem; cursor: pointer; padding: 6px 10px; border-radius: 4px; transition: all 0.3s; line-height: 1; font-family: var(--font); }
-        .theme-toggle:hover { border-color: var(--green); color: var(--green); }
-
-        /* HERO */
-        h1 { color: var(--green); font-size: 1.5rem; margin-bottom: 0.5rem; text-shadow: 0 0 10px var(--green-dark); }
-        .subtitle { color: var(--text-dim); font-size: 0.8rem; margin-bottom: 2.5rem; }
-
-        /* ARTICLES */
-        .article-card {
+        .post-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            padding: 1.8rem;
-            margin-bottom: 1.5rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
+            border-radius: var(--radius);
+            padding: 1.5rem 1.6rem;
+            margin-bottom: 1.2rem;
             cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
         }
-        .article-card:hover {
-            border-color: var(--green-dark);
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.05);
-        }
-        .article-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 3px;
-            height: 100%;
-            background: var(--green-dark);
-            transition: width 0.3s;
-        }
-        .article-card:hover::before {
-            width: 5px;
-            background: var(--green);
-        }
-        .article-meta {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-            margin-bottom: 0.8rem;
-            font-size: 0.75rem;
-        }
-        .article-date { color: var(--text-dim); }
-        .article-tag {
-            color: var(--green);
-            border: 1px solid var(--green-dark);
-            padding: 2px 8px;
-            font-size: 0.65rem;
-            letter-spacing: 1px;
-        }
-        .article-card h2 {
-            color: var(--text);
-            font-size: 1.1rem;
-            margin-bottom: 0.6rem;
-            font-weight: 500;
-        }
-        .article-card:hover h2 {
-            color: var(--green);
-        }
-        .article-card p {
-            color: var(--text-dim);
-            font-size: 0.8rem;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-        .article-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .read-more {
-            color: var(--green-dim);
-            font-size: 0.75rem;
-            transition: color 0.3s;
-        }
-        .article-card:hover .read-more {
-            color: var(--green);
-        }
-        .article-lines {
-            color: var(--text-dim);
-            font-size: 0.7rem;
-        }
+        .post-card:hover { transform: translateY(-2px); border-color: var(--border-strong); box-shadow: var(--shadow); }
+        .post-meta { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; margin-bottom: 0.7rem; }
+        .post-date { color: var(--text-dim); font-size: 0.8rem; font-family: var(--font-mono); }
+        .post-card h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .post-card p { color: var(--text-dim); font-size: 0.92rem; }
+        .post-card:hover h2 { color: var(--cyan); }
 
-        /* FULL ARTICLE */
-        .article-full {
-            display: none;
-        }
-        .article-full.active {
-            display: block;
-        }
-        .article-content {
-            line-height: 1.8;
-            font-size: 0.85rem;
-        }
-        .article-content h3 {
-            color: var(--green);
-            font-size: 1rem;
-            margin: 1.5rem 0 0.8rem;
-        }
-        .article-content p {
-            margin-bottom: 1rem;
-        }
-        .article-content code {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 2px 6px;
-            font-size: 0.8rem;
-            color: var(--cyan);
-        }
-        .article-content pre {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            padding: 1rem;
-            margin: 1rem 0;
-            overflow-x: auto;
-            font-size: 0.8rem;
-            line-height: 1.5;
-        }
-        .article-content ul {
-            margin: 0.5rem 0 1rem 1.5rem;
-        }
-        .article-content li {
-            margin-bottom: 0.4rem;
-        }
+        .post-full { display: none; }
+        .post-full.active { display: block; }
         .back-btn {
-            display: inline-block;
-            color: var(--green);
-            text-decoration: none;
-            font-size: 0.8rem;
-            margin-bottom: 2rem;
-            cursor: pointer;
-            transition: color 0.3s;
+            display: inline-block; cursor: pointer; color: var(--cyan);
+            font-weight: 600; margin-bottom: 1.5rem; font-size: 0.95rem;
         }
-        .back-btn:hover { color: var(--cyan); }
+        .post-full h1 { font-size: clamp(1.4rem, 3vw, 2rem); line-height: 1.2; margin-bottom: 0.5rem; }
+        .post-full .subtitle { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 2rem; font-family: var(--font-mono); }
+        .post-body { max-width: 760px; }
+        .post-body p { margin-bottom: 1rem; }
+        .post-body h3 { margin: 1.8rem 0 0.6rem; font-size: 1.15rem; }
+        .post-body ul, .post-body ol { margin: 0.4rem 0 1.2rem 1.4rem; }
+        .post-body li { margin-bottom: 0.4rem; }
+        .post-body code {
+            font-family: var(--font-mono); font-size: 0.85em; color: var(--cyan);
+            background: var(--bg-elev); border: 1px solid var(--border); border-radius: 6px; padding: 0.1rem 0.4rem;
+        }
+        .post-body pre {
+            background: var(--bg-elev); border: 1px solid var(--border); border-radius: 12px;
+            padding: 1rem 1.2rem; overflow-x: auto; font-family: var(--font-mono);
+            font-size: 0.82rem; line-height: 1.55; margin: 1rem 0;
+        }
+        .post-body pre code { background: none; border: none; padding: 0; color: var(--text); }
 
-        /* FOOTER */
-        .footer { border-top: 1px solid var(--border); margin-top: 3rem; padding: 1.5rem 0; text-align: center; }
-        .footer span { font-size: 0.75rem; color: var(--text-dim); }
-
-        /* NO ARTICLES */
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--text-dim);
-        }
-        .empty-state .icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-        }
-
-        @media (max-width: 600px) {
-            .header { flex-direction: column; gap: 1rem; text-align: center; }
-            .header-right { justify-content: center; }
-        }
+        .footer { position: relative; z-index: 1; }
     </style>
 </head>
 <body>
-    <div class="scanlines"></div>
     <div class="container">
-        <header class="header">
-            <a href="index.html" class="logo">4AYKA</a>
-            <div class="header-right">
-                <a href="index.html" class="back">&lt; cd ~/home</a>
-                <button class="theme-toggle" id="theme-toggle" title="Сменить тему">&#9789;</button>
-            </div>
-        </header>
+        <div class="blog-top">
+            <nav>
+                <a href="index.html" class="logo">4ayka<span>studio</span></a>
+                <div class="blog-links">
+                    <a href="index.html#games">Игры</a>
+                    <a href="index.html#apps">Приложения</a>
+                    <a href="index.html#about">О студии</a>
+                    <a href="desktop.html">PC Sim</a>
+                    <a href="index.html#contact">Контакты</a>
+                    <button class="theme-toggle" id="theme-toggle" title="Сменить тему" aria-label="Сменить тему">&#9789;</button>
+                </div>
+            </nav>
 
-        <div id="blog-list">
-            <h1>~/blog</h1>
-            <p class="subtitle">// статьи о коде, безопасности и геймдеве</p>
+            <h1 class="blog-title">Блог</h1>
+            <p class="blog-sub">// про геймдев, браузерные игры и инструменты разработчика</p>
+        </div>
 
-            <div class="article-card" onclick="openArticle('freeze')">
-                <div class="article-meta">
-                    <span class="article-date">2026-08-28</span>
-                    <span class="article-tag">FREEZE</span>
-                    <span class="article-tag">ANNOUNCEMENT</span>
+        <div id="blog-list" class="blog-top" style="padding-top:0;">
+            <article class="post-card" data-article="relaunch">
+                <div class="post-meta">
+                    <span class="post-date">2026-09-19</span>
+                    <span class="tag tag-new">ANNOUNCEMENT</span>
+                    <span class="tag">GAMEDEV</span>
                 </div>
-                <h2>4ayka Studio: все проекты уходят в заморозку</h2>
-                <p>Команда распалась из-за разногласий — остался только создатель (kremp). Крупных обновлений не будет примерно месяц, максимум — мелкие фиксы и правки безопасности.</p>
-                <div class="article-footer">
-                    <span class="read-more">$ cat freeze.md</span>
-                    <span class="article-lines">~0 строк кода</span>
-                </div>
-            </div>
+                <h2>Сайт с нуля: 4ayka Studio меняет курс на геймдев</h2>
+                <p>Полный рефакторинг сайта: ушли хакерские тулзы и логи, остались блог, PC Sim и одна чёткая цель — делать игры для браузера.</p>
+            </article>
 
-            <div class="article-card" onclick="openArticle('messenger-5.0')">
-                <div class="article-meta">
-                    <span class="article-date">2026-08-27</span>
-                    <span class="article-tag">MAJOR RELEASE</span>
-                    <span class="article-tag">MESSENGER</span>
-                    <span class="article-tag">PWA</span>
+            <article class="post-card" data-article="slingor">
+                <div class="post-meta">
+                    <span class="post-date">2026-09-18</span>
+                    <span class="tag tag-new">GAMEDEV</span>
+                    <span class="tag">MULTIPLAYER</span>
                 </div>
-                <h2>H4ck Messenger 5.0 / T-Blocks 4.0: самое масштабное обновление</h2>
-                <p>Пуш-уведомления, реакции, ответы, голосовые сообщения, блокировка, скрытые чаты, админ-панель, PWA, Service Worker — всё за один релиз.</p>
-                <div class="article-footer">
-                    <span class="read-more">$ cat messenger-5.0.md</span>
-                    <span class="article-lines">~12000 строк изменений</span>
-                </div>
-            </div>
+                <h2>SLINGOR.IO 1.4: мультиплеер на гравитационных пращах</h2>
+                <p>Космос, в котором физику считает сервер, а боты добивают комнату до толпы. История про 30 Гц симуляцию, детерминизм и анти-абуз.</p>
+            </article>
 
-            <div class="article-card" onclick="openArticle('tblocks-v2')">
-                <div class="article-meta">
-                    <span class="article-date">2026-08-27</span>
-                    <span class="article-tag">GAMEDEV</span>
-                    <span class="article-tag">CANVAS</span>
+            <article class="post-card" data-article="dungeon">
+                <div class="post-meta">
+                    <span class="post-date">2026-09-15</span>
+                    <span class="tag">GAMEDEV</span>
+                    <span class="tag">CANVAS</span>
                 </div>
-                <h2>T-Blocks v2.0: от Тетриса дошёл до боссов</h2>
-                <p>Как из простого Тетриса получилась аркада с 4 режимами, 3 боссами, 8 powerups и системой достижений. Всё на одном HTML-файле.</p>
-                <div class="article-footer">
-                    <span class="read-more">$ cat tblocks-v2.md</span>
-                    <span class="article-lines">~1400 строк</span>
-                </div>
-            </div>
+                <h2>Dungeon of the Void: рогалик на 100 этажей</h2>
+                <p>Процедурные миры из сида, три класса, честный фиксированный тик в 30 Гц и сейвы, которые не ломаются.</p>
+            </article>
 
-            <div class="article-card" onclick="openArticle('messenger-4.0')">
-                <div class="article-meta">
-                    <span class="article-date">2026-08-26</span>
-                    <span class="article-tag">MAJOR RELEASE</span>
-                    <span class="article-tag">MESSENGER</span>
-                    <span class="article-tag">E2E</span>
+            <article class="post-card" data-article="tblocks">
+                <div class="post-meta">
+                    <span class="post-date">2026-09-12</span>
+                    <span class="tag">GAMEDEV</span>
+                    <span class="tag">CANVAS</span>
                 </div>
-                <h2>H4ck Messenger 4.0: E2E мессенджер с нуля</h2>
-                <p>Как за один день построили зашифрованный мессенджер — архитектура, шифрование, WebSocket, FastAPI и vanilla JS без фреймворков.</p>
-                <div class="article-footer">
-                    <span class="read-more">$ cat messenger-4.0.md</span>
-                    <span class="article-lines">~3000 строк</span>
-                </div>
-            </div>
+                <h2>T-Blocks 4.0: тетрис, который дорос до боссов</h2>
+                <p>Четыре режима, три босса, восемь павер-аппов и живой лидерборд. Вся игра — один HTML-файл без зависимостей.</p>
+            </article>
 
-            <div class="article-card" onclick="openArticle('e2e-messenger')">
-                <div class="article-meta">
-                    <span class="article-date">2026-08-26</span>
-                    <span class="article-tag">SECURITY</span>
-                    <span class="article-tag">E2E</span>
+            <article class="post-card" data-article="messenger">
+                <div class="post-meta">
+                    <span class="post-date">2026-09-10</span>
+                    <span class="tag">APPS</span>
+                    <span class="tag">SECURITY</span>
                 </div>
-                <h2>H4ck Messenger: E2E шифрование без компромиссов</h2>
-                <p>RSA-2048 + AES-256-GCM: как построить защищённый мессенджер на FastAPI + WebSocket + Web Crypto API.</p>
-                <div class="article-footer">
-                    <span class="read-more">$ cat e2e-messenger.md</span>
-                    <span class="article-lines">~500 строк</span>
-                </div>
-            </div>
+                <h2>H4ck Messenger: E2E-шифрование своими руками</h2>
+                <p>RSA-2048 + AES-256-GCM: сервер не видит содержимое, приватный ключ никогда не покидает браузер. Как это устроено.</p>
+            </article>
 
-            <div class="article-card" onclick="openArticle('vanilla-js')">
-                <div class="article-meta">
-                    <span class="article-date">2026-08-25</span>
-                    <span class="article-tag">JS</span>
-                    <span class="article-tag">OPINION</span>
+            <article class="post-card" data-article="kit">
+                <div class="post-meta">
+                    <span class="post-date">2026-09-08</span>
+                    <span class="tag">TOOLS</span>
+                    <span class="tag">PYTHON</span>
                 </div>
-                <h2>Почему мы пишем на Vanilla JS (и не жалеем)</h2>
-                <p>Фреймворки — это надстройки. Когда понимаешь нативный JS и Web API, любая задача решается без зависимостей.</p>
-                <div class="article-footer">
-                    <span class="read-more">$ cat vanilla-js.md</span>
-                    <span class="article-lines">~300 строк</span>
-                </div>
-            </div>
+                <h2>4ayka-kit: бэкенд из 16 строк YAML</h2>
+                <p>Спека → рабочий FastAPI-сервис с JWT, rate limit и авто-миграцией. Плюс сканер проекта в компактный контекст для ИИ-агентов.</p>
+            </article>
 
-            <div class="article-card" onclick="openArticle('canvas-game')">
-                <div class="article-meta">
-                    <span class="article-date">2026-08-24</span>
-                    <span class="article-tag">TUTORIAL</span>
-                    <span class="article-tag">CANVAS</span>
+            <article class="post-card" data-article="vanilla">
+                <div class="post-meta">
+                    <span class="post-date">2026-09-05</span>
+                    <span class="tag">JS</span>
+                    <span class="tag">OPINION</span>
                 </div>
-                <h2>HTML5 Canvas для игр: гайд для начинающих</h2>
-                <p>RequestAnimationFrame, sprites, collision detection, game loop. Минимальный набор для начала разработки игр в браузере.</p>
-                <div class="article-footer">
-                    <span class="read-more">$ cat canvas-game.md</span>
-                    <span class="article-lines">~400 строк</span>
-                </div>
-            </div>
+                <h2>Почему Vanilla JS, а не фреймворк</h2>
+                <p>Ни одного npm-пакета в продуктах студии. Рассказываем, чем нативный JS покрывает 95% задач и когда фреймворк всё-таки нужен.</p>
+            </article>
 
-            <div class="article-card" onclick="openArticle('crypto-basics')">
-                <div class="article-meta">
-                    <span class="article-date">2026-08-23</span>
-                    <span class="article-tag">CRYPTO</span>
-                    <span class="article-tag">SECURITY</span>
+            <article class="post-card" data-article="canvas">
+                <div class="post-meta">
+                    <span class="post-date">2026-09-01</span>
+                    <span class="tag">TUTORIAL</span>
+                    <span class="tag">CANVAS</span>
                 </div>
-                <h2>Криптография в браузере: AES, RSA и Web Crypto API</h2>
-                <p>Как использовать промышленное шифрование в JavaScript. RSA-OAEP, AES-GCM, ключи, соли — всё на примерах.</p>
-                <div class="article-footer">
-                    <span class="read-more">$ cat crypto-basics.md</span>
-                    <span class="article-lines">~500 строк</span>
-                </div>
-            </div>
+                <h2>HTML5 Canvas: игровой цикл для начинающих</h2>
+                <p>requestAnimationFrame, фиксированный шаг с аккумулятором, коллизии и DPR. Минимум теории — максимум кода.</p>
+            </article>
 
-            <div class="article-card" onclick="openArticle('python-fastapi')">
-                <div class="article-meta">
-                    <span class="article-date">2026-08-22</span>
-                    <span class="article-tag">PYTHON</span>
-                    <span class="article-tag">BACKEND</span>
+            <article class="post-card" data-article="fastapi">
+                <div class="post-meta">
+                    <span class="post-date">2026-08-28</span>
+                    <span class="tag">PYTHON</span>
+                    <span class="tag">BACKEND</span>
                 </div>
                 <h2>FastAPI за 30 минут: REST API для микропроектов</h2>
-                <p>От установки до рабочего сервера. WebSocket, SQLAlchemy, асинхронность — минимальный референс.</p>
-                <div class="article-footer">
-                    <span class="read-more">$ cat python-fastapi.md</span>
-                    <span class="article-lines">~350 строк</span>
-                </div>
+                <p>От установки до работающего сервера с WebSocket и SQLAlchemy. Минимальный референс под каждый проект студии.</p>
+            </article>
+        </div>
+
+        <div id="post-relaunch" class="post-full">
+            <span class="back-btn" data-close>&larr; ко всем постам</span>
+            <h1>Сайт с нуля: 4ayka Studio меняет курс на геймдев</h1>
+            <p class="subtitle">2026-09-19 | ANNOUNCEMENT, GAMEDEV</p>
+            <div class="post-body">
+                <p>Сегодня сайт студии переехал с «хакерской» темы на геймдев. Это не просто новый дизайн — это честная постановка направления: 4ayka Studio делает <b>игры для браузера</b> и инструменты, на которых они строятся.</p>
+
+                <h3>Что ушло</h3>
+                <ul>
+                    <li><b>Hacker Typer, CryptoTool, Particle Logo</b> — игрушки, не относящиеся к направлению</li>
+                    <li><b>Логи</b> и «матричный» декор</li>
+                    <li>Счётчики посетителей с боем зависящего от стороннего сервера</li>
+                </ul>
+
+                <h3>Что осталось</h3>
+                <ul>
+                    <li><b>Блог</b> — переписан под реальное состояние проектов</li>
+                    <li><b>PC Sim</b> — браузерный симулятор системы, где можно открыть терминал и пощёлкать файлы</li>
+                    <li>Контакты и форма связи через Telegram</li>
+                </ul>
+
+                <h3>Что впереди</h3>
+                <p>Актуальные проекты студии: <b>SLINGOR.IO</b> (мультиплеер), <b>T-Blocks</b> (аркада), <b>Dungeon of the Void</b> (рогалик в разработке), плюс <b>H4ck Messenger</b> и <b>4ayka-kit</b> как основа того, как мы делаем бэкенды.</p>
+                <pre>Старый курс:  hack the planet, логи, матрица
+Новый курс:  гравитация, данджоны, WebSocket
+Технологии:  Vanilla JS + Python, как и всегда</pre>
+                <p>Игры открываются ссылкой, код в открытом доступе. Если хочешь пощупать — загляни в <a href="index.html#games">раздел игр</a>.</p>
             </div>
         </div>
 
-        <!-- FULL ARTICLES -->
-        <div class="article-full" id="article-freeze">
-            <a class="back-btn" onclick="closeArticle()">&lt; cd ~/blog</a>
-            <h1>4ayka Studio: все проекты уходят в заморозку</h1>
-            <p class="subtitle">2026-08-28 | FREEZE, ANNOUNCEMENT | ~0 строк кода</p>
-            <div class="article-content">
-                <p>Плохие новости для тех, кто ждал крупных обновлений: команда 4ayka Studio распалась. Разногласия оказались сильнее общего кода, и с этого дня за проектами остаётся один человек — <b>kremp</b> (создатель).</p>
+        <div id="post-slingor" class="post-full">
+            <span class="back-btn" data-close>&larr; ко всем постам</span>
+            <h1>SLINGOR.IO 1.4: мультиплеер на гравитационных пращах</h1>
+            <p class="subtitle">2026-09-18 | GAMEDEV, MULTIPLAYER</p>
+            <div class="post-body">
+                <p>SLINGOR — это .io-игра про космические пращи: облетаешь планету — получаешь разгон в 1.35 раза, собрал цепь собственных пращ — множитель до ×5. Смысл в том, что физика не на клиенте, а в небе — точнее, на сервере.</p>
 
-                <h3>Что это значит</h3>
+                <h3>Архитектура</h3>
                 <ul>
-                    <li>Все проекты и этот сайт уходят в <b>заморозку на ~1 месяц</b></li>
-                    <li><b>Крупных обновлений не будет</b> — ни новых механик, ни новых фич, ни больших релизов</li>
-                    <li>Максимум — <b>мелкие фиксы</b>, правки безопасности и опечатки</li>
-                    <li>Работающие серверы, CI и деплои продолжат работать как есть</li>
+                    <li>Сервер (<code>FastAPI + WebSocket</code>) считает всю симуляцию комнат по <b>30 Гц</b> и раздаёт состояние клиентам ~16 раз в секунду — клиент просто «рисует»</li>
+                    <li>Физика (<code>game/physics.py</code>) — чистая и детерминированная: берёт dt, двигает мир, никакого wall-clock и глобального random</li>
+                    <li>Боты используют тот же вход, что и люди, и добивают комнату до толпы</li>
                 </ul>
 
-                <h3>Что остаётся живым</h3>
-                <pre> H4ck Messenger:  работает (E2E, PWA, админ-панель)
- T-Blocks:        работает (игра + лидерборд)
- 4ayka-kit:       опубликован на GitHub, v0.1.0
- Сайт:            онлайн, блог и логи обновляют вручную</pre>
-
-                <h3>Почему так вышло</h3>
-                <p>Скажем прямо: голоса в команде разделились по направлению развития — кто-то хотел идти в игры, кто-то в инфраструктуру, кто-то вообще в другую сторону. Обсуждать дальше было некому, поэтому решили разойтись. Без драмы, без дележе — просто каждый пошёл своим путём.</p>
-
-                <h3>Что дальше</h3>
-                <p>Замораживаемся на месяц, чтобы передохнуть и решить — а стоит ли вообще возвращаться к большим идеям. Если захочешь написать, сказать спасибо или предложить фикс — kremp на связи:</p>
+                <h3>Геймплей</h3>
                 <ul>
-                    <li>Telegram: <code>@KR0VOSOS</code></li>
-                    <li>Email: <code>kremp577@gmail.com</code></li>
-                    <li>GitHub: <code>github.com/krempik</code></li>
+                    <li><b>Праща</b>: обогнул планету на скорости → разгон ×1.35 и очки</li>
+                    <li><b>Цепь пращ</b>: ещё одна за 6 секунд → ×2, ×3 … ×5</li>
+                    <li><b>Ядра</b>: собирай; погиб — груз падает контейнером, который за 26 секунд исчезает</li>
+                    <li><b>Бонусы</b>: щит (отражает удар), буст (удвоенная тяга), магнит (тянет ядра)</li>
                 </ul>
 
-                <p>Код остаётся открытым, ни один репозиторий не закрывается. Заморозка — это не смерть, это пауза. Может, через месяц снова закодим.</p>
+                <h3>Анти-абуз</h3>
+                <p>Никто не любит читеров, поэтому на сервере: лимит размера фрейма, минимальный интервал между вводами, контроль частоты сообщений с авто-киком, таймаут на «молчаливый» сокет.</p>
+
+                <p>Всё покрыто 48 юнит-тестами на детерминированную физику, ИИ ботов и API. Играть: <code><a href="https://krempik.github.io/slingor">krempik.github.io/slingor</a></code></p>
+                <pre>Симуляция:   30 Гц, сервер-авторитативная
+Раздача:      ~16 Гц + мгновенные события
+Тесты:        48 (physics / ai / api)
+Версия:       1.4.0</pre>
             </div>
         </div>
 
-        <div class="article-full" id="article-tblocks-v2">
-            <a class="back-btn" onclick="closeArticle()">&lt; cd ~/blog</a>
-            <h1>T-Blocks v2.0: от Тетриса дошёл до боссов</h1>
-            <p class="subtitle">2026-08-27 | GAMEDEV, CANVAS | ~1400 строк</p>
-            <div class="article-content">
-                <p>T-Blocks начался как стандартный Тетрис на Canvas. Потом добавились боссы. Потом — powerups. Потом — лидерборд. В итоге получилось 1400 строк чистого JS на одном HTML-файле.</p>
+        <div id="post-dungeon" class="post-full">
+            <span class="back-btn" data-close>&larr; ко всем постам</span>
+            <h1>Dungeon of the Void: рогалик на 100 этажей</h1>
+            <p class="subtitle">2026-09-15 | GAMEDEV, CANVAS</p>
+            <div class="post-body">
+                <p>Dungeon of the Void — 2D данджон-рогалик на голом Canvas. Никаких движков: 12 модулей, один <code>requestAnimationFrame</code> и очень много любви к детерминизму.</p>
 
                 <h3>Что внутри</h3>
-                <p>4 игровых режима: Классический, Зеркальный (фигуры отражаются), Продвинутый (двойные линии, комбо) и Ретро (упрощённый).</p>
-                <p>3 босса с уникальными механиками:</p>
                 <ul>
-                    <li><code>CHUNK</code> — управляет фиксированными блоками, прыгает по полю</li>
-                    <li><code>SPIKE</code> — телепортируется, оставляет шипы</li>
-                    <li><code>BOMB</code> — метает бомбы, взрывает линии</li>
+                    <li><b>Процедурная генерация</b>: каждый этаж собирается из сида — загрузил сейв, получил тот же мир</li>
+                    <li><b>Фиксированный тик 30 Гц</b> с аккумулятором и капом, чтобы игра не «догоняла» время после паузы</li>
+                    <li><b>DPR-aware рендер</b>: на экранах с плотностью 2–3x всё остаётся чётким, тайлы кэшируются</li>
+                    <li><b>Три класса</b>, пассивные умения, магазины, 11 книг лора, боссы и финальная победа</li>
+                    <li><b>Сейвы в localStorage</b> с версионированием и миграцией</li>
+                    <li><b>EN/RU</b> локализация и процедурная музыка через Web Audio</li>
                 </ul>
 
-                <h3>Powerups</h3>
-                <p>8 видов: замедление, взрыв, лазер, телепорт, заморозка, шинковщик, удвоение, зеркало. Каждый — уникальная механика, не просто «бонус».</p>
-
-                <h3>Звуки</h3>
-                <p>Процедурная синтезация через Web Audio API. Ни одного внешнего аудиофайла. Все звуки генерируются в реальном времени.</p>
-
-                <h3>Темы и достижения</h3>
-                <p>4 темы визуального оформления (Matrix, Neon, Retro, Mono). 12 достижений от «Сделай первый квадрат» до «Убей все 3 босса за один прогон».</p>
-
-                <pre> Режим:   Classic | Mirror | Advanced | Retro
- Боссы:   CHUNK / SPIKE / BOMB
- Powerups: 8 штук
- Звуки:    Процедурные (Web Audio API)
- Достижения: 12 штук</pre>
-
-                <p>Весь исходный код — один HTML файл. Без фреймворков, без зависимостей, без компиляторов. Берёшь и открываешь в браузере.</p>
+                <h3>Как устроен код</h3>
+                <p>Симуляция, рендер и UI жёстко разделены: чистая логика (`entities`, `worldgen`) вообще не касается DOM, `render` только читает игровое состояние, `ui` — только DOM. Это даёт легкость тестирования и редкую для таких проектов дисциплину.</p>
+                <pre>Тик:      1000/30 мс, аккумулятор с капом 8 тиков
+Модули:   12 IIFE, однонаправленные зависимости
+Procedural: сид → мир, без Math.random в спавне
+Статус:   играбелен от старта до победы</pre>
+                <p>Проект ещё на полировке, но проходится «из коробки». Следи за блогом — анонс релиза будет тут.</p>
             </div>
         </div>
 
-        <div class="article-full" id="article-e2e-messenger">
-            <a class="back-btn" onclick="closeArticle()">&lt; cd ~/blog</a>
-            <h1>H4ck Messenger: E2E шифрование без компромиссов</h1>
-            <p class="subtitle">2026-08-26 | SECURITY, E2E | ~500 строк</p>
-            <div class="article-content">
-                <p>Мессенджер, где сервер не может прочитать твои сообщения. Не маркетинг — а реальная реализация.</p>
+        <div id="post-tblocks" class="post-full">
+            <span class="back-btn" data-close>&larr; ко всем постам</span>
+            <h1>T-Blocks 4.0: тетрис, который дорос до боссов</h1>
+            <p class="subtitle">2026-09-12 | GAMEDEV, CANVAS</p>
+            <div class="post-body">
+                <p>T-Blocks начинался как обычный тетрис. Потом появились боссы, павер-аппы, достижения и лидерборд. Вся игра — один HTML-файл на ~1400 строк, открывается в браузере без единой зависимости.</p>
 
-                <h3>Архитектура шифрования</h3>
-                <p>При регистрации генерируется RSA-2048 ключевая пара. Публичный ключ отправляется на сервер, приватный — остаётся в браузере.</p>
-                <p>При отправке сообщения:</p>
+                <h3>Режимы</h3>
                 <ul>
-                    <li>Генерируется одноразовый AES-256-GCM ключ</li>
-                    <li>Сообщение шифруется этим ключом</li>
-                    <li>AES-ключ шифруется RSA-публичным ключом получателя</li>
-                    <li>На сервер уходит только зашифрованный текст</li>
+                    <li><b>Классический</b> — комбо и бонусы</li>
+                    <li><b>Марафон</b> — бесконечный, скорость растёт</li>
+                    <li><b>Битва с Боссом</b> — линии наносят урон, босс отвечает мусорными рядами</li>
+                    <li><b>Ультра</b> — две минуты на максимум очков</li>
                 </ul>
+
+                <h3>Боссы</h3>
+                <p>Каждый босс периодически проталкивает поле вверх, добавляя мусорный ряд снизу:</p>
+                <pre>Кубик Хаоса      325 HP  атака каждые 260 тиков  +1 ряд
+Призма Тьмы      520 HP  атака каждые 180 тиков  +2 ряда
+Тетроментор      780 HP  атака каждые 130 тиков  +3 ряда</pre>
+
+                <h3>Павер-аппы (8 штук)</h3>
+                <p>Бомба (взрыв 3×3), Залп (чистит нижний ряд), Заморозка (замедление 5 с), Магнит (притягивает блоки), Ядерка (3 случайных ряда), Клон (повтор последнего бонуса), Зеркало (реверс поля), Шахматы (смена цветов).</p>
+
+                <h3>Из первого релиза</h3>
+                <ul>
+                    <li>12 достижений — от «первой линии» до 500 000 очков</li>
+                    <li>4 темы: Matrix, Neon, Retro, Mono</li>
+                    <li>Процедурный звук через Web Audio — ни одного аудиофайла</li>
+                    <li>Лидерборд и статистика на FastAPI</li>
+                    <li>PWA-манифест и service worker</li>
+                </ul>
+                <p>Играть: <code><a href="https://krempik.github.io/tblocks">krempik.github.io/tblocks</a></code></p>
+            </div>
+        </div>
+
+        <div id="post-messenger" class="post-full">
+            <span class="back-btn" data-close>&larr; ко всем постам</span>
+            <h1>H4ck Messenger: E2E-шифрование своими руками</h1>
+            <p class="subtitle">2026-09-10 | APPS, SECURITY</p>
+            <div class="post-body">
+                <p>H4ck Messenger — мессенджер, в котором сервер не может прочитать сообщения. Не маркетинг, а реализация на Web Crypto API.</p>
+
+                <h3>Как устроено шифрование</h3>
+                <ol>
+                    <li>При регистрации генерируется пара <b>RSA-2048</b>; публичный ключ уходит на сервер, приватный остаётся в браузере</li>
+                    <li>На каждое сообщение создаётся одноразовый ключ <b>AES-256-GCM</b></li>
+                    <li>Сообщение шифруется AES, сам AES-ключ заворачивается RSA-ключом получателя</li>
+                    <li>На сервер уходит только шифротекст — расшифровать его без приватного ключа невозможно</li>
+                </ol>
 
                 <h3>Стек</h3>
-                <pre> Backend:   Python, FastAPI, SQLAlchemy, WebSocket
- Frontend:  Vanilla JS, Web Crypto API
- DB:        SQLite (разработка) / PostgreSQL (прод)
- Протокол:  WebSocket (реалтайм)</pre>
+                <pre>Backend:   Python, FastAPI, SQLAlchemy, WebSocket
+Frontend:  Vanilla JS, Web Crypto API, PWA
+Auth:      JWT (access + refresh), PBKDF2-SHA256
+DB:        SQLite
+Публикация: Cloudflare Tunnel</pre>
 
-                <h3>Что сервер видит</h3>
-                <p>Только зашифрованный текст. Без ключей расшифровать невозможно. Аутентификация — по токенам, пароли хэшируются bcrypt'ом.</p>
-
-                <p>Сообщения хранятся в БД в зашифрованном виде. Даже если базу украдут — данные бесполезны без приватных ключей пользователей.</p>
+                <h3>Что умеет</h3>
+                <ul>
+                    <li>Личные чаты с E2E и групповые чаты</li>
+                    <li>Отправка файлов, статусы онлайн, индикатор набора</li>
+                    <li>Прочитано/доставлено, редактирование и удаление</li>
+                    <li>Админ-панель с баном и мод-логами</li>
+                </ul>
+                <p>Открыть: <code><a href="https://krempik.github.io/messenger">krempik.github.io/messenger</a></code></p>
             </div>
         </div>
 
-        <div class="article-full" id="article-vanilla-js">
-            <a class="back-btn" onclick="closeArticle()">&lt; cd ~/blog</a>
-            <h1>Почему мы пишем на Vanilla JS (и не жалеем)</h1>
-            <p class="subtitle">2026-08-25 | JS, OPINION | ~300 строк</p>
-            <div class="article-content">
-                <p>«Используй React/Vue/Svelte» — стандартный совет. Мы его не слушаем. Вот почему.</p>
+        <div id="post-kit" class="post-full">
+            <span class="back-btn" data-close>&larr; ко всем постам</span>
+            <h1>4ayka-kit: бэкенд из 16 строк YAML</h1>
+            <p class="subtitle">2026-09-08 | TOOLS, PYTHON</p>
+            <div class="post-body">
+                <p>4ayka-kit — тулкит, который мы делаем для себя: вместо рутинных FastAPI-сервисов пишем короткую спеку и получаем рабочий бэкенд со всеми примочками.</p>
+
+                <h3>Спека → сервис</h3>
+                <pre>project: { name: notes, title: Notes, auth: jwt }
+resources:
+  notes:
+    fields: { title: str, body: text, tags: 'list[str]' }
+    crud: full</pre>
+                <p><code>ayka gen</code> собирает модели, схемы, роутеры, JWT-авторизацию, rate limit и авто-миграцию БД. Дальше просто поднимаешь <code>uvicorn app.main:app</code>.</p>
+
+                <h3>Состав</h3>
+                <ul>
+                    <li><code>ayka.auth</code> — PBKDF2, access/refresh JWT, зависимость авторизации</li>
+                    <li><code>ayka.db</code> — schema + безопасная авто-миграция без потери данных</li>
+                    <li><code>ayka.middleware</code> — IP-rate limiter (multiproxy-aware)</li>
+                    <li><code>ayka.files</code> — MIME-guard для загрузок</li>
+                    <li><code>ayka.version</code> — версии в одном месте</li>
+                    <li><code>ayka.scanner</code> / <code>ayka ctx</code> — сканирование проекта в компактный контекст для ИИ</li>
+                </ul>
+
+                <p>Покрыт 48 тестами, включая полный e2e-прогон сгенерированного приложения. Репозиторий: <code><a href="https://github.com/krempik/4ayka-kit">github.com/krempik/4ayka-kit</a></code></p>
+                <pre>Команды CLI:
+  ayka new fastapi myapp   # каркас из спеки
+  ayka gen                 # генерация app/ + CI + тесты
+  ayka ctx [DIR] --ai      # контекст проекта для агента
+  ayka version bump minor  # версия в одном месте</pre>
+            </div>
+        </div>
+
+        <div id="post-vanilla" class="post-full">
+            <span class="back-btn" data-close>&larr; ко всем постам</span>
+            <h1>Почему Vanilla JS, а не фреймворк</h1>
+            <p class="subtitle">2026-09-05 | JS, OPINION</p>
+            <div class="post-body">
+                <p>«Используй React/Svelte/что-угодно» — стандартный совет. Мы его не слушаем. Вот почему.</p>
 
                 <h3>Зависимости — это проблемы</h3>
-                <p>Каждый npm-пакет — это:</p>
                 <ul>
                     <li>node_modules чудовищных размеров</li>
-                    <li>Лицензии, которые ты никогда не читал</li>
-                    <li>Уязвимости в транзитивных зависимостях</li>
-                    <li>Обновления, которые ломают обратную совместимость</li>
+                    <li>Лицензии, которые никто не читал</li>
+                    <li>Уязвимости в транзитивных пакетах</li>
+                    <li>Обновления, которые ломают совместимость</li>
                 </ul>
 
                 <h3>Vanilla JS покрывает 95% задач</h3>
-                <p>DOM манипуляции? <code>querySelector</code>, <code>classList</code>, <code>addEventListener</code>. AJAX? <code>fetch</code>. Реалтайм? <code>WebSocket</code>. Криптография? <code>Crypto</code>. Рисование? <code>Canvas</code>.</p>
+                <p>DOM? <code>querySelector</code>, <code>classList</code>, <code>addEventListener</code>. AJAX? <code>fetch</code>. Реалтайм? <code>WebSocket</code>. Криптография? <code>crypto.subtle</code>. Игры? <code>Canvas</code> + <code>requestAnimationFrame</code>.</p>
 
                 <h3>Когда фреймворк оправдан</h3>
-                <p>Большие SPA с сложной state management. Многословные формы. Командная разработка с 10+ людьми. Но для микропроектов, игр, тулзов — vanilla быстрее и проще.</p>
-
-                <p>Наш мессенджер — vanilla JS. Наша игра — vanilla JS. Все инструменты — vanilla JS. И мы не планируем менять подход.</p>
+                <p>Большие SPA с тяжёлым состоянием, десяток разработчиков, сложные формы. Для микропроектов, игр и тулзов vanilla проще, быстрее и понятнее.</p>
+                <p>Наш мессенджер — vanilla. Наши игры — vanilla. Инструменты — vanilla. Подход менять не планируем.</p>
             </div>
         </div>
 
-        <div class="article-full" id="article-canvas-game">
-            <a class="back-btn" onclick="closeArticle()">&lt; cd ~/blog</a>
-            <h1>HTML5 Canvas для игр: гайд для начинающих</h1>
-            <p class="subtitle">2026-08-24 | TUTORIAL, CANVAS | ~400 строк</p>
-            <div class="article-content">
-                <p>Как сделать первую игру на Canvas. Минимум теории — максимум кода.</p>
+        <div id="post-canvas" class="post-full">
+            <span class="back-btn" data-close>&larr; ко всем постам</span>
+            <h1>HTML5 Canvas: игровой цикл для начинающих</h1>
+            <p class="subtitle">2026-09-01 | TUTORIAL, CANVAS</p>
+            <div class="post-body">
+                <p>Основа любой Canvas-игры — цикл <code>requestAnimationFrame</code>. Минимум теории, максимум кода.</p>
 
-                <h3>Game loop</h3>
-                <p>Основа любой Canvas-игры — цикл <code>requestAnimationFrame</code>:</p>
-                <pre>function gameLoop() {
-    update();  // логика
-    draw();    // отрисовка
+                <h3>Базовый цикл</h3>
+                <pre>function gameLoop(ts) {
+    update(dt);   // логика
+    draw();       // отрисовка
     requestAnimationFrame(gameLoop);
+}
+requestAnimationFrame(gameLoop);</pre>
+
+                <h3>Фиксированный шаг — правильно</h3>
+                <p>Если физика на клиенте, шаг времени должен быть стабильным. Накапливаем время и выполняем симуляцию фиксированными тиками:</p>
+                <pre>const STEP = 1000 / 30;
+let acc = 0, last = 0;
+function frame(ts) {
+    acc += Math.min(ts - last, 250);
+    last = ts;
+    while (acc >= STEP) { update(STEP); acc -= STEP; }
+    draw();
+    requestAnimationFrame(frame);
 }</pre>
-
-                <h3>Спрайты</h3>
-                <p>Рисуем прямоугольники, круги, текст. Картинки — опционально. В T-Blocks все спрайты — просто <code>fillRect</code> и <code>arc</code>.</p>
-
-                <h3>Столкновения</h3>
-                <p>Простейшая проверка — прямоугольники пересекаются:</p>
-                <pre>function collides(a, b) {
-    return a.x < b.x + b.w &&
-           a.x + a.w > b.x &&
-           a.y < b.y + b.h &&
-           a.y + a.h > b.y;
-}</pre>
-
-                <h3>Звук</h3>
-                <p>Web Audio API даёт процедурную синтезацию. Пиши осцилляторы — получай 8-bit звуки без файлов.</p>
-
-                <p>Весь код T-Blocks (~1400 строк) — хороший пример реальной Canvas-игры. Берите, изучайте, форкайте.</p>
-            </div>
-        </div>
-
-        <div class="article-full" id="article-crypto-basics">
-            <a class="back-btn" onclick="closeArticle()">&lt; cd ~/blog</a>
-            <h1>Криптография в браузере: AES, RSA и Web Crypto API</h1>
-            <p class="subtitle">2026-08-23 | CRYPTO, SECURITY | ~500 строк</p>
-            <div class="article-content">
-                <p>Web Crypto API — промышленная криптография прямо в браузере. Не полифилл, не упрощённая версия — а настоящий стандарт.</p>
-
-                <h3>AES-256-GCM</h3>
-                <p>Симметричное шифрование. Один ключ для шифрования и расшифровки. Быстрое, подходит для данных.</p>
-                <pre>const key = await crypto.subtle.generateKey(
-    { name: 'AES-GCM', length: 256 },
-    true, ['encrypt', 'decrypt']
-);</pre>
-
-                <h3>RSA-OAEP</h3>
-                <p>Асимметричное шифрование. Два ключа: публичный (шифрует) и приватный (расшифровывает). Медленное, подходит для передачи ключей.</p>
-
-                <h3>Смешанный подход</h3>
-                <p>В реальных E2E-системах (Signal, WhatsApp) используют гибридный подход:</p>
                 <ul>
-                    <li>RSA шифрует AES-ключ</li>
-                    <li>AES шифрует данные</li>
-                    <li>Получатель расшифровывает RSA-ключ, потом данные</li>
+                    <li>Кап аккумулятора (250 мс) спасает от «спирали смерти» при фоне вкладки</li>
+                    <li>Такой паттерн используется в Dungeon of the Void</li>
                 </ul>
 
-                <p>Именно так работает H4ck Messenger. Код — на GitHub.</p>
+                <h3>Коллизии</h3>
+                <pre>function collides(a, b) {
+    return a.x < b.x + b.w && a.x + a.w > b.x &&
+           a.y < b.y + b.h && a.y + a.h > b.y;
+}</pre>
+
+                <h3>DPR: чтобы не было мыла</h3>
+                <p>На экранах с плотностью 2–3x растянутый канвас выглядит размытым. Учитывай <code>devicePixelRatio</code> и масштабируй контекст.</p>
+                <pre>const dpr = Math.min(devicePixelRatio || 1, 2);
+canvas.width = width * dpr;
+canvas.height = height * dpr;
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);</pre>
+
+                <p>Теперь хватит читать — пиши свою первую игру.</p>
             </div>
         </div>
 
-        <div class="article-full" id="article-python-fastapi">
-            <a class="back-btn" onclick="closeArticle()">&lt; cd ~/blog</a>
+        <div id="post-fastapi" class="post-full">
+            <span class="back-btn" data-close>&larr; ко всем постам</span>
             <h1>FastAPI за 30 минут: REST API для микропроектов</h1>
-            <p class="subtitle">2026-08-22 | PYTHON, BACKEND | ~350 строк</p>
-            <div class="article-content">
-                <p>FastAPI — лучший фреймворк для быстрого бэкенда на Python. Минимум boilerplate, максимальная скорость.</p>
-
-                <h3>Установка</h3>
-                <pre>pip install fastapi uvicorn</pre>
+            <p class="subtitle">2026-08-28 | PYTHON, BACKEND</p>
+            <div class="post-body">
+                <p>FastAPI — фреймворк, на котором построены бэкенды студии: лидерборд T-Blocks, комнаты SLINGOR и H4ck Messenger.</p>
 
                 <h3>Минимальный сервер</h3>
                 <pre>from fastapi import FastAPI
+
 app = FastAPI()
 
 @app.get("/")
 def root():
-    return {"status": "online"}
-
-# uvicorn main:app --reload</pre>
+    return {"status": "online"}</pre>
 
                 <h3>WebSocket</h3>
-                <p>Для реалтайма — встроенные WebSocket:</p>
-                <pre>@app.websocket("/ws/{token}")
-async def ws(websocket, token):
+                <pre>@app.websocket("/ws")
+async def ws(websocket: WebSocket):
     await websocket.accept()
     data = await websocket.receive_json()
     await websocket.send_json({"ok": True})</pre>
 
                 <h3>SQLAlchemy</h3>
-                <p>Для БД — SQLAlchemy с async-поддержкой. Всё из коробки.</p>
+                <p>Вместе со SQLite это закрывает весь «микропроект» от схемы до реального времени. А если сервисов становится много — на помощь приходит <a href="blog.html" data-same="kit">4ayka-kit</a>, который генерирует это из YAML.</p>
 
-                <p>FastAPI + SQLite + WebSocket — наш стандарт для бэкенда. Мессенджер, лидерборд, API — всё на этом стеке.</p>
-            </div>
-        </div>
-
-        <!-- NEW RELEASE ARTICLE -->
-        <div class="article-full" id="article-messenger-4.0">
-            <a class="back-btn" onclick="closeArticle()">&lt; cd ~/blog</a>
-            <h1>H4ck Messenger 4.0: E2E мессенджер с нуля</h1>
-            <p class="subtitle">2026-08-26 | MAJOR RELEASE, MESSENGER, E2E | ~3000 строк</p>
-            <div class="article-content">
-                <p>Первая версия H4ck Messenger — зашифрованный мессенджер, построенный за один день. Никаких фреймворков, никаких компромиссов. FastAPI + WebSocket + Web Crypto API + Vanilla JS.</p>
-
-                <h3>Зачем ещё один мессенджер?</h3>
-                <p>Потому что существующие либо закрытые (WhatsApp, Telegram), либо сложные в развёртывании (Matrix). Мы хотели мессенджер, который можно запустить одной командой, где сервер не видит сообщения.</p>
-
-                <h3>Архитектура шифрования</h3>
-                <p>При регистрации генерируется RSA-2048 ключевая пара:</p>
-                <ul>
-                    <li>Публичный ключ уходит на сервер</li>
-                    <li>Приватный ключ остаётся в localStorage браузера</li>
-                    <li>Сервер хранит только зашифрованные данные</li>
-                </ul>
-                <p>При отправке сообщения:</p>
-                <ul>
-                    <li>Генерируется одноразовый AES-256-GCM ключ</li>
-                    <li>Сообщение шифруется AES'ом</li>
-                    <li>AES-ключ шифруется RSA-публичным ключом получателя</li>
-                    <li>На сервер уходит: <code>iv:ciphertext</code></li>
-                </ul>
-
-                <h3>Стек</h3>
-<pre>Backend:   Python 3, FastAPI, SQLAlchemy, WebSocket
-Frontend:  Vanilla JS, Web Crypto API
-DB:        SQLite
-Auth:      JWT (HS256), bcrypt хеши
-Realtime:  WebSocket</pre>
-
-                <h3>Что реализовано</h3>
-                <ul>
-                    <li>Регистрация и логин с JWT-токенами</li>
-                    <li>E2E шифрование: RSA-2048 + AES-256-GCM</li>
-                    <li>Личные и групповые чаты</li>
-                    <li>Отправка файлов (до 100 МБ)</li>
-                    <li>Статус «онлайн/offline» в реальном времени</li>
-                    <li>Индикатор набора текста</li>
-                    <li>Прочитано/доставлено (read receipts)</li>
-                    <li>Редактирование и удаление сообщений</li>
-                </ul>
-
-                <h3>Клиент</h3>
-                <p>Один HTML-файл + один JS-файл. Никакого сборщика, npm, webpack. Открываешь — и работает. CSS-переменные для тем, адаптивный дизайн, mobile-first.</p>
-
-                <h3>Сервер</h3>
-                <p>FastAPI с WebSocket-эндпоинтом. SQLAlchemy + SQLite. Cloudflare Tunnel для публичного доступа. Rate-limiting, JWT-авторизация, CORS.</p>
-
-                <p>Исходный код — на GitHub. Запуск: <code>pip install -r requirements.txt && python -m uvicorn server.main:app</code>.</p>
-
-                <h3>Версия</h3>
-                <p>H4ck Messenger: 4.0.0 (major — первая рабочая версия с E2E)</p>
-            </div>
-        </div>
-
-        <div class="article-full" id="article-messenger-5.0">
-            <a class="back-btn" onclick="closeArticle()">&lt; cd ~/blog</a>
-            <h1>H4ck Messenger 5.0 / T-Blocks 4.0: самое масштабное обновление</h1>
-            <p class="subtitle">2026-08-27 | MAJOR RELEASE, MESSENGER, PWA | ~12000 строк изменений</p>
-            <div class="article-content">
-                <p>Это релиз, который превращает мессенджер из «просто работает» в полноценную платформу. И T-Blocks тоже обновился.</p>
-
-                <h3>Push-уведомления (Web Push API)</h3>
-                <p>Теперь сообщения приходят даже когда вкладка закрыта. Реализовано через Service Worker + VAPID ключи:</p>
-                <ul>
-                    <li>Генерация P-256 ключей при первом запуске</li>
-                    <li>Подписка на push через <code>navigator.serviceWorker.pushManager</code></li>
-                    <li>Отправка уведомлений с сервера через Web Push протокол</li>
-                    <li>Клики по уведомлению открывают чат</li>
-                </ul>
-                <p>Сервер хранит подписки в таблице <code>push_subscriptions</code>, клиент автоматически переподписывается при смене ключей.</p>
-
-                <h3>Социальные фичи</h3>
-                <ul>
-                    <li><b>Реакции на сообщения</b> — эмодзи под сообщением, счётчики, toggle по клику</li>
-                    <li><b>Ответы/цитирование</b> — свайп/долгое нажатие → «Ответить», превью в UI</li>
-                    <li><b>Закрепленные сообщения</b> — <code>pinned_message_id</code> в чате, баннер в хедере</li>
-                    <li><b>Mentions (@username)</b> — парсинг на фронте, уведомления через WS</li>
-                    <li><b>Темы чата</b> — <code>theme_color</code> в настройках группы</li>
-                    <li><b>Исчезающие сообщения</b> — таймер 1ч/24ч/7д, автоочистка фоновым кроном</li>
-                    <li><b>Статусы профиля</b> — поле <code>status</code> в User</li>
-                </ul>
-
-                <h3>Медиа</h3>
-                <ul>
-                    <li><b>Голосовые сообщения</b> — MediaRecorder API → WebM/Opus → загрузка как файл с длительностью</li>
-                    <li><b>Превью ссылок (Open Graph)</b> — фетч og:title/image/description при вставке URL, кэш в <code>link_previews</code></li>
-                    <li><b>Стикеры/паки</b> — JSON паки, таблицы <code>sticker_packs</code>/<code>stickers</code>, пикер в UI</li>
-                </ul>
-
-                <h3>Приватность и безопасность</h3>
-                <ul>
-                    <li><b>Блокировка пользователей</b> — таблица <code>blocks</code>, фильтр в списке пользователей и WS</li>
-                    <li><b>Скрытые чаты (PIN)</b> — флаг <code>is_hidden</code> + bcrypt-хеш PIN, разблокировка через модалку</li>
-                    <li><b>Экспорт чата (JSON)</b> — <code>GET /api/chats/{id}/export</code> для GDPR</li>
-                    <li><b>Самоуничтожение аккаунта</b> — <code>DELETE /api/me</code>, каскадное удаление всех данных</li>
-                </ul>
-
-                <h3>Админ-панель и модерация</h3>
-                <ul>
-                    <li>UI в клиенте (шестерёнка для админа kremp)</li>
-                    <li>Статистика: пользователи, чаты, сообщения, онлайн, DAU</li>
-                    <li>Таблица пользователей с баном/разбаном/-shadow баном</li>
-                    <li>Таблица чатов с удалением</li>
-                    <li>Мод-логи: кто/что/когда удалил/забанил</li>
-                    <li>Удаление сообщений модератором</li>
-                    <li>Эндпоинты: <code>/api/admin/*</code>, защита через <code>is_admin</code> флаг</li>
-                </ul>
-
-                <h3>PWA и офлайн</h3>
-                <ul>
-                    <li><b>Service Worker</b> — кэш статики, офлайн-работа, стратегия Stale-While-Revalidate</li>
-                    <li><b>Background Sync</b> — очередь исходящих сообщений в IndexedDB, отправка при появлении сети</li>
-                    <li><b>App Shortcuts</b> — «Новый чат», «Профиль» в меню иконки</li>
-                    <li><b>Manifest v4</b> — обновлённый манифест с shortcuts</li>
-                </ul>
-
-                <h3>Техдолг и инфраструктура</h3>
-                <ul>
-                    <li>PostgreSQL-ready конфиг (через env)</li>
-                    <li>Redis для rate-limit / кэша / pubsub (готово к подключению)</li>
-                    <li>Prometheus <code>/metrics</code> эндпоинт</li>
-                    <li>Docker Compose для продакшена</li>
-                    <li>Миграция на pbkdf2_sha256 (исправлен баг bcrypt в passlib на Python 3.14)</li>
-                </ul>
-
-                <h3>T-Blocks 4.0</h3>
-                <p>Тоже получил обнову: версия через API, динамическое отображение, исправлены баги с БД.</p>
-
-                <h3>Как обновиться</h3>
-                <pre># Messenger
-cd messenger
-pip install -r requirements.txt
-python -c "from server.database import SessionLocal, User; db=SessionLocal(); u=db.query(User).filter(User.username=='kremp').first(); u.is_admin=True; db.commit()"
-
-# T-Blocks
-cd tblocks
-pip install -r requirements.txt
-
-# Website — просто git push, GitHub Pages сам задеплоит</pre>
-
-                <h3>Версии</h3>
-                <p>Messenger: 5.0.0 (major — новая архитектура уведомлений, PWA, админка)<br>
-                T-Blocks: 4.0.0 (major — новая версия API, исправления)<br>
-                Website: добавлен этот пост в блог</p>
-
-                <p><b>Чейнджлог авто-генерируется</b> — скрипт <code>bump_version.py</code> делает <code>patch|minor|major</code> бамп, логи пишутся в VERSION файлы, блог обновляется вручную за 5 минут.</p>
-
-                <p>Всё это — на Vanilla JS + Python. Никаких фреймворков, никаких зависимостей, которых нет в стандартной библиотеке. Берёшь и деплоишь.</p>
+                <pre>Стек студии для бэкенда:
+  FastAPI + SQLAlchemy + SQLite
+  WebSocket для реалтайма
+  JWT (PBKDF2 хеши) для авторизации</pre>
             </div>
         </div>
 
         <footer class="footer">
-            <span>4AYKA STUDIO | Blog | 2026</span>
+            <div class="container">
+                <p class="footer-name">4AYKA STUDIO &middot; Блог</p>
+                <p class="footer-meta">написано человеком, а не ИИ</p>
+            </div>
         </footer>
     </div>
 
     <script>
-        // Theme
-        const themeToggle = document.getElementById('theme-toggle');
-        let isLight = false;
-        try { isLight = localStorage.getItem('4ayka_theme') === 'light'; } catch(e) {}
-        if (isLight) { document.body.classList.add('light'); themeToggle.textContent = '\u2600'; }
-        themeToggle.addEventListener('click', () => {
-            isLight = !isLight;
-            document.body.classList.toggle('light', isLight);
-            themeToggle.textContent = isLight ? '\u2600' : '\u263D';
-            try { localStorage.setItem('4ayka_theme', isLight ? 'light' : 'dark'); } catch(e) {}
-        });
+        (function initBlog() {
+            // Theme
+            var isLight = false;
+            try { isLight = localStorage.getItem('4ayka_theme') === 'light'; } catch (e) { /* storage off */ }
+            if (isLight) document.body.classList.add('light');
+            var themeBtn = document.getElementById('theme-toggle');
+            if (themeBtn) {
+                themeBtn.textContent = isLight ? '\u2600' : '\u263D';
+                themeBtn.addEventListener('click', function () {
+                    isLight = !isLight;
+                    document.body.classList.toggle('light', isLight);
+                    themeBtn.textContent = isLight ? '\u2600' : '\u263D';
+                    try { localStorage.setItem('4ayka_theme', isLight ? 'light' : 'dark'); } catch (e) { /* storage off */ }
+                });
+            }
 
-        // Articles
-        function openArticle(id) {
-            document.getElementById('blog-list').style.display = 'none';
-            document.querySelectorAll('.article-full').forEach(a => a.classList.remove('active'));
-            const article = document.getElementById('article-' + id);
-            if (article) article.classList.add('active');
-            window.scrollTo(0, 0);
-        }
-        function closeArticle() {
-            document.querySelectorAll('.article-full').forEach(a => a.classList.remove('active'));
-            document.getElementById('blog-list').style.display = 'block';
-            window.scrollTo(0, 0);
-        }
+            // Articles
+            var list = document.getElementById('blog-list');
+            function openArticle(id) {
+                list.style.display = 'none';
+                document.querySelectorAll('.post-full').forEach(function (a) { a.classList.remove('active'); });
+                var post = document.getElementById('post-' + id);
+                if (post) post.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+            function closeArticle() {
+                document.querySelectorAll('.post-full').forEach(function (a) { a.classList.remove('active'); });
+                list.style.display = 'block';
+                window.scrollTo(0, 0);
+            }
+
+            document.querySelectorAll('[data-article]').forEach(function (card) {
+                card.addEventListener('click', function () {
+                    openArticle(card.getAttribute('data-article'));
+                });
+            });
+            document.querySelectorAll('[data-close]').forEach(function (btn) {
+                btn.addEventListener('click', closeArticle);
+            });
+            document.querySelectorAll('[data-same]').forEach(function (link) {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    openArticle(link.getAttribute('data-same'));
+                });
+            });
+        })();
     </script>
 </body>
 </html>
