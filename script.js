@@ -218,18 +218,25 @@
 })();
 
 // --------------------------------- VERSIONS ----------------------------------
+// Pull the real release version from each repo's VERSION file (raw GitHub is
+// always served, unlike the /api/version endpoints behind a running server).
+// On any failure the hardcoded span text stays as the offline fallback.
 (function initVersions() {
     var map = {
-        'version-slingor': 'https://krempik.github.io/slingor/api/version',
-        'version-tblocks': 'https://krempik.github.io/tblocks/api/version',
-        'version-messenger': 'https://krempik.github.io/messenger/api/version'
+        'version-slingor': 'https://raw.githubusercontent.com/krempik/slingor/main/VERSION',
+        'version-tblocks': 'https://raw.githubusercontent.com/krempik/tblocks/main/VERSION',
+        'version-messenger': 'https://raw.githubusercontent.com/krempik/messenger/main/VERSION'
     };
     Object.keys(map).forEach(function (id) {
         fetch(map[id])
-            .then(function (r) { return r.json(); })
-            .then(function (d) {
+            .then(function (r) {
+                if (!r.ok) throw new Error('HTTP ' + r.status);
+                return r.text();
+            })
+            .then(function (text) {
+                var v = text.trim();
                 var el = document.getElementById(id);
-                if (el && d && d.version) el.textContent = 'v' + d.version;
+                if (el && v) el.textContent = 'v' + v;
             })
             .catch(function () { /* keep the hardcoded fallback */ });
     });
