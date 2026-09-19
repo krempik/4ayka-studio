@@ -249,7 +249,9 @@ var termFS={};
 Object.keys(VFS).forEach(function(k){termFS[k]=JSON.parse(JSON.stringify(VFS[k]))});
 
 function persistFS(){
-  try{localStorage.setItem('4ayka_vfs',JSON.stringify(termFS));}
+  var blob=JSON.stringify(termFS);
+  if(blob.length>4000000){console.warn('fs persist skipped: blob too large ('+blob.length+' bytes)');return;}
+  try{localStorage.setItem('4ayka_vfs',blob);}
   catch(err){console.warn('fs persist failed:',err);}
 }
 function overlayFS(){
@@ -660,7 +662,8 @@ function printTerm(el,txt,color){
 function initTerm(w){
   var out=w.querySelector('[id^=tout-]');
   var inp=w.querySelector('[id^=tin-]');
-  var hist=[];
+  // ArrowUp/Down navigate the *shared* cmdHistory (single source of truth);
+  // each window keeps only its own navigation index into that list.
   var histIdx=-1;
   var cmds=['help','clear','ls','cd','cat','pwd','echo','whoami','uname','date','uptime','tree','ps','df','free','top','ping','cowsay','fortune','nano','mkdir','rm','touch','history','exit','reboot'];
   printTerm(out,'4aykaOS Terminal v1.0\nType "help" for commands.\n','#777');
@@ -668,10 +671,10 @@ function initTerm(w){
     if(e.key==='Enter'){
       var cmd=inp.value.trim();
       inp.value='';
-      if(cmd){hist.push(cmd);histIdx=hist.length;printTerm(out,'\n'+termUser+' '+termDir+'$ '+cmd+'\n','#0af');execCmd(cmd,out);}
+      if(cmd){if(cmdHistory[cmdHistory.length-1]!==cmd){cmdHistory.push(cmd);if(cmdHistory.length>100)cmdHistory.shift();}histIdx=cmdHistory.length;printTerm(out,'\n'+termUser+' '+termDir+'$ '+cmd+'\n','#0af');execCmd(cmd,out);}
     }
-    else if(e.key==='ArrowUp'){e.preventDefault();if(histIdx>0){histIdx--;inp.value=hist[histIdx];}}
-    else if(e.key==='ArrowDown'){e.preventDefault();if(histIdx<hist.length-1){histIdx++;inp.value=hist[histIdx];}else{histIdx=hist.length;inp.value='';}}
+    else if(e.key==='ArrowUp'){e.preventDefault();if(histIdx>0){histIdx--;inp.value=cmdHistory[histIdx];}}
+    else if(e.key==='ArrowDown'){e.preventDefault();if(histIdx<cmdHistory.length-1){histIdx++;inp.value=cmdHistory[histIdx];}else{histIdx=cmdHistory.length;inp.value='';}}
     else if(e.key==='Tab'){
       e.preventDefault();
       var wd=inp.value.trim().split(/\s+/);
@@ -700,7 +703,6 @@ function initTerm(w){
 }
 
 function execCmd(cmd,out){
-  cmdHistory.push(cmd);
   var parts=cmd.split(/\s+/);
   var c=parts[0];
   var a=parts.slice(1).join(' ');

@@ -225,7 +225,8 @@
     var map = {
         'version-slingor': 'https://raw.githubusercontent.com/krempik/slingor/main/VERSION',
         'version-tblocks': 'https://raw.githubusercontent.com/krempik/tblocks/main/VERSION',
-        'version-messenger': 'https://raw.githubusercontent.com/krempik/messenger/main/VERSION'
+        'version-messenger': 'https://raw.githubusercontent.com/krempik/messenger/main/VERSION',
+        'version-dungeon': 'https://raw.githubusercontent.com/krempik/dungeon/main/VERSION'
     };
     Object.keys(map).forEach(function (id) {
         fetch(map[id])
