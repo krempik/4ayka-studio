@@ -81,6 +81,19 @@
     Array.prototype.forEach.call(nums, function (el) { io.observe(el); });
 })();
 
+// -------------------------------- STUDIO DAYS --------------------------------
+// "Дней работы студии" считаются от первого коммита сайта (2026-08-26).
+// Чистый календарь — никаких внешних API. Значение подставляется до запуска
+// счётчиков, чтобы анимация шла по актуальному data-target.
+(function studioDays() {
+    var el = document.getElementById('stat-days');
+    if (!el) return;
+    var anchor = Date.UTC(2026, 7, 26);
+    var days = Math.max(Math.floor((Date.now() - anchor) / 86400000), 1);
+    el.setAttribute('data-target', String(days));
+    el.textContent = days;
+})();
+
 // ------------------------------- LIVE GITHUB STATS ---------------------------
 // Pulls real numbers from the GitHub API (public repos, non-forks) and keeps
 // them in localStorage for one hour so the unauthenticated rate limit is not
@@ -89,16 +102,11 @@
     var stats = document.querySelectorAll('[data-live]');
     if (!stats.length) return;
     var reposEl = document.getElementById('stat-projects');
-    var starsEl = document.getElementById('stat-stars');
 
-    function apply(repos, stars) {
+    function apply(repos) {
         if (reposEl && reposEl.getAttribute('data-target')) {
             reposEl.setAttribute('data-target', String(repos));
             reposEl.textContent = repos;
-        }
-        if (starsEl && starsEl.getAttribute('data-target')) {
-            starsEl.setAttribute('data-target', String(stars));
-            starsEl.textContent = stars;
         }
     }
 
@@ -115,11 +123,10 @@
             return null;
         }
     }
-    function storeCache(repos, stars) {
+    function storeCache(repos) {
         try {
             localStorage.setItem(KEY, JSON.stringify({
                 repos: repos,
-                stars: stars,
                 expires: Date.now() + 60 * 60 * 1000
             }));
         } catch (e) {
@@ -129,7 +136,7 @@
 
     var cached = readCache();
     if (cached) {
-        apply(cached.repos, cached.stars);
+        apply(cached.repos);
         return;
     }
 
@@ -140,9 +147,8 @@
         })
         .then(function (repos) {
             var owned = repos.filter(function (r) { return !r.fork; });
-            var stars = owned.reduce(function (sum, r) { return sum + (r.stargazers_count || 0); }, 0);
-            apply(owned.length, stars);
-            storeCache(owned.length, stars);
+            apply(owned.length);
+            storeCache(owned.length);
         })
         .catch(function (e) {
             console.warn('github stats fallback kept', e);
