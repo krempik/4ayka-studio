@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 Canvas: игровой цикл для начинающих | 4ayka Studio</title>
+    <meta name="description" content="requestAnimationFrame, фиксированный шаг с аккумулятором, коллизии и DPR. Минимум теории — максимум кода.">
+    <meta name="author" content="4ayka Studio">
+    <meta property="og:title" content="HTML5 Canvas: игровой цикл для начинающих | 4ayka Studio">
+    <meta property="og:description" content="requestAnimationFrame, фиксированный шаг с аккумулятором, коллизии и DPR. Минимум теории — максимум кода.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://krempik.github.io/4ayka-studio/blog/canvas.html">
+    <meta property="og:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
+    <meta property="og:site_name" content="4ayka Studio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="HTML5 Canvas: игровой цикл для начинающих | 4ayka Studio">
+    <meta name="twitter:description" content="requestAnimationFrame, фиксированный шаг с аккумулятором, коллизии и DPR. Минимум теории — максимум кода.">
+    <meta name="twitter:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
+    <link rel="canonical" href="https://krempik.github.io/4ayka-studio/blog/canvas.html">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0e1a'/><text x='50' y='74' font-size='62' text-anchor='middle' fill='%2322d3ee' font-family='monospace' font-weight='bold'>4</text></svg>">
+    <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#0b0e1a">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="../site.js"></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"HTML5 Canvas: игровой цикл для начинающих","description":"requestAnimationFrame, фиксированный шаг с аккумулятором, коллизии и DPR. Минимум теории — максимум кода.","datePublished":"2026-09-01","inLanguage":"ru","mainEntityOfPage":"https://krempik.github.io/4ayka-studio/blog/canvas.html","author":{"@type":"Organization","name":"4ayka Studio","url":"https://krempik.github.io/4ayka-studio"},"publisher":{"@type":"Organization","name":"4ayka Studio","url":"https://krempik.github.io/4ayka-studio"},"image":"https://krempik.github.io/4ayka-studio/img/og-blog.png"}</script>
+</head>
+<body>
+    <a class="skip-link" href="#content">К содержимому</a>
+    <nav class="nav" id="nav">
+        <a href="../index.html" class="logo">4ayka<span>studio</span></a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html#home">Главная</a></li>
+            <li><a href="../index.html#games">Игры</a></li>
+            <li><a href="../index.html#apps">Приложения</a></li>
+            <li><a href="../index.html#about">О студии</a></li>
+            <li><a href="../blog/" class="active">Блог</a></li>
+            <li><a href="../desktop.html">PC Sim</a></li>
+            <li><a href="../index.html#contact">Контакты</a></li>
+        </ul>
+        <div class="nav-meta">
+            <button class="theme-toggle" id="theme-toggle" title="Сменить тему" aria-label="Сменить тему" aria-pressed="false">&#9789;</button>
+            <button class="burger" id="burger" aria-label="Меню" aria-controls="nav-links" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <main id="content">
+        <article class="section page-section">
+            <div class="container">
+                <a class="back-btn" href="index.html">&larr; ко всем постам</a>
+                <article class="post-full">
+                    <h1>HTML5 Canvas: игровой цикл для начинающих</h1>
+                    <p class="subtitle">2026-09-01 | TUTORIAL, CANVAS</p>
+                    <div class="post-body">
+                <p>Основа любой Canvas-игры — цикл <code>requestAnimationFrame</code>. Минимум теории, максимум кода.</p>
+
+                <h3>Базовый цикл</h3>
+                <pre>function gameLoop(ts) {
+    update(dt);   // логика
+    draw();       // отрисовка
+    requestAnimationFrame(gameLoop);
+}
+requestAnimationFrame(gameLoop);</pre>
+
+                <h3>Фиксированный шаг — правильно</h3>
+                <p>Если физика на клиенте, шаг времени должен быть стабильным. Накапливаем время и выполняем симуляцию фиксированными тиками:</p>
+                <pre>const STEP = 1000 / 30;
+let acc = 0, last = 0;
+function frame(ts) {
+    acc += Math.min(ts - last, 250);
+    last = ts;
+    while (acc >= STEP) { update(STEP); acc -= STEP; }
+    draw();
+    requestAnimationFrame(frame);
+}</pre>
+                <ul>
+                    <li>Кап аккумулятора (250 мс) спасает от «спирали смерти» при фоне вкладки</li>
+                    <li>Такой паттерн используется в Dungeon of the Void</li>
+                </ul>
+
+                <h3>Коллизии</h3>
+                <pre>function collides(a, b) {
+    return a.x < b.x + b.w && a.x + a.w > b.x &&
+           a.y < b.y + b.h && a.y + a.h > b.y;
+}</pre>
+
+                <h3>DPR: чтобы не было мыла</h3>
+                <p>На экранах с плотностью 2–3x растянутый канвас выглядит размытым. Учитывай <code>devicePixelRatio</code> и масштабируй контекст.</p>
+                <pre>const dpr = Math.min(devicePixelRatio || 1, 2);
+canvas.width = width * dpr;
+canvas.height = height * dpr;
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);</pre>
+
+                <p>Теперь хватит читать — пиши свою первую игру.</p>
+</div>
+                </article>
+                <nav class="post-nav">
+                <a href="fastapi.html" rel="prev">&larr; FastAPI за 30 минут: REST API для микропроектов</a>
+                <a href="vanilla.html" rel="next">Почему Vanilla JS, а не фреймворк &rarr;</a>
+                </nav>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-name">4AYKA STUDIO &middot; 2026</p>
+            <p class="footer-meta">сделано в одиночку, с любовью к коду</p>
+        </div>
+    </footer>
+</body>
+</html>

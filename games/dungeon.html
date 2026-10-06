@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon of the Void — браузерная игра | 4ayka Studio</title>
+    <meta name="description" content="Рогалик на 100 этажей: процедурные миры из сида, три класса, волшебство и сейвы, которые не ломаются. Один поток rAF, рендер на Canvas 2D.">
+    <meta name="author" content="4ayka Studio">
+    <meta property="og:title" content="Dungeon of the Void — браузерная игра | 4ayka Studio">
+    <meta property="og:description" content="Рогалик на 100 этажей: процедурные миры из сида, три класса, волшебство и сейвы, которые не ломаются. Один поток rAF, рендер на Canvas 2D.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://krempik.github.io/4ayka-studio/games/dungeon.html">
+    <meta property="og:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
+    <meta property="og:site_name" content="4ayka Studio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Dungeon of the Void — браузерная игра | 4ayka Studio">
+    <meta name="twitter:description" content="Рогалик на 100 этажей: процедурные миры из сида, три класса, волшебство и сейвы, которые не ломаются. Один поток rAF, рендер на Canvas 2D.">
+    <meta name="twitter:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
+    <link rel="canonical" href="https://krempik.github.io/4ayka-studio/games/dungeon.html">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0e1a'/><text x='50' y='74' font-size='62' text-anchor='middle' fill='%2322d3ee' font-family='monospace' font-weight='bold'>4</text></svg>">
+    <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#0b0e1a">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="../site.js"></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Dungeon of the Void","description":"Рогалик на 100 этажей: процедурные миры из сида, три класса, волшебство и сейвы, которые не ломаются. Один поток rAF, рендер на Canvas 2D.","applicationCategory":"GameApplication","operatingSystem":"Any (web browser)","url":"https://krempik.github.io/dungeon","image":"https://krempik.github.io/4ayka-studio/img/game-dungeon.png","inLanguage":"ru","author":{"@type":"Organization","name":"4ayka Studio","url":"https://krempik.github.io/4ayka-studio"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body>
+    <a class="skip-link" href="#content">К содержимому</a>
+    <nav class="nav" id="nav">
+        <a href="../index.html" class="logo">4ayka<span>studio</span></a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html#home">Главная</a></li>
+            <li><a href="../index.html#games" class="active">Игры</a></li>
+            <li><a href="../index.html#apps">Приложения</a></li>
+            <li><a href="../index.html#about">О студии</a></li>
+            <li><a href="../blog/">Блог</a></li>
+            <li><a href="../desktop.html">PC Sim</a></li>
+            <li><a href="../index.html#contact">Контакты</a></li>
+        </ul>
+        <div class="nav-meta">
+            <button class="theme-toggle" id="theme-toggle" title="Сменить тему" aria-label="Сменить тему" aria-pressed="false">&#9789;</button>
+            <button class="burger" id="burger" aria-label="Меню" aria-controls="nav-links" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <main id="content">
+        <section class="section page-section">
+            <div class="container">
+                <a class="back-btn" href="../index.html#games">&larr; все игры</a>
+                <div class="game-head">
+                    <img class="game-cover" src="../img/game-dungeon.png" alt="Dungeon of the Void — обложка" width="1280" height="720" loading="lazy">
+                    <div class="game-head-body">
+                        <div class="post-meta"><span class="tag">РОГАЛИК</span><span class="tag">PROCEDURAL</span><span class="tag">CANVAS</span></div>
+                        <h1 class="game-title">Dungeon of the Void</h1>
+                        <p class="game-lead">Рогалик на 100 этажей: процедурные миры из сида, три класса, волшебство и сейвы, которые не ломаются. Один поток rAF, рендер на Canvas 2D.</p>
+                        <div class="game-actions">
+                            <a class="btn btn-primary" href="https://krempik.github.io/dungeon" target="_blank" rel="noopener">Играть</a>
+                            <a class="btn btn-ghost" href="https://github.com/krempik/dungeon" target="_blank" rel="noopener">Репозиторий</a>
+                            <span class="version" id="version-dungeon">v1.0.1</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-spec">
+    <h2>Что внутри</h2>
+    <ul>
+        <li><b>Процедурная генерация</b> — каждый этаж собирается из сида: загрузил сейв, получил тот же мир.</li>
+        <li><b>100 этажей</b>, боссы, финальная победа и 11 книг лора по пути.</li>
+        <li><b>Три класса</b> с пассивными умениями и магазинами между этажами.</li>
+        <li><b>Сейвы в localStorage</b> с версионированием и миграцией старых схем.</li>
+        <li><b>EN/RU</b> локализация и процедурная музыка через Web Audio.</li>
+    </ul>
+
+    <h2>Управление</h2>
+    <table class="spec-table">
+        <tr><th>Действие</th><th>Клавиши</th></tr>
+        <tr><td>Движение</td><td><code>WASD</code> / стрелки</td></tr>
+        <tr><td>Атака</td><td><code>Space</code> / клик</td></tr>
+        <tr><td>Способность класса</td><td><code>Q</code></td></tr>
+        <tr><td>Предметы и инвентарь</td><td><code>E</code> / <code>I</code></td></tr>
+        <tr><td>Пауза</td><td><code>Esc</code></td></tr>
+    </table>
+
+    <h2>Техническая часть</h2>
+    <ul>
+        <li>Фиксированный тик <b>30 Гц</b> с аккумулятором и капом — после паузы игра не «догоняет» время.</li>
+        <li>DPR-aware рендер: на экранах 2–3x тайлы остаются чёткими и кэшируются.</li>
+        <li>12 модулей IIFE с однонаправленными зависимами: симуляция, рендер и UI жёстко разделены.</li>
+        <li>Чистая логика не трогает DOM — отсюда легкость тестирования.</li>
+        <li>Спавн без <code>Math.random</code>: мир детерминирован сидом.</li>
+    </ul>
+    <pre>Тик:        1000/30 мс, аккумулятор с капом 8 тиков
+Модули:     12 IIFE, однонаправленные зависимости
+Procedural: сид → мир, без Math.random в спавне
+Статус:     играбелен от старта до победы</pre>
+</div>
+                <p class="page-note">Подробнее в блоге: <a href="../blog/dungeon.html">Dungeon of the Void: рогалик на 100 этажей</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-name">4AYKA STUDIO &middot; 2026</p>
+            <p class="footer-meta">сделано в одиночку, с любовью к коду</p>
+        </div>
+    </footer>
+</body>
+</html>

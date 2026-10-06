@@ -1,0 +1,54 @@
+<!--meta
+{
+  "slug": "canvas",
+  "date": "2026-09-01",
+  "tags": [
+    "TUTORIAL",
+    "CANVAS"
+  ],
+  "title": "HTML5 Canvas: игровой цикл для начинающих",
+  "lead": "requestAnimationFrame, фиксированный шаг с аккумулятором, коллизии и DPR. Минимум теории — максимум кода."
+}
+-->
+<div class="post-body">
+                <p>Основа любой Canvas-игры — цикл <code>requestAnimationFrame</code>. Минимум теории, максимум кода.</p>
+
+                <h3>Базовый цикл</h3>
+                <pre>function gameLoop(ts) {
+    update(dt);   // логика
+    draw();       // отрисовка
+    requestAnimationFrame(gameLoop);
+}
+requestAnimationFrame(gameLoop);</pre>
+
+                <h3>Фиксированный шаг — правильно</h3>
+                <p>Если физика на клиенте, шаг времени должен быть стабильным. Накапливаем время и выполняем симуляцию фиксированными тиками:</p>
+                <pre>const STEP = 1000 / 30;
+let acc = 0, last = 0;
+function frame(ts) {
+    acc += Math.min(ts - last, 250);
+    last = ts;
+    while (acc >= STEP) { update(STEP); acc -= STEP; }
+    draw();
+    requestAnimationFrame(frame);
+}</pre>
+                <ul>
+                    <li>Кап аккумулятора (250 мс) спасает от «спирали смерти» при фоне вкладки</li>
+                    <li>Такой паттерн используется в Dungeon of the Void</li>
+                </ul>
+
+                <h3>Коллизии</h3>
+                <pre>function collides(a, b) {
+    return a.x < b.x + b.w && a.x + a.w > b.x &&
+           a.y < b.y + b.h && a.y + a.h > b.y;
+}</pre>
+
+                <h3>DPR: чтобы не было мыла</h3>
+                <p>На экранах с плотностью 2–3x растянутый канвас выглядит размытым. Учитывай <code>devicePixelRatio</code> и масштабируй контекст.</p>
+                <pre>const dpr = Math.min(devicePixelRatio || 1, 2);
+canvas.width = width * dpr;
+canvas.height = height * dpr;
+ctx.setTransform(dpr, 0, 0, dpr, 0, 0);</pre>
+
+                <p>Теперь хватит читать — пиши свою первую игру.</p>
+</div>

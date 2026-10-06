@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-Blocks 4.0: тетрис, который дорос до боссов | 4ayka Studio</title>
+    <meta name="description" content="Четыре режима, три босса, восемь павер-аппов и живой лидерборд. Вся игра — один HTML-файл без зависимостей.">
+    <meta name="author" content="4ayka Studio">
+    <meta property="og:title" content="T-Blocks 4.0: тетрис, который дорос до боссов | 4ayka Studio">
+    <meta property="og:description" content="Четыре режима, три босса, восемь павер-аппов и живой лидерборд. Вся игра — один HTML-файл без зависимостей.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://krempik.github.io/4ayka-studio/blog/tblocks.html">
+    <meta property="og:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
+    <meta property="og:site_name" content="4ayka Studio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="T-Blocks 4.0: тетрис, который дорос до боссов | 4ayka Studio">
+    <meta name="twitter:description" content="Четыре режима, три босса, восемь павер-аппов и живой лидерборд. Вся игра — один HTML-файл без зависимостей.">
+    <meta name="twitter:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
+    <link rel="canonical" href="https://krempik.github.io/4ayka-studio/blog/tblocks.html">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0e1a'/><text x='50' y='74' font-size='62' text-anchor='middle' fill='%2322d3ee' font-family='monospace' font-weight='bold'>4</text></svg>">
+    <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#0b0e1a">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="../site.js"></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"T-Blocks 4.0: тетрис, который дорос до боссов","description":"Четыре режима, три босса, восемь павер-аппов и живой лидерборд. Вся игра — один HTML-файл без зависимостей.","datePublished":"2026-09-12","inLanguage":"ru","mainEntityOfPage":"https://krempik.github.io/4ayka-studio/blog/tblocks.html","author":{"@type":"Organization","name":"4ayka Studio","url":"https://krempik.github.io/4ayka-studio"},"publisher":{"@type":"Organization","name":"4ayka Studio","url":"https://krempik.github.io/4ayka-studio"},"image":"https://krempik.github.io/4ayka-studio/img/og-blog.png"}</script>
+</head>
+<body>
+    <a class="skip-link" href="#content">К содержимому</a>
+    <nav class="nav" id="nav">
+        <a href="../index.html" class="logo">4ayka<span>studio</span></a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html#home">Главная</a></li>
+            <li><a href="../index.html#games">Игры</a></li>
+            <li><a href="../index.html#apps">Приложения</a></li>
+            <li><a href="../index.html#about">О студии</a></li>
+            <li><a href="../blog/" class="active">Блог</a></li>
+            <li><a href="../desktop.html">PC Sim</a></li>
+            <li><a href="../index.html#contact">Контакты</a></li>
+        </ul>
+        <div class="nav-meta">
+            <button class="theme-toggle" id="theme-toggle" title="Сменить тему" aria-label="Сменить тему" aria-pressed="false">&#9789;</button>
+            <button class="burger" id="burger" aria-label="Меню" aria-controls="nav-links" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <main id="content">
+        <article class="section page-section">
+            <div class="container">
+                <a class="back-btn" href="index.html">&larr; ко всем постам</a>
+                <article class="post-full">
+                    <h1>T-Blocks 4.0: тетрис, который дорос до боссов</h1>
+                    <p class="subtitle">2026-09-12 | GAMEDEV, CANVAS</p>
+                    <div class="post-body">
+                <p>T-Blocks начинался как обычный тетрис. Потом появились боссы, павер-аппы, достижения и лидерборд. Вся игра — один HTML-файл на ~1400 строк, открывается в браузере без единой зависимости.</p>
+
+                <h3>Режимы</h3>
+                <ul>
+                    <li><b>Классический</b> — комбо и бонусы</li>
+                    <li><b>Марафон</b> — бесконечный, скорость растёт</li>
+                    <li><b>Битва с Боссом</b> — линии наносят урон, босс отвечает мусорными рядами</li>
+                    <li><b>Ультра</b> — две минуты на максимум очков</li>
+                </ul>
+
+                <h3>Боссы</h3>
+                <p>Каждый босс периодически проталкивает поле вверх, добавляя мусорный ряд снизу:</p>
+                <pre>Кубик Хаоса      325 HP  атака каждые 260 тиков  +1 ряд
+Призма Тьмы      520 HP  атака каждые 180 тиков  +2 ряда
+Тетроментор      780 HP  атака каждые 130 тиков  +3 ряда</pre>
+
+                <h3>Павер-аппы (8 штук)</h3>
+                <p>Бомба (взрыв 3×3), Залп (чистит нижний ряд), Заморозка (замедление 5 с), Магнит (притягивает блоки), Ядерка (3 случайных ряда), Клон (повтор последнего бонуса), Зеркало (реверс поля), Шахматы (смена цветов).</p>
+
+                <h3>Из первого релиза</h3>
+                <ul>
+                    <li>12 достижений — от «первой линии» до 500 000 очков</li>
+                    <li>4 темы: Matrix, Neon, Retro, Mono</li>
+                    <li>Процедурный звук через Web Audio — ни одного аудиофайла</li>
+                    <li>Лидерборд и статистика на FastAPI</li>
+                    <li>PWA-манифест и service worker</li>
+                </ul>
+                <p>Играть: <code><a href="https://krempik.github.io/tblocks">krempik.github.io/tblocks</a></code></p>
+</div>
+                </article>
+                <nav class="post-nav">
+                <a href="messenger.html" rel="prev">&larr; Frendo: E2E-шифрование своими руками</a>
+                <a href="dungeon.html" rel="next">Dungeon of the Void: рогалик на 100 этажей &rarr;</a>
+                </nav>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-name">4AYKA STUDIO &middot; 2026</p>
+            <p class="footer-meta">сделано в одиночку, с любовью к коду</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!--meta
+{
+  "slug": "fastapi",
+  "date": "2026-08-28",
+  "tags": [
+    "PYTHON",
+    "BACKEND"
+  ],
+  "title": "FastAPI за 30 минут: REST API для микропроектов",
+  "lead": "От установки до работающего сервера с WebSocket и SQLAlchemy. Минимальный референс под каждый проект студии."
+}
+-->
+<div class="post-body">
+                <p>FastAPI — фреймворк, на котором построены бэкенды студии: лидерборд T-Blocks, комнаты SLINGOR и Frendo.</p>
+
+                <h3>Минимальный сервер</h3>
+                <pre>from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+def root():
+    return {"status": "online"}</pre>
+
+                <h3>WebSocket</h3>
+                <pre>@app.websocket("/ws")
+async def ws(websocket: WebSocket):
+    await websocket.accept()
+    data = await websocket.receive_json()
+    await websocket.send_json({"ok": True})</pre>
+
+                <h3>SQLAlchemy</h3>
+                <p>Вместе со SQLite это закрывает весь «микропроект» от схемы до реального времени. А если сервисов становится много — на помощь приходит <a href="blog.html" data-same="kit">4ayka-kit</a>, который генерирует это из YAML.</p>
+
+                <pre>Стек студии для бэкенда:
+  FastAPI + SQLAlchemy + SQLite
+  WebSocket для реалтайма
+  JWT (PBKDF2 хеши) для авторизации</pre>
+</div>

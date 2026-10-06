@@ -10,34 +10,56 @@
     <meta property="og:description" content="Браузерные игры, мультиплеер, рогалики и инструменты разработчика. Vanilla JS + Python. Без фреймворков, без компиляторов.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://krempik.github.io/4ayka-studio">
+    <meta property="og:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
     <meta property="og:site_name" content="4ayka Studio">
-    <meta name="twitter:card" content="summary">
+    <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="4ayka Studio — инди-геймдев">
     <meta name="twitter:description" content="Браузерные игры, мультиплеер, рогалики и инструменты разработчика.">
+    <meta name="twitter:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
     <link rel="canonical" href="https://krempik.github.io/4ayka-studio">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0e1a'/><text x='50' y='74' font-size='62' text-anchor='middle' fill='%2322d3ee' font-family='monospace' font-weight='bold'>4</text></svg>">
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="theme-color" content="#0b0e1a">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="site.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "4ayka Studio",
+        "alternateName": "4aykaStudio",
+        "url": "https://krempik.github.io/4ayka-studio",
+        "inLanguage": "ru",
+        "author": {
+            "@type": "Organization",
+            "name": "4ayka Studio",
+            "url": "https://github.com/krempik"
+        }
+    }
+    </script>
 </head>
 <body>
     <canvas id="space" aria-hidden="true"></canvas>
+    <a class="skip-link" href="#games">К содержимому</a>
 
     <nav class="nav" id="nav">
         <a href="#home" class="logo">4ayka<span>studio</span></a>
-        <ul class="nav-links">
+        <ul class="nav-links" id="nav-links">
             <li><a href="#home">Главная</a></li>
             <li><a href="#games">Игры</a></li>
             <li><a href="#apps">Приложения</a></li>
             <li><a href="#about">О студии</a></li>
-            <li><a href="blog.html">Блог</a></li>
+            <li><a href="blog/">Блог</a></li>
             <li><a href="desktop.html">PC Sim</a></li>
             <li><a href="#contact">Контакты</a></li>
         </ul>
         <div class="nav-meta">
-            <button class="theme-toggle" id="theme-toggle" title="Сменить тему" aria-label="Сменить тему">&#9789;</button>
-            <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+            <button class="theme-toggle" id="theme-toggle" title="Сменить тему" aria-label="Сменить тему" aria-pressed="false">&#9789;</button>
+            <button class="burger" id="burger" aria-label="Меню" aria-controls="nav-links" aria-expanded="false"><span></span><span></span><span></span></button>
         </div>
     </nav>
 
@@ -52,7 +74,7 @@
             </div>
             <div class="hero-feature">
                 <p class="hero-feature-head">Сегодня в прокачке</p>
-                <p class="hero-feature-line">● SLINGOR 1.4 — гравитационные пращи · ● Dungeon — рогалик в работе · ● Блог обновлён</p>
+                <p class="hero-feature-line">● SLINGOR 1.5 — гравитационные пращи · ● Dungeon — рогалик в работе · ● Блог обновлён</p>
             </div>
         </div>
     </header>
@@ -76,6 +98,7 @@
                         </ul>
                         <div class="featured-actions">
                             <a href="https://krempik.github.io/slingor" target="_blank" rel="noopener" class="btn btn-primary">Играть</a>
+                            <a href="games/slingor.html" class="card-link">Подробнее &#8594;</a>
                             <span class="version" id="version-slingor">v1.5.0</span>
                         </div>
                     </div>
@@ -91,28 +114,32 @@
 
                 <div class="cards-grid">
                     <article class="card" data-reveal>
+                        <a href="games/tblocks.html" aria-label="T-Blocks — подробнее">
+                            <img class="card-cover" src="img/game-tblocks.png" alt="T-Blocks — тетрис с боссами" width="640" height="360" loading="lazy">
+                        </a>
                         <div class="card-top">
-                            <span class="card-emoji" aria-hidden="true">&#9649;</span>
                             <span class="tag">ОФИЦИАЛЬНО ВЫПУЩЕНО</span>
                         </div>
                         <h3>T-Blocks</h3>
                         <p>Тетрис-++: боссы толкают поле, 8 павер-аппов, 12 достижений, 4 темы и живой лидерборд на FastAPI.</p>
                         <div class="card-foot">
                             <span class="version" id="version-tblocks">v4.1.0</span>
-                            <a href="https://krempik.github.io/tblocks" target="_blank" rel="noopener" class="card-link">Играть &#8594;</a>
+                            <a href="games/tblocks.html" class="card-link">Подробнее &#8594;</a>
                         </div>
                     </article>
 
                     <article class="card" data-reveal>
+                        <a href="games/dungeon.html" aria-label="Dungeon of the Void — подробнее">
+                            <img class="card-cover" src="img/game-dungeon.png" alt="Dungeon of the Void — рогалик на 100 этажей" width="640" height="360" loading="lazy">
+                        </a>
                         <div class="card-top">
-                            <span class="card-emoji" aria-hidden="true">&#9876;&#65039;</span>
                             <span class="tag">ОФИЦИАЛЬНО ВЫПУЩЕНО</span>
                         </div>
                         <h3>Dungeon of the Void</h3>
                         <p>Рогалик на 100 этажей: процедурные миры, волшебство и сейвы. Всё на одном потоке rAF, рендер на Canvas 2D.</p>
                         <div class="card-foot">
                             <span class="version" id="version-dungeon">v1.0.1</span>
-                            <a href="https://krempik.github.io/dungeon" target="_blank" rel="noopener" class="card-link">Играть &#8594;</a>
+                            <a href="games/dungeon.html" class="card-link">Подробнее &#8594;</a>
                         </div>
                     </article>
                 </div>
@@ -166,13 +193,13 @@
                         <p>Python + FastAPI на сервере, vanilla JS на клиенте. Фреймворки — только там, где без них нельзя.</p>
                     </div>
                     <div class="card stats-card" data-reveal>
-                        <div class="stat" data-reveal>
-                            <span class="stat-number" data-target="3">0</span>
-                            <span class="stat-label">проекта в открытом коде</span>
+                        <div class="stat" data-reveal data-live>
+                            <span class="stat-number" id="stat-projects" data-target="3">0</span>
+                            <span class="stat-label">проектов в открытом коде</span>
                         </div>
-                        <div class="stat" data-reveal>
-                            <span class="stat-number" data-target="2">0</span>
-                            <span class="stat-label">браузерные игры</span>
+                        <div class="stat" data-reveal data-live>
+                            <span class="stat-number" id="stat-stars" data-target="112">0</span>
+                            <span class="stat-label">звёзд на GitHub</span>
                         </div>
                         <div class="stat" data-reveal>
                             <span class="stat-number" data-target="112">0</span>
@@ -214,6 +241,13 @@
                             <textarea id="contact-message" placeholder="привет! у меня есть идея игры…" rows="5" required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Отправить в Telegram</button>
+                        <div class="contact-fallback" id="contact-fallback" hidden>
+                            <p class="contact-note" data-status aria-live="polite"></p>
+                            <div class="fallback-row">
+                                <a class="btn btn-ghost" target="_blank" rel="noopener">Открыть Telegram</a>
+                                <button type="button" class="btn btn-ghost" data-copy>Скопировать сообщение</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

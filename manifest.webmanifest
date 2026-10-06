@@ -1,0 +1,31 @@
+{
+    "name": "4ayka Studio",
+    "short_name": "4ayka",
+    "description": "Инди-студия: браузерные игры, геймдев-инструменты и бэкенды на Python.",
+    "lang": "ru",
+    "start_url": "./index.html",
+    "scope": "./",
+    "display": "standalone",
+    "background_color": "#0b0e1a",
+    "theme_color": "#0b0e1a",
+    "icons": [
+        {
+            "src": "img/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "img/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "img/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

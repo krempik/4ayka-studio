@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://krempik.github.io/4ayka-studio/sitemap.xml

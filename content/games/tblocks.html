@@ -1,0 +1,48 @@
+<!--meta
+{
+  "slug": "tblocks",
+  "title": "T-Blocks",
+  "lead": "Тетрис-++: боссы толкают поле вверх, 8 павер-аппов, 12 достижений, 4 темы и живой лидерборд на FastAPI. Вся игра — один HTML-файл.",
+  "tags": ["АРКАДА", "LEADERBOARD", "PWA"],
+  "cover": "game-tblocks.png",
+  "play": "https://krempik.github.io/tblocks",
+  "repo": "https://github.com/krempik/tblocks",
+  "version_id": "version-tblocks",
+  "version_hint": "v4.1.0",
+  "related_post": "tblocks",
+  "related_title": "T-Blocks 4.0: тетрис, который дорос до боссов"
+}
+-->
+<div class="game-spec">
+    <h2>Режимы</h2>
+    <ul>
+        <li><b>Классический</b> — комбо и бонусы, стандартные правила.</li>
+        <li><b>Марафон</b> — бесконечный, скорость растёт с уровнем.</li>
+        <li><b>Битва с Боссом</b> — линии наносят урон, босс отвечает мусорными рядами.</li>
+        <li><b>Ультра</b> — две минуты на максимум очков.</li>
+    </ul>
+
+    <h2>Боссы</h2>
+    <p>Каждый босс периодически проталкивает поле вверх, добавляя мусорный ряд снизу:</p>
+    <pre>Кубик Хаоса      325 HP  атака каждые 260 тиков  +1 ряд
+Призма Тьмы      520 HP  атака каждые 180 тиков  +2 ряда
+Тетроментор      780 HP  атака каждые 130 тиков  +3 ряда</pre>
+
+    <h2>Управление</h2>
+    <table class="spec-table">
+        <tr><th>Действие</th><th>Клавиши</th></tr>
+        <tr><td>Движение</td><td><code>←</code> <code>→</code></td></tr>
+        <tr><td>Мягкое / жёсткое падение</td><td><code>↓</code> / <code>Space</code></td></tr>
+        <tr><td>Вращение</td><td><code>↑</code> / <code>X</code></td></tr>
+        <tr><td>Пауза</td><td><code>P</code> / <code>Esc</code></td></tr>
+    </table>
+
+    <h2>Техническая часть</h2>
+    <ul>
+        <li>Один HTML-файл на ~1400 строк, ноль зависимостей — открывается в браузере как есть.</li>
+        <li>Лидерборд и статистика — <code>FastAPI</code> + SQLite, версии в одном месте.</li>
+        <li>Процедурный звук через <code>Web Audio</code>: ни одного аудиофайла.</li>
+        <li>PWA-манифест и service worker — игра ставится на рабочий стол и работает офлайн.</li>
+        <li>12 достижений и 4 темы оформления: Matrix, Neon, Retro, Mono.</li>
+    </ul>
+</div>

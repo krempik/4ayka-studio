@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frendo: E2E-шифрование своими руками | 4ayka Studio</title>
+    <meta name="description" content="RSA-2048 + AES-256-GCM: сервер не видит содержимое, приватный ключ никогда не покидает браузер. Как это устроено.">
+    <meta name="author" content="4ayka Studio">
+    <meta property="og:title" content="Frendo: E2E-шифрование своими руками | 4ayka Studio">
+    <meta property="og:description" content="RSA-2048 + AES-256-GCM: сервер не видит содержимое, приватный ключ никогда не покидает браузер. Как это устроено.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://krempik.github.io/4ayka-studio/blog/messenger.html">
+    <meta property="og:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
+    <meta property="og:site_name" content="4ayka Studio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Frendo: E2E-шифрование своими руками | 4ayka Studio">
+    <meta name="twitter:description" content="RSA-2048 + AES-256-GCM: сервер не видит содержимое, приватный ключ никогда не покидает браузер. Как это устроено.">
+    <meta name="twitter:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
+    <link rel="canonical" href="https://krempik.github.io/4ayka-studio/blog/messenger.html">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0e1a'/><text x='50' y='74' font-size='62' text-anchor='middle' fill='%2322d3ee' font-family='monospace' font-weight='bold'>4</text></svg>">
+    <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#0b0e1a">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="../site.js"></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Frendo: E2E-шифрование своими руками","description":"RSA-2048 + AES-256-GCM: сервер не видит содержимое, приватный ключ никогда не покидает браузер. Как это устроено.","datePublished":"2026-09-10","inLanguage":"ru","mainEntityOfPage":"https://krempik.github.io/4ayka-studio/blog/messenger.html","author":{"@type":"Organization","name":"4ayka Studio","url":"https://krempik.github.io/4ayka-studio"},"publisher":{"@type":"Organization","name":"4ayka Studio","url":"https://krempik.github.io/4ayka-studio"},"image":"https://krempik.github.io/4ayka-studio/img/og-blog.png"}</script>
+</head>
+<body>
+    <a class="skip-link" href="#content">К содержимому</a>
+    <nav class="nav" id="nav">
+        <a href="../index.html" class="logo">4ayka<span>studio</span></a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html#home">Главная</a></li>
+            <li><a href="../index.html#games">Игры</a></li>
+            <li><a href="../index.html#apps">Приложения</a></li>
+            <li><a href="../index.html#about">О студии</a></li>
+            <li><a href="../blog/" class="active">Блог</a></li>
+            <li><a href="../desktop.html">PC Sim</a></li>
+            <li><a href="../index.html#contact">Контакты</a></li>
+        </ul>
+        <div class="nav-meta">
+            <button class="theme-toggle" id="theme-toggle" title="Сменить тему" aria-label="Сменить тему" aria-pressed="false">&#9789;</button>
+            <button class="burger" id="burger" aria-label="Меню" aria-controls="nav-links" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <main id="content">
+        <article class="section page-section">
+            <div class="container">
+                <a class="back-btn" href="index.html">&larr; ко всем постам</a>
+                <article class="post-full">
+                    <h1>Frendo: E2E-шифрование своими руками</h1>
+                    <p class="subtitle">2026-09-10 | APPS, SECURITY</p>
+                    <div class="post-body">
+                <p>Frendo — мессенджер, в котором сервер не может прочитать сообщения. Не маркетинг, а реализация на Web Crypto API.</p>
+
+                <h3>Как устроено шифрование</h3>
+                <ol>
+                    <li>При регистрации генерируется пара <b>RSA-2048</b>; публичный ключ уходит на сервер, приватный остаётся в браузере</li>
+                    <li>На каждое сообщение создаётся одноразовый ключ <b>AES-256-GCM</b></li>
+                    <li>Сообщение шифруется AES, сам AES-ключ заворачивается RSA-ключом получателя</li>
+                    <li>На сервер уходит только шифротекст — расшифровать его без приватного ключа невозможно</li>
+                </ol>
+
+                <h3>Стек</h3>
+                <pre>Backend:   Python, FastAPI, SQLAlchemy, WebSocket
+Frontend:  Vanilla JS, Web Crypto API, PWA
+Auth:      JWT (access + refresh), PBKDF2-SHA256
+DB:        SQLite
+Публикация: Cloudflare Tunnel</pre>
+
+                <h3>Что умеет</h3>
+                <ul>
+                    <li>Личные чаты с E2E и групповые чаты</li>
+                    <li>Отправка файлов, статусы онлайн, индикатор набора</li>
+                    <li>Прочитано/доставлено, редактирование и удаление</li>
+                    <li>Админ-панель с баном и мод-логами</li>
+                </ul>
+                <p>Открыть: <code><a href="https://krempik.github.io/messenger">krempik.github.io/messenger</a></code></p>
+</div>
+                </article>
+                <nav class="post-nav">
+                <a href="kit.html" rel="prev">&larr; 4ayka-kit: бэкенд из 16 строк YAML</a>
+                <a href="tblocks.html" rel="next">T-Blocks 4.0: тетрис, который дорос до боссов &rarr;</a>
+                </nav>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-name">4AYKA STUDIO &middot; 2026</p>
+            <p class="footer-meta">сделано в одиночку, с любовью к коду</p>
+        </div>
+    </footer>
+</body>
+</html>

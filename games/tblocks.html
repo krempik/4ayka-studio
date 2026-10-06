@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T-Blocks — браузерная игра | 4ayka Studio</title>
+    <meta name="description" content="Тетрис-++: боссы толкают поле вверх, 8 павер-аппов, 12 достижений, 4 темы и живой лидерборд на FastAPI. Вся игра — один HTML-файл.">
+    <meta name="author" content="4ayka Studio">
+    <meta property="og:title" content="T-Blocks — браузерная игра | 4ayka Studio">
+    <meta property="og:description" content="Тетрис-++: боссы толкают поле вверх, 8 павер-аппов, 12 достижений, 4 темы и живой лидерборд на FastAPI. Вся игра — один HTML-файл.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://krempik.github.io/4ayka-studio/games/tblocks.html">
+    <meta property="og:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
+    <meta property="og:site_name" content="4ayka Studio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="T-Blocks — браузерная игра | 4ayka Studio">
+    <meta name="twitter:description" content="Тетрис-++: боссы толкают поле вверх, 8 павер-аппов, 12 достижений, 4 темы и живой лидерборд на FastAPI. Вся игра — один HTML-файл.">
+    <meta name="twitter:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
+    <link rel="canonical" href="https://krempik.github.io/4ayka-studio/games/tblocks.html">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0e1a'/><text x='50' y='74' font-size='62' text-anchor='middle' fill='%2322d3ee' font-family='monospace' font-weight='bold'>4</text></svg>">
+    <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#0b0e1a">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="../site.js"></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"T-Blocks","description":"Тетрис-++: боссы толкают поле вверх, 8 павер-аппов, 12 достижений, 4 темы и живой лидерборд на FastAPI. Вся игра — один HTML-файл.","applicationCategory":"GameApplication","operatingSystem":"Any (web browser)","url":"https://krempik.github.io/tblocks","image":"https://krempik.github.io/4ayka-studio/img/game-tblocks.png","inLanguage":"ru","author":{"@type":"Organization","name":"4ayka Studio","url":"https://krempik.github.io/4ayka-studio"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+</head>
+<body>
+    <a class="skip-link" href="#content">К содержимому</a>
+    <nav class="nav" id="nav">
+        <a href="../index.html" class="logo">4ayka<span>studio</span></a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html#home">Главная</a></li>
+            <li><a href="../index.html#games" class="active">Игры</a></li>
+            <li><a href="../index.html#apps">Приложения</a></li>
+            <li><a href="../index.html#about">О студии</a></li>
+            <li><a href="../blog/">Блог</a></li>
+            <li><a href="../desktop.html">PC Sim</a></li>
+            <li><a href="../index.html#contact">Контакты</a></li>
+        </ul>
+        <div class="nav-meta">
+            <button class="theme-toggle" id="theme-toggle" title="Сменить тему" aria-label="Сменить тему" aria-pressed="false">&#9789;</button>
+            <button class="burger" id="burger" aria-label="Меню" aria-controls="nav-links" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <main id="content">
+        <section class="section page-section">
+            <div class="container">
+                <a class="back-btn" href="../index.html#games">&larr; все игры</a>
+                <div class="game-head">
+                    <img class="game-cover" src="../img/game-tblocks.png" alt="T-Blocks — обложка" width="1280" height="720" loading="lazy">
+                    <div class="game-head-body">
+                        <div class="post-meta"><span class="tag">АРКАДА</span><span class="tag">LEADERBOARD</span><span class="tag">PWA</span></div>
+                        <h1 class="game-title">T-Blocks</h1>
+                        <p class="game-lead">Тетрис-++: боссы толкают поле вверх, 8 павер-аппов, 12 достижений, 4 темы и живой лидерборд на FastAPI. Вся игра — один HTML-файл.</p>
+                        <div class="game-actions">
+                            <a class="btn btn-primary" href="https://krempik.github.io/tblocks" target="_blank" rel="noopener">Играть</a>
+                            <a class="btn btn-ghost" href="https://github.com/krempik/tblocks" target="_blank" rel="noopener">Репозиторий</a>
+                            <span class="version" id="version-tblocks">v4.1.0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="game-spec">
+    <h2>Режимы</h2>
+    <ul>
+        <li><b>Классический</b> — комбо и бонусы, стандартные правила.</li>
+        <li><b>Марафон</b> — бесконечный, скорость растёт с уровнем.</li>
+        <li><b>Битва с Боссом</b> — линии наносят урон, босс отвечает мусорными рядами.</li>
+        <li><b>Ультра</b> — две минуты на максимум очков.</li>
+    </ul>
+
+    <h2>Боссы</h2>
+    <p>Каждый босс периодически проталкивает поле вверх, добавляя мусорный ряд снизу:</p>
+    <pre>Кубик Хаоса      325 HP  атака каждые 260 тиков  +1 ряд
+Призма Тьмы      520 HP  атака каждые 180 тиков  +2 ряда
+Тетроментор      780 HP  атака каждые 130 тиков  +3 ряда</pre>
+
+    <h2>Управление</h2>
+    <table class="spec-table">
+        <tr><th>Действие</th><th>Клавиши</th></tr>
+        <tr><td>Движение</td><td><code>←</code> <code>→</code></td></tr>
+        <tr><td>Мягкое / жёсткое падение</td><td><code>↓</code> / <code>Space</code></td></tr>
+        <tr><td>Вращение</td><td><code>↑</code> / <code>X</code></td></tr>
+        <tr><td>Пауза</td><td><code>P</code> / <code>Esc</code></td></tr>
+    </table>
+
+    <h2>Техническая часть</h2>
+    <ul>
+        <li>Один HTML-файл на ~1400 строк, ноль зависимостей — открывается в браузере как есть.</li>
+        <li>Лидерборд и статистика — <code>FastAPI</code> + SQLite, версии в одном месте.</li>
+        <li>Процедурный звук через <code>Web Audio</code>: ни одного аудиофайла.</li>
+        <li>PWA-манифест и service worker — игра ставится на рабочий стол и работает офлайн.</li>
+        <li>12 достижений и 4 темы оформления: Matrix, Neon, Retro, Mono.</li>
+    </ul>
+</div>
+                <p class="page-note">Подробнее в блоге: <a href="../blog/tblocks.html">T-Blocks 4.0: тетрис, который дорос до боссов</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-name">4AYKA STUDIO &middot; 2026</p>
+            <p class="footer-meta">сделано в одиночку, с любовью к коду</p>
+        </div>
+    </footer>
+</body>
+</html>

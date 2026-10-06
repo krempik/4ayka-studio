@@ -1,106 +1,6 @@
-﻿// 4ayka Studio — main site scripts
-
-(function initTheme() {
-    var isLight = false;
-    try { isLight = localStorage.getItem('4ayka_theme') === 'light'; } catch (e) { /* storage off */ }
-    if (isLight) document.body.classList.add('light');
-})();
-
-// ------------------------------------ NAV ------------------------------------
-(function initNav() {
-    var nav = document.getElementById('nav');
-    var links = Array.prototype.slice.call(document.querySelectorAll('.nav-links a'));
-    var burger = document.getElementById('burger');
-    var navLinks = document.querySelector('.nav-links');
-    var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
-
-    window.addEventListener('scroll', function () {
-        nav.classList.toggle('scrolled', window.scrollY > 40);
-    }, { passive: true });
-
-    window.addEventListener('scroll', function () {
-        var current = '';
-        var probe = window.scrollY + 140;
-        sections.forEach(function (s) {
-            if (probe >= s.offsetTop) current = s.getAttribute('id');
-        });
-        links.forEach(function (l) {
-            l.classList.toggle('active', l.getAttribute('href') === '#' + current);
-        });
-    }, { passive: true });
-
-    burger.addEventListener('click', function () {
-        navLinks.classList.toggle('active');
-    });
-
-    links.forEach(function (l) {
-        l.addEventListener('click', function () {
-            navLinks.classList.remove('active');
-        });
-    });
-})();
-
-// ------------------------------- SPACE CANVAS --------------------------------
-// Decor only: parallax starfield. DPR-aware, pauses when the tab is hidden,
-// and honours prefers-reduced-motion via CSS (element hidden).
-(function initSpace() {
-    var canvas = document.getElementById('space');
-    if (!canvas) return;
-    var ctx = canvas.getContext('2d');
-
-    var W = 0, H = 0, dpr = 1;
-    var stars = [];
-    var MAX_STARS = 130;
-    var running = true;
-
-    function resize() {
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        W = window.innerWidth;
-        H = window.innerHeight;
-        canvas.width = W * dpr;
-        canvas.height = H * dpr;
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        stars = Array(MAX_STARS).fill(0).map(spawn, true);
-    }
-
-    function spawn() {
-        return {
-            x: Math.random() * W,
-            y: Math.random() * H,
-            r: Math.random() * 1.5 + 0.3,
-            v: Math.random() * 0.35 + 0.08,
-            hue: Math.random() < 0.18 ? 1 : 0
-        };
-    }
-
-    function draw(ts) {
-        if (!running) return;
-        ctx.clearRect(0, 0, W, H);
-        for (var i = 0; i < stars.length; i++) {
-            var s = stars[i];
-            s.x -= s.v;
-            if (s.x < -2) s.x = W + 2;
-            ctx.beginPath();
-            ctx.arc(s.x, s.y, s.r, 0, 6.2832);
-            ctx.fillStyle = s.hue ? 'rgba(139,92,246,0.85)' : 'rgba(210,220,250,0.55)';
-            ctx.fill();
-        }
-        requestAnimationFrame(draw);
-    }
-
-    function pause() { running = false; }
-    function resume() {
-        if (!running) { running = true; requestAnimationFrame(draw); }
-    }
-
-    window.addEventListener('resize', resize);
-    document.addEventListener('visibilitychange', function () {
-        if (document.hidden) pause(); else resume();
-    });
-
-    resize();
-    requestAnimationFrame(draw);
-})();
+﻿// 4ayka Studio — index page behaviour.
+// Theme, navigation, starfield, versions and the clock live in site.js, which
+// is loaded on every page. This file is main-page specific.
 
 // --------------------------------- TYPEWRITER --------------------------------
 (function initTyper() {
@@ -151,105 +51,203 @@
 
 // ---------------------------------- COUNTERS ---------------------------------
 (function initCounters() {
-    var nums = document.querySelectorAll('.stat-number');
-    if (!('IntersectionObserver' in window) || !nums.length) return;
+    var nums = document.querySelectorAll('.stat-number[data-target]');
+    if (!('IntersectionObserver' in window) || !nums.length) {
+        Array.prototype.forEach.call(nums, function (el) {
+            el.textContent = el.getAttribute('data-target');
+        });
+        return;
+    }
+    function runCount(el, target) {
+        var start = null;
+        function step(ts) {
+            if (start === null) start = ts;
+            var p = Math.min((ts - start) / 1400, 1);
+            var eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.round(target * eased);
+            if (p < 1) requestAnimationFrame(step);
+            else el.textContent = target;
+        }
+        requestAnimationFrame(step);
+    }
     var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
             if (!entry.isIntersecting) return;
             var el = entry.target;
-            var target = parseInt(el.getAttribute('data-target'), 10) || 0;
-            var start = null;
             io.unobserve(el);
-            function step(ts) {
-                if (start === null) start = ts;
-                var p = Math.min((ts - start) / 1400, 1);
-                var eased = 1 - Math.pow(1 - p, 3);
-                el.textContent = Math.round(target * eased);
-                if (p < 1) requestAnimationFrame(step);
-                else el.textContent = target;
-            }
-            requestAnimationFrame(step);
+            runCount(el, parseInt(el.getAttribute('data-target'), 10) || 0);
         });
     }, { threshold: 0.5 });
     Array.prototype.forEach.call(nums, function (el) { io.observe(el); });
 })();
 
-// ------------------------------------ THEME ----------------------------------
-(function initThemeToggle() {
-    var btn = document.getElementById('theme-toggle');
-    if (!btn) return;
-    var isLight = document.body.classList.contains('light');
-    btn.textContent = isLight ? '\u2600' : '\u263D';
-    btn.addEventListener('click', function () {
-        isLight = !isLight;
-        document.body.classList.toggle('light', isLight);
-        btn.textContent = isLight ? '\u2600' : '\u263D';
-        try { localStorage.setItem('4ayka_theme', isLight ? 'light' : 'dark'); } catch (e) { /* storage off */ }
-    });
+// ------------------------------- LIVE GITHUB STATS ---------------------------
+// Pulls real numbers from the GitHub API (public repos, non-forks) and keeps
+// them in localStorage for one hour so the unauthenticated rate limit is not
+// an issue. On any failure the hardcoded fallback numbers stay in the card.
+(function liveGitHubStats() {
+    var stats = document.querySelectorAll('[data-live]');
+    if (!stats.length) return;
+    var reposEl = document.getElementById('stat-projects');
+    var starsEl = document.getElementById('stat-stars');
+
+    function apply(repos, stars) {
+        if (reposEl && reposEl.getAttribute('data-target')) {
+            reposEl.setAttribute('data-target', String(repos));
+            reposEl.textContent = repos;
+        }
+        if (starsEl && starsEl.getAttribute('data-target')) {
+            starsEl.setAttribute('data-target', String(stars));
+            starsEl.textContent = stars;
+        }
+    }
+
+    var KEY = '4ayka_github_stats';
+    function readCache() {
+        try {
+            var raw = localStorage.getItem(KEY);
+            if (!raw) return null;
+            var data = JSON.parse(raw);
+            if (!data || Date.now() > data.expires) return null;
+            return data;
+        } catch (e) {
+            console.warn('github stats cache read failed', e);
+            return null;
+        }
+    }
+    function storeCache(repos, stars) {
+        try {
+            localStorage.setItem(KEY, JSON.stringify({
+                repos: repos,
+                stars: stars,
+                expires: Date.now() + 60 * 60 * 1000
+            }));
+        } catch (e) {
+            console.warn('github stats cache write failed', e);
+        }
+    }
+
+    var cached = readCache();
+    if (cached) {
+        apply(cached.repos, cached.stars);
+        return;
+    }
+
+    fetch('https://api.github.com/users/krempik/repos?per_page=100&type=public')
+        .then(function (r) {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+        })
+        .then(function (repos) {
+            var owned = repos.filter(function (r) { return !r.fork; });
+            var stars = owned.reduce(function (sum, r) { return sum + (r.stargazers_count || 0); }, 0);
+            apply(owned.length, stars);
+            storeCache(owned.length, stars);
+        })
+        .catch(function (e) {
+            console.warn('github stats fallback kept', e);
+        });
 })();
 
 // ----------------------------------- FORM ------------------------------------
 (function initContactForm() {
     var form = document.getElementById('contact-form');
     if (!form) return;
+    var btn = form.querySelector('.btn');
+    var resetBtn = null;
+    var fallback = document.getElementById('contact-fallback');
+    var fallbackLink = fallback ? fallback.querySelector('a') : null;
+    var copyBtn = fallback ? fallback.querySelector('[data-copy]') : null;
+    var status = fallback ? fallback.querySelector('[data-status]') : null;
+    var NICK = form.querySelector('#contact-nick');
+    var EMAIL = form.querySelector('#contact-email');
+    var MSG = form.querySelector('#contact-message');
+
+    function buildText() {
+        var nick = NICK.value.trim() || 'Гость';
+        var email = EMAIL.value.trim();
+        var message = MSG.value.trim();
+        return 'Сообщение с сайта 4ayka Studio\n\nОт: ' + nick +
+            (email ? '\nEmail: ' + email : '') + '\n\n' + message;
+    }
+    function buildUrl() {
+        return 'https://t.me/KR0VOSOS?text=' + encodeURIComponent(buildText());
+    }
+    function setStatus(text) {
+        if (status) status.textContent = text;
+    }
+    function resetForm() {
+        form.reset();
+        btn.textContent = 'Отправить в Telegram';
+        btn.disabled = false;
+        if (fallback) fallback.hidden = true;
+        setStatus('');
+    }
+
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-        var btn = form.querySelector('.btn');
-        var nick = form.querySelector('#contact-nick').value.trim() || 'Гость';
-        var email = form.querySelector('#contact-email').value.trim();
-        var message = form.querySelector('#contact-message').value.trim();
-
-        var text = 'Сообщение с сайта 4ayka Studio\n\nОт: ' + nick +
-            (email ? '\nEmail: ' + email : '') + '\n\n' + message;
-        var url = 'https://t.me/KR0VOSOS?text=' + encodeURIComponent(text);
-
+        var url = buildUrl();
         btn.textContent = 'Открываю Telegram…';
         btn.disabled = true;
+
+        // A popup blocker may return null — fall back to a visible link and a
+        // copy button instead of silently "opening" nothing.
+        var opened = null;
+        try {
+            opened = window.open(url, '_blank', 'noopener');
+        } catch (err) {
+            console.warn('popup window.open blocked', err);
+            opened = null;
+        }
+
         setTimeout(function () {
-            window.open(url, '_blank');
-            btn.textContent = 'Готово! Ты молодец :)';
-            setTimeout(function () {
-                btn.textContent = 'Отправить в Telegram';
-                btn.disabled = false;
-                form.reset();
-            }, 2500);
-        }, 400);
+            if (fallback) {
+                if (fallbackLink) fallbackLink.href = url;
+                fallback.hidden = false;
+            }
+            setStatus(opened ? 'Открыл Telegram в новой вкладке.' : 'Всплывающее окно не пропустил браузер — открой вручную.');
+            btn.textContent = 'Готово!';
+            if (!resetBtn) {
+                resetBtn = document.createElement('button');
+                resetBtn.type = 'button';
+                resetBtn.className = 'btn btn-ghost form-reset';
+                resetBtn.textContent = 'Написать ещё';
+                resetBtn.addEventListener('click', resetForm);
+                form.appendChild(resetBtn);
+            }
+        }, 700);
     });
-})();
 
-// --------------------------------- VERSIONS ----------------------------------
-// Pull the real release version from each repo's VERSION file (raw GitHub is
-// always served, unlike the /api/version endpoints behind a running server).
-// On any failure the hardcoded span text stays as the offline fallback.
-(function initVersions() {
-    var map = {
-        'version-slingor': 'https://raw.githubusercontent.com/krempik/slingor/main/VERSION',
-        'version-tblocks': 'https://raw.githubusercontent.com/krempik/tblocks/main/VERSION',
-        'version-messenger': 'https://raw.githubusercontent.com/krempik/messenger/main/VERSION',
-        'version-dungeon': 'https://raw.githubusercontent.com/krempik/dungeon/main/VERSION'
-    };
-    Object.keys(map).forEach(function (id) {
-        fetch(map[id])
-            .then(function (r) {
-                if (!r.ok) throw new Error('HTTP ' + r.status);
-                return r.text();
-            })
-            .then(function (text) {
-                var v = text.trim();
-                var el = document.getElementById(id);
-                if (el && v) el.textContent = 'v' + v;
-            })
-            .catch(function () { /* keep the hardcoded fallback */ });
-    });
-})();
-
-// ----------------------------------- CLOCK -----------------------------------
-(function initClock() {
-    var el = document.getElementById('clock');
-    if (!el) return;
-    function tick() {
-        el.textContent = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-        setTimeout(tick, 30000);
+    if (copyBtn) {
+        copyBtn.addEventListener('click', function () {
+            var text = buildText();
+            function done() { setStatus('Скопировано в буфер — вставь в любой чат с собой.'); }
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(done).catch(function (err) {
+                    console.warn('clipboard write failed', err);
+                    fallbackCopy(text);
+                    done();
+                });
+            } else {
+                fallbackCopy(text);
+                done();
+            }
+        });
     }
-    tick();
+
+    function fallbackCopy(text) {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        try {
+            ta.select();
+            document.execCommand('copy');
+        } catch (e) {
+            console.warn('execCommand copy failed', e);
+        } finally {
+            document.body.removeChild(ta);
+        }
+    }
 })();

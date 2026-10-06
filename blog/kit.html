@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>4ayka-kit: бэкенд из 16 строк YAML | 4ayka Studio</title>
+    <meta name="description" content="Спека → рабочий FastAPI-сервис с JWT, rate limit и авто-миграцией. Плюс сканер проекта в компактный контекст для ИИ-агентов.">
+    <meta name="author" content="4ayka Studio">
+    <meta property="og:title" content="4ayka-kit: бэкенд из 16 строк YAML | 4ayka Studio">
+    <meta property="og:description" content="Спека → рабочий FastAPI-сервис с JWT, rate limit и авто-миграцией. Плюс сканер проекта в компактный контекст для ИИ-агентов.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://krempik.github.io/4ayka-studio/blog/kit.html">
+    <meta property="og:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
+    <meta property="og:site_name" content="4ayka Studio">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="4ayka-kit: бэкенд из 16 строк YAML | 4ayka Studio">
+    <meta name="twitter:description" content="Спека → рабочий FastAPI-сервис с JWT, rate limit и авто-миграцией. Плюс сканер проекта в компактный контекст для ИИ-агентов.">
+    <meta name="twitter:image" content="https://krempik.github.io/4ayka-studio/img/og.png">
+    <link rel="canonical" href="https://krempik.github.io/4ayka-studio/blog/kit.html">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0e1a'/><text x='50' y='74' font-size='62' text-anchor='middle' fill='%2322d3ee' font-family='monospace' font-weight='bold'>4</text></svg>">
+    <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+    <link rel="manifest" href="../manifest.webmanifest">
+    <meta name="theme-color" content="#0b0e1a">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="../site.js"></script>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"4ayka-kit: бэкенд из 16 строк YAML","description":"Спека → рабочий FastAPI-сервис с JWT, rate limit и авто-миграцией. Плюс сканер проекта в компактный контекст для ИИ-агентов.","datePublished":"2026-09-08","inLanguage":"ru","mainEntityOfPage":"https://krempik.github.io/4ayka-studio/blog/kit.html","author":{"@type":"Organization","name":"4ayka Studio","url":"https://krempik.github.io/4ayka-studio"},"publisher":{"@type":"Organization","name":"4ayka Studio","url":"https://krempik.github.io/4ayka-studio"},"image":"https://krempik.github.io/4ayka-studio/img/og-blog.png"}</script>
+</head>
+<body>
+    <a class="skip-link" href="#content">К содержимому</a>
+    <nav class="nav" id="nav">
+        <a href="../index.html" class="logo">4ayka<span>studio</span></a>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="../index.html#home">Главная</a></li>
+            <li><a href="../index.html#games">Игры</a></li>
+            <li><a href="../index.html#apps">Приложения</a></li>
+            <li><a href="../index.html#about">О студии</a></li>
+            <li><a href="../blog/" class="active">Блог</a></li>
+            <li><a href="../desktop.html">PC Sim</a></li>
+            <li><a href="../index.html#contact">Контакты</a></li>
+        </ul>
+        <div class="nav-meta">
+            <button class="theme-toggle" id="theme-toggle" title="Сменить тему" aria-label="Сменить тему" aria-pressed="false">&#9789;</button>
+            <button class="burger" id="burger" aria-label="Меню" aria-controls="nav-links" aria-expanded="false"><span></span><span></span><span></span></button>
+        </div>
+    </nav>
+
+    <main id="content">
+        <article class="section page-section">
+            <div class="container">
+                <a class="back-btn" href="index.html">&larr; ко всем постам</a>
+                <article class="post-full">
+                    <h1>4ayka-kit: бэкенд из 16 строк YAML</h1>
+                    <p class="subtitle">2026-09-08 | TOOLS, PYTHON</p>
+                    <div class="post-body">
+                <p>4ayka-kit — тулкит, который мы делаем для себя: вместо рутинных FastAPI-сервисов пишем короткую спеку и получаем рабочий бэкенд со всеми примочками.</p>
+
+                <h3>Спека → сервис</h3>
+                <pre>project: { name: notes, title: Notes, auth: jwt }
+resources:
+  notes:
+    fields: { title: str, body: text, tags: 'list[str]' }
+    crud: full</pre>
+                <p><code>ayka gen</code> собирает модели, схемы, роутеры, JWT-авторизацию, rate limit и авто-миграцию БД. Дальше просто поднимаешь <code>uvicorn app.main:app</code>.</p>
+
+                <h3>Состав</h3>
+                <ul>
+                    <li><code>ayka.auth</code> — PBKDF2, access/refresh JWT, зависимость авторизации</li>
+                    <li><code>ayka.db</code> — schema + безопасная авто-миграция без потери данных</li>
+                    <li><code>ayka.middleware</code> — IP-rate limiter (multiproxy-aware)</li>
+                    <li><code>ayka.files</code> — MIME-guard для загрузок</li>
+                    <li><code>ayka.version</code> — версии в одном месте</li>
+                    <li><code>ayka.scanner</code> / <code>ayka ctx</code> — сканирование проекта в компактный контекст для ИИ</li>
+                </ul>
+
+                <p>Покрыт 48 тестами, включая полный e2e-прогон сгенерированного приложения. Репозиторий: <code><a href="https://github.com/krempik/4ayka-kit">github.com/krempik/4ayka-kit</a></code></p>
+                <pre>Команды CLI:
+  ayka new fastapi myapp   # каркас из спеки
+  ayka gen                 # генерация app/ + CI + тесты
+  ayka ctx [DIR] --ai      # контекст проекта для агента
+  ayka version bump minor  # версия в одном месте</pre>
+</div>
+                </article>
+                <nav class="post-nav">
+                <a href="vanilla.html" rel="prev">&larr; Почему Vanilla JS, а не фреймворк</a>
+                <a href="messenger.html" rel="next">Frendo: E2E-шифрование своими руками &rarr;</a>
+                </nav>
+            </div>
+        </article>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer-name">4AYKA STUDIO &middot; 2026</p>
+            <p class="footer-meta">сделано в одиночку, с любовью к коду</p>
+        </div>
+    </footer>
+</body>
+</html>

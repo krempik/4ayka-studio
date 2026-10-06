@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>4aykaOS v2.1</title>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="site.js"></script>
 <style>
 :root{--g:#00ff41;--gd:#003b00;--cy:#00ffff;--r:#ff0040;--y:#ffff00;--bg:#050505;--wb:#0c0c0c;--wh:#151515;--bd:#1e1e1e;--tx:#b0b0b0;--dm:#555;--f:'Fira Code',monospace}
-body.light{--g:#008b30;--gd:#00611f;--cy:#0077a8;--r:#b30033;--y:#a89200;--bg:#e8e7e0;--wb:#f7f6f0;--wh:#ffffff;--bd:#c9c7ba;--tx:#2a2a2a;--dm:#757575}
+html.light{--g:#008b30;--gd:#00611f;--cy:#0077a8;--r:#b30033;--y:#a89200;--bg:#e8e7e0;--wb:#f7f6f0;--wh:#ffffff;--bd:#c9c7ba;--tx:#2a2a2a;--dm:#757575}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--tx);font-family:var(--f);height:100vh;overflow:hidden;user-select:none}
 ::selection{background:var(--g);color:#000}
@@ -219,7 +220,6 @@ var OS_VER='2.1';
 var OS_BUILD='2026.09';
 var USER='kremp';
 var termUser=USER+'@4ayka';
-(function(){var t=localStorage.getItem('4ayka_theme');if(t==='light')document.body.classList.add('light');})();
 var C={g:'#00ff41',gd:'#003b00',cy:'#00ffff',r:'#ff0040',y:'#ffff00'};
 var wins={},winZ=100,activeWin=null,cmdHistory=[];
 var termDir='~';
@@ -1275,10 +1275,9 @@ document.addEventListener('click',function(e){
   if(el.dataset.tray){
     switch(el.dataset.tray){
       case 'theme':{
-        var l=document.body.classList.toggle('light');
-        try{localStorage.setItem('4ayka_theme',l?'light':'dark');}
-        catch(err){console.warn('theme persist failed:',err);}
-        showNotif('Вид','Тема: '+(l?'светлая':'тёмная'));
+        var now=Site4.isLight();
+        Site4.toggleTheme();
+        showNotif('Вид','Тема: '+(now?'тёмная':'светлая'));
         break;
       }
       case 'wifi':showNotif('Сеть','Wi-Fi: 4ayka_Studio_5G - 120 Мбит/с');break;

@@ -1,0 +1,40 @@
+<!--meta
+{
+  "slug": "kit",
+  "date": "2026-09-08",
+  "tags": [
+    "TOOLS",
+    "PYTHON"
+  ],
+  "title": "4ayka-kit: бэкенд из 16 строк YAML",
+  "lead": "Спека → рабочий FastAPI-сервис с JWT, rate limit и авто-миграцией. Плюс сканер проекта в компактный контекст для ИИ-агентов."
+}
+-->
+<div class="post-body">
+                <p>4ayka-kit — тулкит, который мы делаем для себя: вместо рутинных FastAPI-сервисов пишем короткую спеку и получаем рабочий бэкенд со всеми примочками.</p>
+
+                <h3>Спека → сервис</h3>
+                <pre>project: { name: notes, title: Notes, auth: jwt }
+resources:
+  notes:
+    fields: { title: str, body: text, tags: 'list[str]' }
+    crud: full</pre>
+                <p><code>ayka gen</code> собирает модели, схемы, роутеры, JWT-авторизацию, rate limit и авто-миграцию БД. Дальше просто поднимаешь <code>uvicorn app.main:app</code>.</p>
+
+                <h3>Состав</h3>
+                <ul>
+                    <li><code>ayka.auth</code> — PBKDF2, access/refresh JWT, зависимость авторизации</li>
+                    <li><code>ayka.db</code> — schema + безопасная авто-миграция без потери данных</li>
+                    <li><code>ayka.middleware</code> — IP-rate limiter (multiproxy-aware)</li>
+                    <li><code>ayka.files</code> — MIME-guard для загрузок</li>
+                    <li><code>ayka.version</code> — версии в одном месте</li>
+                    <li><code>ayka.scanner</code> / <code>ayka ctx</code> — сканирование проекта в компактный контекст для ИИ</li>
+                </ul>
+
+                <p>Покрыт 48 тестами, включая полный e2e-прогон сгенерированного приложения. Репозиторий: <code><a href="https://github.com/krempik/4ayka-kit">github.com/krempik/4ayka-kit</a></code></p>
+                <pre>Команды CLI:
+  ayka new fastapi myapp   # каркас из спеки
+  ayka gen                 # генерация app/ + CI + тесты
+  ayka ctx [DIR] --ai      # контекст проекта для агента
+  ayka version bump minor  # версия в одном месте</pre>
+</div>
